@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "715680281280",
+    "firebase_url": "https://filebaseimagelabeling.firebaseio.com",
+    "project_id": "filebaseimagelabeling",
+    "storage_bucket": "filebaseimagelabeling.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715680281280:android:22c2e15a1f17d7c9",
+        "android_client_info": {
+          "package_name": "com.thinh.filebaseimagelabeling"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715680281280-o6h70jqphj7plh83focaakp5tj7v3q19.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thinh.filebaseimagelabeling",
+            "certificate_hash": "57a472de66ab873ab2a7e0437b810802148503a6"
+          }
+        },
+        {
+          "client_id": "715680281280-aovmottr9g376r6vicoa0m7elp91vt9l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU_vUQRtz8ESDucB11-ae8fS3CpKS3z5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715680281280-aovmottr9g376r6vicoa0m7elp91vt9l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
