@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "715680281280",
-    "firebase_url": "https://filebaseimagelabeling.firebaseio.com",
-    "project_id": "filebaseimagelabeling",
-    "storage_bucket": "filebaseimagelabeling.appspot.com"
+    "project_number": "753133518994",
+    "firebase_url": "https://nutriapp-ce7e8.firebaseio.com",
+    "project_id": "nutriapp-ce7e8",
+    "storage_bucket": "nutriapp-ce7e8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:715680281280:android:22c2e15a1f17d7c9",
+        "mobilesdk_app_id": "1:753133518994:android:22c2e15a1f17d7c9",
         "android_client_info": {
           "package_name": "com.thinh.filebaseimagelabeling"
         }
       },
       "oauth_client": [
         {
-          "client_id": "715680281280-o6h70jqphj7plh83focaakp5tj7v3q19.apps.googleusercontent.com",
+          "client_id": "753133518994-vgfu43t2nbceedluuinbj9eje3g9lbpi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.thinh.filebaseimagelabeling",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "715680281280-aovmottr9g376r6vicoa0m7elp91vt9l.apps.googleusercontent.com",
+          "client_id": "753133518994-vh179t06virjc3vvk8nvpsj7vjtst9df.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCU_vUQRtz8ESDucB11-ae8fS3CpKS3z5Y"
+          "current_key": "AIzaSyD7x6mizOJ7UZlMADxXrNNscY0fYNyEY14"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "715680281280-aovmottr9g376r6vicoa0m7elp91vt9l.apps.googleusercontent.com",
+              "client_id": "753133518994-vh179t06virjc3vvk8nvpsj7vjtst9df.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
