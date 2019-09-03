@@ -1,4 +1,4 @@
-package com.thinh.filebaseimagelabeling;
+package com.thinh.foodnutrientfact;
 
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
@@ -7,19 +7,16 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOptions;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceImageLabelerOptions;
-import com.thinh.filebaseimagelabeling.enums.ImageDetectEngine;
-import com.thinh.filebaseimagelabeling.helper.InternetCheck;
+import com.thinh.foodnutrientfact.enums.ImageDetectEngine;
+import com.thinh.foodnutrientfact.helper.InternetCheck;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
 import com.wonderkiln.camerakit.CameraKitEventListener;
@@ -98,8 +95,9 @@ public class MainActivity extends AppCompatActivity {
         //Create a FirebaseVisionImage object from a Bitmap object
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 
-        new InternetCheck(internet -> {
-            FirebaseVisionImageLabeler detectImageLabeler = getFirebaseVisionImageLabeler(internet ? ImageDetectEngine.COULD_ENGINE : ImageDetectEngine.DEVICE_ENGINE);
+        // If have internet, we will use COULD_ENGINE mode Else we will use DEVICE_ENGINE mode
+        new InternetCheck(connectInternet -> {
+            FirebaseVisionImageLabeler detectImageLabeler = getFirebaseVisionImageLabeler(connectInternet ? ImageDetectEngine.COULD_ENGINE : ImageDetectEngine.DEVICE_ENGINE);
             detectImageLabeler.processImage(image)
                     .addOnSuccessListener(labels -> processDataResult(labels))
                     .addOnFailureListener(e -> Log.d("EDMTERROR",e.getMessage()));
@@ -117,19 +115,19 @@ public class MainActivity extends AppCompatActivity {
         switch (imageDetectEngine)
         {
             case COULD_ENGINE:
-                FirebaseVisionCloudImageLabelerOptions cloudImageLabelerOptions =
+                FirebaseVisionCloudImageLabelerOptions cloudLabeler =          //Finding Labels in a supplied image runs inference on cloud
                         new FirebaseVisionCloudImageLabelerOptions.Builder()
                                 .setConfidenceThreshold(0.8f) // Get highest Confidence Threshold
                                 .build();
                 return FirebaseVision.getInstance()
-                        .getCloudImageLabeler(cloudImageLabelerOptions);
+                        .getCloudImageLabeler(cloudLabeler);
             case DEVICE_ENGINE:
-                FirebaseVisionOnDeviceImageLabelerOptions deviceImageLabelerOptions =
+                FirebaseVisionOnDeviceImageLabelerOptions deviceLabeler =       //Finding Labels in a supplied image runs inference on device
                         new FirebaseVisionOnDeviceImageLabelerOptions.Builder()
                                 .setConfidenceThreshold(0.8f) // Get highest Confidence Threshold
                                 .build();
                 return FirebaseVision.getInstance()
-                        .getOnDeviceImageLabeler(deviceImageLabelerOptions);
+                        .getOnDeviceImageLabeler(deviceLabeler);
             default:
                 return null;
         }
@@ -141,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void processDataResult(List<FirebaseVisionImageLabel> labels) {
         for (FirebaseVisionImageLabel label : labels){
-            Toast.makeText(this,"Result: "+label.getText(),Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Result: "+label.getText(),Toast.LENGTH_LONG).show();  //Get and show the label's text description
         }
         if (waitingDialog.isShowing()){
             waitingDialog.dismiss();
