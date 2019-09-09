@@ -42,6 +42,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753133518994:android:faa2f724d2a1aae7",
+        "android_client_info": {
+          "package_name": "com.thinh.foodnutrientfact"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753133518994-vh179t06virjc3vvk8nvpsj7vjtst9df.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7x6mizOJ7UZlMADxXrNNscY0fYNyEY14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753133518994-vh179t06virjc3vvk8nvpsj7vjtst9df.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

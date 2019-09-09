@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +19,7 @@ import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceImageLabelerOptions;
 import com.thinh.foodnutrientfact.enums.ImageDetectEngine;
 import com.thinh.foodnutrientfact.helper.InternetCheck;
+import com.thinh.foodnutrientfact.helper.database.DatabaseAccess;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
 import com.wonderkiln.camerakit.CameraKitEventListener;
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     CameraView cameraView;
     Button btnDetect;
     AlertDialog waitingDialog;
-
+    View viewResult;
     @Override
     protected void onResume() {
         super.onResume();
@@ -53,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
         cameraView = (CameraView) findViewById(R.id.camemraView);
         btnDetect = (Button)findViewById(R.id.btnDetect);
         waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage("Please waiting...").setCancelable(false).build();
-
+        viewResult = findViewById(R.id.resultLayout);
+        viewResult.setVisibility(LinearLayout.GONE);
         cameraView.addCameraKitListener(new CameraKitEventListener() {
             @Override
             public void onEvent(CameraKitEvent cameraKitEvent) {
@@ -72,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
                 bitmap =  Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(),bitmap.getHeight(),false);
                 cameraView.stop();
                 runDetect(bitmap);
+
+
+
             }
 
             @Override
@@ -83,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         btnDetect.setOnClickListener((view)->{
             cameraView.start();
             cameraView.captureImage();
+
         });
     }
 
@@ -117,14 +125,14 @@ public class MainActivity extends AppCompatActivity {
             case COULD_ENGINE:
                 FirebaseVisionCloudImageLabelerOptions cloudLabeler =          //Finding Labels in a supplied image runs inference on cloud
                         new FirebaseVisionCloudImageLabelerOptions.Builder()
-                                .setConfidenceThreshold(0.8f) // Get highest Confidence Threshold
+                                .setConfidenceThreshold(0.9f) // Get highest Confidence Threshold
                                 .build();
                 return FirebaseVision.getInstance()
                         .getCloudImageLabeler(cloudLabeler);
             case DEVICE_ENGINE:
                 FirebaseVisionOnDeviceImageLabelerOptions deviceLabeler =       //Finding Labels in a supplied image runs inference on device
                         new FirebaseVisionOnDeviceImageLabelerOptions.Builder()
-                                .setConfidenceThreshold(0.8f) // Get highest Confidence Threshold
+                                .setConfidenceThreshold(0.82f) // Get highest Confidence Threshold
                                 .build();
                 return FirebaseVision.getInstance()
                         .getOnDeviceImageLabeler(deviceLabeler);
@@ -138,11 +146,56 @@ public class MainActivity extends AppCompatActivity {
      * @param labels a list of FirebaseVisionImageLabel objects after detect image
      */
     private void processDataResult(List<FirebaseVisionImageLabel> labels) {
+        String foodName = null;
         for (FirebaseVisionImageLabel label : labels){
-            Toast.makeText(this,"Result: "+label.getText(),Toast.LENGTH_LONG).show();  //Get and show the label's text description
+//            Toast.makeText(this,"Result: "+label.getText(),Toast.LENGTH_LONG).show();//Get and show the label's text description
+//            showFoodNutri("Label",label.getText());
+            if (label.getText().equalsIgnoreCase("food") || label.getText().equalsIgnoreCase("cup")){
+                foodName = null;
+            }
+            else {
+                foodName = label.getText();
+                break;
+            }
         }
         if (waitingDialog.isShowing()){
             waitingDialog.dismiss();
         }
+        getNutrition(foodName);
     }
+
+    /**
+     * Get Food Nutrition From food Name after detect image
+     * @param foodName label after detect image
+     */
+    private void getNutrition(String foodName){
+
+        //create  the instance of databases access class and open databases connection
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
+        databaseAccess.open();
+
+        String foodNutri = databaseAccess.getFoodNutri(foodName);
+        if(foodNutri==null || foodNutri.isEmpty()){
+            showFoodNutri("Error","Not Found");
+        }
+        else{
+            showFoodNutri("Result", foodNutri+foodName);
+            viewResult.setVisibility(LinearLayout.VISIBLE);
+        }
+        databaseAccess.close();
+    }
+
+    /**
+     * Show nutritional results have just been obtained
+     * @param title
+     * @param content detailed nutrition results have just been taken
+     */
+    private void showFoodNutri(String title, String content){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(content);
+        builder.show();
+    }
+
 }
