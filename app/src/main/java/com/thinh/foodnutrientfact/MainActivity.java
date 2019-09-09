@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,16 +28,18 @@ import com.wonderkiln.camerakit.CameraKitImage;
 import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     CameraView cameraView;
     Button btnDetect;
     AlertDialog waitingDialog;
-    View viewResult;
+    View viewResult,viewDetailRessult;
+    TextView  txtFoodName,calories,totalFat,cholesterol,protein;
     @Override
     protected void onResume() {
         super.onResume();
@@ -53,11 +56,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        cameraView = (CameraView) findViewById(R.id.camemraView);
-        btnDetect = (Button)findViewById(R.id.btnDetect);
-        waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage("Please waiting...").setCancelable(false).build();
-        viewResult = findViewById(R.id.resultLayout);
-        viewResult.setVisibility(LinearLayout.GONE);
+        setUpParam();
         cameraView.addCameraKitListener(new CameraKitEventListener() {
             @Override
             public void onEvent(CameraKitEvent cameraKitEvent) {
@@ -77,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 cameraView.stop();
                 runDetect(bitmap);
 
-
-
             }
 
             @Override
@@ -90,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
         btnDetect.setOnClickListener((view)->{
             cameraView.start();
             cameraView.captureImage();
+            viewDetailRessult.setVisibility(LinearLayout.GONE);
+            viewResult.setVisibility(LinearLayout.GONE);
 
         });
     }
@@ -174,12 +173,18 @@ public class MainActivity extends AppCompatActivity {
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
         databaseAccess.open();
 
-        String foodNutri = databaseAccess.getFoodNutri(foodName);
+        ArrayList<String> foodNutri = databaseAccess.getFoodNutri(foodName);
+
         if(foodNutri==null || foodNutri.isEmpty()){
             showFoodNutri("Error","Not Found");
         }
         else{
-            showFoodNutri("Result", foodNutri+foodName);
+            txtFoodName.setText(foodName);
+            calories.setText(foodNutri.get(0));
+            totalFat.setText(foodNutri.get(1));
+            cholesterol.setText(foodNutri.get(2));
+            protein.setText(foodNutri.get(3));
+//            showFoodNutri("Result", foodNutri+foodName);
             viewResult.setVisibility(LinearLayout.VISIBLE);
         }
         databaseAccess.close();
@@ -198,4 +203,30 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view.getId()==R.id.resultLayout){
+            viewResult.setVisibility(LinearLayout.GONE);
+            viewDetailRessult.setVisibility(LinearLayout.VISIBLE);
+        }else if(view.getId()==R.id.detailresultLayout){
+            viewDetailRessult.setVisibility(LinearLayout.GONE);
+            viewResult.setVisibility(LinearLayout.VISIBLE);
+        }
+    }
+    public void setUpParam(){
+        cameraView = (CameraView) findViewById(R.id.camemraView);
+        btnDetect = (Button)findViewById(R.id.btnDetect);
+        waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage("Please waiting...").setCancelable(false).build();
+        viewResult = findViewById(R.id.resultLayout);
+        viewDetailRessult = findViewById(R.id.detailresultLayout);
+        viewDetailRessult.setVisibility(LinearLayout.GONE);
+        viewResult.setVisibility(LinearLayout.GONE);
+        viewDetailRessult.setOnClickListener(this);
+        viewResult.setOnClickListener(this);
+        txtFoodName = viewResult.findViewById(R.id.txtFoodName);
+        calories = viewResult.findViewById(R.id.txtCal);
+        totalFat = viewResult.findViewById(R.id.txtTotalFat);
+        cholesterol = viewResult.findViewById(R.id.txtCholesterol);
+        protein = viewResult.findViewById(R.id.txtProtein);
+    }
 }

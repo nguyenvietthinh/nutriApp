@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/border"
     android:orientation="vertical">
 
     <TextView
@@ -159,22 +160,22 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/txtVitaminLabel"
-            android:layout_width="104dp"
+            android:id="@+id/txtProteinLabel"
+            android:layout_width="99dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
-            android:text="Vitamin"
+            android:text="Protein"
             android:textColor="#ED221E1E"
             android:textSize="24dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtVitamin"
+            android:id="@+id/txtProtein"
             android:layout_width="211dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="31 g"
+            android:text="85 mg"
             android:textColor="#EB242020"
             android:textSize="24dp" />
     </LinearLayout>
@@ -182,5 +183,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray" />
+
 
 </LinearLayout>

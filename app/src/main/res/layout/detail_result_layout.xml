@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:includeFontPadding="false"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="Nutrition Facts"
+        android:textColor="#FA111010"
+        android:textSize="26sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/txtFoodName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:text="Food Name"
+        android:textColor="#201E1E"
+        android:textSize="20sp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtLabelAmount"
+            android:layout_width="131dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Amount Per"
+            android:textColor="#ED221E1E"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtAmount"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="100 grams"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtCalLabel"
+            android:layout_width="97dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Calories"
+            android:textColor="#ED221E1E"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtCal"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="165"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtTotalFatLabel"
+            android:layout_width="105dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Total Fat"
+            android:textColor="#ED221E1E"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/txtTotalFat"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="3.6g"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtSaturatedLabel"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="7dp"
+            android:text="Saturated fat"
+            android:textAlignment="center"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtSaturatedFat"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85 g"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="36dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/txtPolyunsaturatedLabel"
+        android:layout_width="232dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingTop="7dp"
+        android:text="Polyunsaturated fat"
+        android:textAlignment="center"
+        android:textColor="#EB242020"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/txtPolyunsaturatedFat"
+        android:layout_width="211dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="85 g"
+        android:textColor="#EB242020"
+        android:textSize="20sp" />
+</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtMonounsaturatedLabel"
+            android:layout_width="239dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="7dp"
+            android:text="Monounsaturated fat"
+            android:textAlignment="center"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtMonounsaturatedFat"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85 g"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtCholesterolLabel"
+            android:layout_width="141dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Cholesterol"
+            android:textColor="#ED221E1E"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtCholesterol"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85 mg"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtSodiumLabel"
+            android:layout_width="141dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Sodium"
+            android:textColor="#ED221E1E"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtSodium"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85 mg"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtPotassiumLabel"
+            android:layout_width="141dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Potassium"
+            android:textColor="#ED221E1E"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtPotassium"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85 mg"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtProteinLabel"
+            android:layout_width="142dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Protein"
+            android:textColor="#ED221E1E"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtProtein"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85 g"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtVitaminCLabel"
+            android:layout_width="142dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Vitamin C"
+            android:textColor="#EB242020"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtVitaminC"
+            android:layout_width="222dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85 mg"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtVitaminALabel"
+            android:layout_width="142dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Vitamin A"
+            android:textColor="#EB242020"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtVitaminA"
+            android:layout_width="222dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85 mg"
+            android:textColor="#EB242020"
+
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtVitaminDLabel"
+            android:layout_width="142dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Vitamin D"
+            android:textColor="#EB242020"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtVitaminD"
+            android:layout_width="222dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85 mg"
+            android:textColor="#EB242020"
+
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtVitaminB6Label"
+            android:layout_width="142dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Vitamin B-6"
+            android:textColor="#EB242020"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtVitaminB6"
+            android:layout_width="222dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85 mg"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtVitaminB12Label"
+            android:layout_width="144dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="Vitamin B-12"
+            android:textColor="#EB242020"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtVitaminB12"
+            android:layout_width="222dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85 mg"
+            android:textColor="#EB242020"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+</LinearLayout>
