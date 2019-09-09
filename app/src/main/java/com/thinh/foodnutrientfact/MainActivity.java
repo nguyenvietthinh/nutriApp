@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,6 +29,7 @@ import com.wonderkiln.camerakit.CameraView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dmax.dialog.SpotsDialog;
 
@@ -105,8 +105,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // If have internet, we will use COULD_ENGINE mode Else we will use DEVICE_ENGINE mode
         new InternetCheck(connectInternet -> {
             FirebaseVisionImageLabeler detectImageLabeler = getFirebaseVisionImageLabeler(connectInternet ? ImageDetectEngine.COULD_ENGINE : ImageDetectEngine.DEVICE_ENGINE);
+            if(detectImageLabeler == null)
+            {
+                //TODO: log the error
+                return;
+            }
             detectImageLabeler.processImage(image)
-                    .addOnSuccessListener(labels -> processDataResult(labels))
+                    .addOnSuccessListener(labels -> {
+                        if(labels != null && !labels.isEmpty())
+                        {
+                            // Image that is 'More correct' ia put at the top
+                            labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
+                            processDataResult(labels);
+                        }
+                    })
                     .addOnFailureListener(e -> Log.d("EDMTERROR",e.getMessage()));
         });
 
@@ -145,22 +157,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param labels a list of FirebaseVisionImageLabel objects after detect image
      */
     private void processDataResult(List<FirebaseVisionImageLabel> labels) {
-        String foodName = null;
-        for (FirebaseVisionImageLabel label : labels){
-//            Toast.makeText(this,"Result: "+label.getText(),Toast.LENGTH_LONG).show();//Get and show the label's text description
-//            showFoodNutri("Label",label.getText());
-            if (label.getText().equalsIgnoreCase("food") || label.getText().equalsIgnoreCase("cup")){
-                foodName = null;
+        String foodName = "";
+        List<String> itemNames = labels.stream().map(lbl -> lbl.getText()).collect(Collectors.toList());
+        for (String itemName : itemNames){
+            if (itemName.equalsIgnoreCase("food") || itemName.equalsIgnoreCase("cup")){
+                continue;
             }
             else {
-                foodName = label.getText();
+                foodName = itemName;
                 break;
             }
         }
         if (waitingDialog.isShowing()){
             waitingDialog.dismiss();
         }
-        getNutrition(foodName);
+        if(!foodName.equals("")){
+            getNutrition(foodName);
+        }
     }
 
     /**
@@ -214,9 +227,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     public void setUpParam(){
-        cameraView = (CameraView) findViewById(R.id.camemraView);
-        btnDetect = (Button)findViewById(R.id.btnDetect);
-        waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage("Please waiting...").setCancelable(false).build();
+        cameraView = findViewById(R.id.camemraView);
+        btnDetect = findViewById(R.id.btnDetect);
+        waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage("Analyzing the object...").setCancelable(false).build();
         viewResult = findViewById(R.id.resultLayout);
         viewDetailRessult = findViewById(R.id.detailresultLayout);
         viewDetailRessult.setVisibility(LinearLayout.GONE);
