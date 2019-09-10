@@ -96,29 +96,30 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="49dp"
+        android:layout_height="55dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/txtTotalFatLabel"
-            android:layout_width="117dp"
+            android:id="@+id/txtProteinLabel"
+            android:layout_width="99dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
-            android:text="Total Fat"
+            android:text="Protein"
             android:textColor="#ED221E1E"
             android:textSize="24dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtTotalFat"
+            android:id="@+id/txtProtein"
             android:layout_width="211dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="3.6g"
+            android:text="85 mg"
             android:textColor="#EB242020"
             android:textSize="24dp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -149,36 +150,38 @@
             android:textColor="#EB242020"
             android:textSize="24dp" />
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="49dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/txtProteinLabel"
-            android:layout_width="99dp"
+            android:id="@+id/txtTotalFatLabel"
+            android:layout_width="117dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
-            android:text="Protein"
+            android:text="Total Fat"
             android:textColor="#ED221E1E"
             android:textSize="24dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtProtein"
+            android:id="@+id/txtTotalFat"
             android:layout_width="211dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="85 mg"
+            android:text="3.6g"
             android:textColor="#EB242020"
             android:textSize="24dp" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

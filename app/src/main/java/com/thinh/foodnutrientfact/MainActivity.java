@@ -20,6 +20,7 @@ import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceImageLabelerOpt
 import com.thinh.foodnutrientfact.enums.ImageDetectEngine;
 import com.thinh.foodnutrientfact.helper.InternetCheck;
 import com.thinh.foodnutrientfact.helper.database.DatabaseAccess;
+import com.thinh.foodnutrientfact.model.FoodInfoDTO;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
 import com.wonderkiln.camerakit.CameraKitEventListener;
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(detectImageLabeler == null)
             {
                 //TODO: log the error
+                Log.d("Error","Detect Image Labeler cannot be null");
                 return;
             }
             detectImageLabeler.processImage(image)
@@ -117,6 +119,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // Image that is 'More correct' ia put at the top
                             labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
                             processDataResult(labels);
+                        }else{
+                            showFoodNutri("Error","Cannot be Detect Image");
+                            waitingDialog.dismiss();
                         }
                     })
                     .addOnFailureListener(e -> Log.d("EDMTERROR",e.getMessage()));
@@ -184,23 +189,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //create  the instance of databases access class and open databases connection
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
-        databaseAccess.open();
 
-        ArrayList<String> foodNutri = databaseAccess.getFoodNutri(foodName);
 
-        if(foodNutri==null || foodNutri.isEmpty()){
+        FoodInfoDTO foodNutri = databaseAccess.getFoodNutri(foodName);
+
+        if(foodNutri==null){
             showFoodNutri("Error","Not Found");
         }
         else{
-            txtFoodName.setText(foodName);
-            calories.setText(foodNutri.get(0));
-            totalFat.setText(foodNutri.get(1));
-            cholesterol.setText(foodNutri.get(2));
-            protein.setText(foodNutri.get(3));
-//            showFoodNutri("Result", foodNutri+foodName);
+            txtFoodName.setText(foodNutri.getFoodName());
+            calories.setText( Double.toString(foodNutri.getCalories()));
+            totalFat.setText( Double.toString(foodNutri.getTotalFat()));
+            cholesterol.setText(Integer.toString(foodNutri.getCholesterol()));
+            protein.setText(Double.toString(foodNutri.getProtein()));
             viewResult.setVisibility(LinearLayout.VISIBLE);
         }
-        databaseAccess.close();
     }
 
     /**
@@ -216,16 +219,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.show();
     }
 
+    /**
+     * Show and Hide Result And Detail Result Layout
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         if(view.getId()==R.id.resultLayout){
             viewResult.setVisibility(LinearLayout.GONE);
             viewDetailRessult.setVisibility(LinearLayout.VISIBLE);
+
         }else if(view.getId()==R.id.detailresultLayout){
             viewDetailRessult.setVisibility(LinearLayout.GONE);
             viewResult.setVisibility(LinearLayout.VISIBLE);
         }
     }
+
+    /**
+     * Declare Params
+     */
     public void setUpParam(){
         cameraView = findViewById(R.id.camemraView);
         btnDetect = findViewById(R.id.btnDetect);
@@ -237,9 +249,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewDetailRessult.setOnClickListener(this);
         viewResult.setOnClickListener(this);
         txtFoodName = viewResult.findViewById(R.id.txtFoodName);
-        calories = viewResult.findViewById(R.id.txtCal);
+        calories = (TextView)viewResult.findViewById(R.id.txtCal);
         totalFat = viewResult.findViewById(R.id.txtTotalFat);
         cholesterol = viewResult.findViewById(R.id.txtCholesterol);
         protein = viewResult.findViewById(R.id.txtProtein);
+
     }
 }

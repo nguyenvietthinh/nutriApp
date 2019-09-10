@@ -2,19 +2,40 @@ package com.thinh.foodnutrientfact.helper.database;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.thinh.foodnutrientfact.model.FatInfo;
+import com.thinh.foodnutrientfact.model.FatType;
+import com.thinh.foodnutrientfact.model.FoodInfoDTO;
+import com.thinh.foodnutrientfact.model.VitaminInfo;
+import com.thinh.foodnutrientfact.model.VitaminType;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class DatabaseAccess {
 
+    public static final int Idx_Energy = 3;
+    public static final int Idx_Total_Fat = 5;
+    public static final int Idx_FA_Sat = 43;
+    public static final int Idx_FA_Poly = 45;
+    public static final int Idx_FA_Mono = 44;
+    public static final int Idx_Chol = 47;
+    public static final int Idx_Sod = 15;
+    public static final int Idx_Pot = 14;
+    public static final int Idx_Protein = 4;
+    public static final int Idx_Vit_C = 20;
+    public static final int Idx_Vit_A_RAE = 32;
+    public static final int Idx_Vit_D = 41;
+    public static final int Idx_Vit_B6 = 25;
+    public static final int Idx_Vit_B12 = 30;
     private SQLiteOpenHelper openHelper;
-    private SQLiteDatabase db;
     private static DatabaseAccess instance;
     private static final String TABLE_NAME = "food_nutri";
-    Cursor cursor = null;
 
     /**
      * private constructor so that object creation from outside the class is avoided
@@ -35,21 +56,8 @@ public class DatabaseAccess {
         return instance;
     }
 
-    /**
-     * open connection databases
-     */
-    public void open(){
-        this.db = openHelper.getWritableDatabase();
-    }
 
-    /**
-     * close the databases
-     */
-    public void close(){
-        if(db!=null){
-            this.db.close();
-        }
-    }
+
 
     /**
      * Get Food Nutrition from Food Name
@@ -128,40 +136,42 @@ public class DatabaseAccess {
 //        return buffer.toString();
 //    }
 
-    public ArrayList<String> getFoodNutri(String foodName){
+    public FoodInfoDTO getFoodNutri(String foodName){
+
+
 
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE Shrt_Desc LIKE '%"+foodName+"%'";
-       ArrayList<String> detailNutri = new ArrayList<>();
-        try {
-            cursor = db.rawQuery(query, new String[]{});
+        FoodInfoDTO foodInfoDTO = null;
+        try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{})){
             if (cursor.moveToFirst()) { // Move to first row
                 do {
-
-                    detailNutri.add(cursor.getString(3));//Energy
-                    detailNutri.add(cursor.getString(5)); //Total_Fat
-                    detailNutri.add(cursor.getString(43)); //FA_Sat_(g)
-                    detailNutri.add(cursor.getString(45)); //FA_Poly_(g)
-                    detailNutri.add(cursor.getString(44)); //FA_Mono_(g)
-                    detailNutri.add(cursor.getString(46)); //Cholestrl_(mg)
-                    detailNutri.add(cursor.getString(15)); //Sodium_(mg)
-                    detailNutri.add(cursor.getString(14)); //Potassium_(mg)
-                    detailNutri.add(cursor.getString(4)); //Protein_(g)
-                    detailNutri.add(cursor.getString(20)); //Vit_C_(mg)
-                    detailNutri.add(cursor.getString(32)); //Vit_A_RAE
-                    detailNutri.add(cursor.getString(41)); //Vit_D_IU
-                    detailNutri.add(cursor.getString(25)); //Vit_B6_(mg)
-                    detailNutri.add(cursor.getString(30)); //Vit_B12_(µg)
-
-
+                    double calories = Double.parseDouble(cursor.getString(Idx_Energy));//Energy
+                    double totalFat = Double.parseDouble(cursor.getString(Idx_Total_Fat)); //Total_Fat
+                    double protein = Double.parseDouble(cursor.getString(Idx_Protein)); //Protein_(g)
+                    FatInfo fatSat = new FatInfo(FatType.Sat,Double.parseDouble(cursor.getString(Idx_FA_Sat)));
+                    FatInfo fatPoly = new FatInfo(FatType.Poly,Double.parseDouble(cursor.getString(Idx_FA_Poly)));
+                    FatInfo fatMono = new FatInfo(FatType.Mono,Double.parseDouble(cursor.getString(Idx_FA_Mono)));
+                    List<FatInfo> fatInfoList = new ArrayList<>();
+                    fatInfoList.add(fatSat);
+                    fatInfoList.add(fatPoly);
+                    fatInfoList.add(fatMono);
+                    int cholesterol = Integer.parseInt(cursor.getString(Idx_Chol)); //Cholestrl_(mg)
+                    int sodium = Integer.parseInt(cursor.getString(Idx_Sod)); //Sodium_(mg)
+                    int potassium = Integer.parseInt(cursor.getString(Idx_Pot)); // Potassium_(mg)9+
+                    VitaminInfo vitaminC = new VitaminInfo(VitaminType.C,Double.parseDouble(cursor.getString(Idx_Vit_C)));//Vit_C_(mg)
+                    VitaminInfo vitaminA = new VitaminInfo(VitaminType.A,Double.parseDouble(cursor.getString(Idx_Vit_A_RAE)));//Vit_A_RAE
+                    VitaminInfo vitaminD = new VitaminInfo(VitaminType.D,Double.parseDouble(cursor.getString(Idx_Vit_D)));//Vit_D_IU
+                    VitaminInfo vitaminB6 = new VitaminInfo(VitaminType.B6,Double.parseDouble(cursor.getString(Idx_Vit_B6)));//Vit_B6_(mg)
+                    VitaminInfo vitaminB12 = new VitaminInfo(VitaminType.B12,Double.parseDouble(cursor.getString(Idx_Vit_B12)));//Vit_B12_(µg)
+                    List<VitaminInfo> vitaminInfoList = Arrays.asList(vitaminC,vitaminA,vitaminD,vitaminB6,vitaminB12);
+                    foodInfoDTO = FoodInfoDTO.constructFoodWithDetailInfo(foodName, calories, totalFat, protein, fatInfoList, cholesterol, sodium, potassium, vitaminInfoList);
                 } while (cursor.moveToNext());
-                return detailNutri;
+                return foodInfoDTO;
             }
-        }
-        finally{
-            cursor.close();
-            db.close();
+        }catch (SQLException e){
+            e.printStackTrace();
         }
 
-        return detailNutri;
+        return foodInfoDTO;
     }
 }
