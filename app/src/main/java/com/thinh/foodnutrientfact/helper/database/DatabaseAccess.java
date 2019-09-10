@@ -137,12 +137,9 @@ public class DatabaseAccess {
 //    }
 
     public FoodInfoDTO getFoodNutri(String foodName){
-
-
-
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE Shrt_Desc LIKE '%"+foodName+"%'";
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE Shrt_Desc LIKE ? LIMIT 1 ";
         FoodInfoDTO foodInfoDTO = null;
-        try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{})){
+        try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ "%" + foodName + "%"})){
             if (cursor.moveToFirst()) { // Move to first row
                 do {
                     double calories = Double.parseDouble(cursor.getString(Idx_Energy));//Energy
