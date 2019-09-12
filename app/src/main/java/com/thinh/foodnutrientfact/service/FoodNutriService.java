@@ -1,23 +1,21 @@
 package com.thinh.foodnutrientfact.service;
 
-import android.content.Context;
-
 import com.thinh.foodnutrientfact.model.FoodInfoDTO;
+
+import javax.inject.Inject;
 
 public class FoodNutriService {
 
     private FoodNutriRepository foodNutriRepository;
 
-    public FoodNutriService() {
-    }
-
+    @Inject
     public FoodNutriService(FoodNutriRepository foodNutriRepository) {
         this.foodNutriRepository = foodNutriRepository;
     }
 
-    public FoodInfoDTO getFoodNutri(String foodName,Context context){
+    public FoodInfoDTO getFoodNutri(String foodName){
 
-        FoodInfoDTO foodInfoDTO = foodNutriRepository.getFoodNutri(foodName,context);
+        FoodInfoDTO foodInfoDTO = foodNutriRepository.getFoodNutri(foodName);
         return foodInfoDTO;
     }
 }

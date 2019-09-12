@@ -17,10 +17,14 @@ import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOption
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceImageLabelerOptions;
+
+import com.thinh.foodnutrientfact.di.FNServiceComponent;
+import com.thinh.foodnutrientfact.di.FoodNutriApplication;
 import com.thinh.foodnutrientfact.enums.ImageDetectEngine;
 import com.thinh.foodnutrientfact.helper.InternetCheck;
-import com.thinh.foodnutrientfact.helper.database.DatabaseAccess;
+import com.thinh.foodnutrientfact.helper.database.FoodNutriDAO;
 import com.thinh.foodnutrientfact.model.FoodInfoDTO;
+import com.thinh.foodnutrientfact.service.FoodNutriService;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
 import com.wonderkiln.camerakit.CameraKitEventListener;
@@ -28,9 +32,10 @@ import com.wonderkiln.camerakit.CameraKitImage;
 import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.inject.Inject;
 
 import dmax.dialog.SpotsDialog;
 
@@ -41,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     AlertDialog waitingDialog;
     View viewResult,viewDetailRessult;
     TextView  txtFoodName,calories,totalFat,cholesterol,protein;
+    @Inject
+    FoodNutriService foodNutriService;
     @Override
     protected void onResume() {
         super.onResume();
@@ -58,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setUpParam();
+        ((FoodNutriApplication) getApplication()).getComponent().inject(this);
         cameraView.addCameraKitListener(new CameraKitEventListener() {
             @Override
             public void onEvent(CameraKitEvent cameraKitEvent) {
@@ -188,10 +196,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getNutrition(String foodName){
 
         //create  the instance of databases access class and open databases connection
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
-
-
-        FoodInfoDTO foodNutri = databaseAccess.getFoodNutri(foodName);
+//        FoodNutriDAO databaseAccess = FoodNutriDAO.getInstance(getApplicationContext());
+//        FoodInfoDTO foodNutri = databaseAccess.getFoodNutri(foodName);
+        FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
 
         if(foodNutri==null){
             showFoodNutri("Error","Not Found");

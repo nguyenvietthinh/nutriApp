@@ -4,6 +4,7 @@
     android:installLocation="preferExternal">
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <application
+        android:name=".di.FoodNutriApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Food Nutrient Fact"

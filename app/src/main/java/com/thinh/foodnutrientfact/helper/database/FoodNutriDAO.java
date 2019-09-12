@@ -1,6 +1,5 @@
 package com.thinh.foodnutrientfact.helper.database;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,40 +10,33 @@ import com.thinh.foodnutrientfact.model.FatType;
 import com.thinh.foodnutrientfact.model.FoodInfoDTO;
 import com.thinh.foodnutrientfact.model.VitaminInfo;
 import com.thinh.foodnutrientfact.model.VitaminType;
-import com.thinh.foodnutrientfact.service.FoodNutriRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
 
-public class DatabaseAccess   {
+import dagger.Provides;
+
+
+public class FoodNutriDAO {
 
     private SQLiteOpenHelper openHelper;
-    private static DatabaseAccess instance;
+    private static FoodNutriDAO instance;
     private static final String TABLE_NAME = "food_nutri";
 
     /**
      * private constructor so that object creation from outside the class is avoided
-     * @param context
      */
-    private DatabaseAccess(Context context) {
-        this.openHelper = new DatabaseOpenHelper(context);
+    @Inject
+//    public FoodNutriDAO() {
+//        this.openHelper = new DatabaseOpenHelper();
+//    }
+
+    public FoodNutriDAO(SQLiteOpenHelper openHelper) {
+        this.openHelper = openHelper;
     }
-
-    /**
-     * return the single instance of databases
-     * @param context
-     */
-    public static DatabaseAccess getInstance(Context context){
-        if(instance == null){
-            instance = new DatabaseAccess(context);
-        }
-        return instance;
-    }
-
-
-
 
     /**
      * Get Food Nutrition from Food Name
@@ -52,7 +44,7 @@ public class DatabaseAccess   {
      * @return
      */
     public FoodInfoDTO getFoodNutri(String foodName){
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE Shrt_Desc LIKE ? LIMIT 1 ";
+        String query = "SELECT Energ_Kcal, Lipid_Tot, Protein, FA_Sat, FA_Poly, FA_Mono, Cholestrl, Sodium, Potassium, Vit_C, Vit_A_RAE, Vit_D_IU, Vit_B6, Vit_B12  FROM " + TABLE_NAME + " WHERE Shrt_Desc LIKE ? LIMIT 1 ";
         FoodInfoDTO foodInfoDTO = null;
         try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ "%" + foodName + "%"})){
             if (cursor.moveToFirst()) { // Move to first row
