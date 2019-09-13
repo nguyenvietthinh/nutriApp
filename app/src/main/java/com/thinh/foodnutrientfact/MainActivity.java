@@ -2,6 +2,8 @@ package com.thinh.foodnutrientfact;
 
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -96,8 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnDetect.setOnClickListener((view)->{
             cameraView.start();
             cameraView.captureImage();
-            viewDetailRessult.setVisibility(LinearLayout.GONE);
-            viewResult.setVisibility(LinearLayout.GONE);
+
 
         });
     }
@@ -198,18 +199,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //create  the instance of databases access class and open databases connection
 //        FoodNutriDAO databaseAccess = FoodNutriDAO.getInstance(getApplicationContext());
 //        FoodInfoDTO foodNutri = databaseAccess.getFoodNutri(foodName);
-        FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
+        String foodNutri = foodNutriService.getFoodNutri(foodName);
 
         if(foodNutri==null){
             showFoodNutri("Error","Not Found");
         }
         else{
-            txtFoodName.setText(foodNutri.getFoodName());
-            calories.setText( Double.toString(foodNutri.getCalories()));
-            totalFat.setText( Double.toString(foodNutri.getTotalFat()));
-            cholesterol.setText(Integer.toString(foodNutri.getCholesterol()));
-            protein.setText(Double.toString(foodNutri.getProtein()));
-            viewResult.setVisibility(LinearLayout.VISIBLE);
+            showFoodNutri("Nutrition Facts",foodNutri);
         }
     }
 
@@ -219,10 +215,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param content detailed nutrition results have just been taken
      */
     private void showFoodNutri(String title, String content){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+         AlertDialog builder = new AlertDialog.Builder(this,R.style.CustomDialog).create();
         builder.setCancelable(true);
         builder.setTitle(title);
         builder.setMessage(content);
+        builder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         builder.show();
     }
 
@@ -232,14 +229,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onClick(View view) {
-        if(view.getId()==R.id.resultLayout){
-            viewResult.setVisibility(LinearLayout.GONE);
-            viewDetailRessult.setVisibility(LinearLayout.VISIBLE);
 
-        }else if(view.getId()==R.id.detailresultLayout){
-            viewDetailRessult.setVisibility(LinearLayout.GONE);
-            viewResult.setVisibility(LinearLayout.VISIBLE);
-        }
     }
 
     /**
@@ -249,17 +239,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cameraView = findViewById(R.id.camemraView);
         btnDetect = findViewById(R.id.btnDetect);
         waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage("Analyzing the object...").setCancelable(false).build();
-        viewResult = findViewById(R.id.resultLayout);
-        viewDetailRessult = findViewById(R.id.detailresultLayout);
-        viewDetailRessult.setVisibility(LinearLayout.GONE);
-        viewResult.setVisibility(LinearLayout.GONE);
-        viewDetailRessult.setOnClickListener(this);
-        viewResult.setOnClickListener(this);
-        txtFoodName = viewResult.findViewById(R.id.txtFoodName);
-        calories = (TextView)viewResult.findViewById(R.id.txtCal);
-        totalFat = viewResult.findViewById(R.id.txtTotalFat);
-        cholesterol = viewResult.findViewById(R.id.txtCholesterol);
-        protein = viewResult.findViewById(R.id.txtProtein);
 
     }
 }

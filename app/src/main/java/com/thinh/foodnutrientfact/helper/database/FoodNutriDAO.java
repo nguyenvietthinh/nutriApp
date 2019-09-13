@@ -30,13 +30,11 @@ public class FoodNutriDAO {
      * private constructor so that object creation from outside the class is avoided
      */
     @Inject
-//    public FoodNutriDAO() {
-//        this.openHelper = new DatabaseOpenHelper();
-//    }
-
-    public FoodNutriDAO(SQLiteOpenHelper openHelper) {
-        this.openHelper = openHelper;
+    public FoodNutriDAO() {
+        this.openHelper = new DatabaseOpenHelper();
     }
+
+
 
     /**
      * Get Food Nutrition from Food Name

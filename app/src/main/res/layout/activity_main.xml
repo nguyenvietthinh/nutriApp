@@ -24,19 +24,19 @@
         android:text="DETECT" />
     </RelativeLayout>
 
-    <include
-        android:id="@+id/resultLayout"
-        layout="@layout/result_layout"
-        android:layout_width="279dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <!--<include-->
+        <!--android:id="@+id/resultLayout"-->
+        <!--layout="@layout/result_layout"-->
+        <!--android:layout_width="279dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
-    <include
-        android:id="@+id/detailresultLayout"
-        layout="@layout/detail_result_layout"
-        android:layout_width="281dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <!--<include-->
+        <!--android:id="@+id/detailresultLayout"-->
+        <!--layout="@layout/detail_result_layout"-->
+        <!--android:layout_width="281dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true" />-->
 </FrameLayout>
