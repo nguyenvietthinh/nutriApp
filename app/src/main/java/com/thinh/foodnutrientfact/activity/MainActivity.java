@@ -1,14 +1,13 @@
-package com.thinh.foodnutrientfact;
+package com.thinh.foodnutrientfact.activity;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,13 +18,10 @@ import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOption
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceImageLabelerOptions;
-
-import com.thinh.foodnutrientfact.di.FNServiceComponent;
+import com.thinh.foodnutrientfact.R;
 import com.thinh.foodnutrientfact.di.FoodNutriApplication;
 import com.thinh.foodnutrientfact.enums.ImageDetectEngine;
 import com.thinh.foodnutrientfact.helper.InternetCheck;
-import com.thinh.foodnutrientfact.helper.database.FoodNutriDAO;
-import com.thinh.foodnutrientfact.model.FoodInfoDTO;
 import com.thinh.foodnutrientfact.service.FoodNutriService;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
@@ -39,6 +35,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import dagger.android.AndroidInjection;
 import dmax.dialog.SpotsDialog;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -48,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     AlertDialog waitingDialog;
     View viewResult,viewDetailRessult;
     TextView  txtFoodName,calories,totalFat,cholesterol,protein;
+
     @Inject
     FoodNutriService foodNutriService;
     @Override
@@ -67,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setUpParam();
-        ((FoodNutriApplication) getApplication()).getComponent().inject(this);
+        FoodNutriApplication application = (FoodNutriApplication) getApplication();
+        application.getComponent().inject(this);
         cameraView.addCameraKitListener(new CameraKitEventListener() {
             @Override
             public void onEvent(CameraKitEvent cameraKitEvent) {
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
                             processDataResult(labels);
                         }else{
-                            showFoodNutri("Error","Cannot be Detect Image");
+                            showFoodNutri("Error","Cannot detect the object");
                             waitingDialog.dismiss();
                         }
                     })

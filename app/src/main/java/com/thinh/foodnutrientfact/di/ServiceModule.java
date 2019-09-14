@@ -1,5 +1,6 @@
 package com.thinh.foodnutrientfact.di;
 
+import com.thinh.foodnutrientfact.helper.database.FoodNutriDAO;
 import com.thinh.foodnutrientfact.helper.database.SqlFoodNutriRepositoryImp;
 import com.thinh.foodnutrientfact.service.FoodNutriRepository;
 import com.thinh.foodnutrientfact.service.FoodNutriService;
@@ -12,16 +13,13 @@ import dagger.Provides;
 @Module
 public class ServiceModule {
 
-
-
     @Provides @Singleton
-    FoodNutriRepository foodNutriRepository (SqlFoodNutriRepositoryImp sqlFoodNutriRepositoryImp){
-        return sqlFoodNutriRepositoryImp;
+    FoodNutriRepository provideFoodNutriRepository (FoodNutriDAO foodNutriDAO){
+        return new SqlFoodNutriRepositoryImp(foodNutriDAO);
     }
 
     @Provides @Singleton
     FoodNutriService provideFoodNutriService(FoodNutriRepository foodNutriRepository){
         return new FoodNutriService(foodNutriRepository);
     }
-
 }

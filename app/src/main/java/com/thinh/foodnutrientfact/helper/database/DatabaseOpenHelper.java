@@ -1,8 +1,12 @@
 package com.thinh.foodnutrientfact.helper.database;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 public class DatabaseOpenHelper extends SQLiteAssetHelper {
 
@@ -13,5 +17,10 @@ public class DatabaseOpenHelper extends SQLiteAssetHelper {
 
     public DatabaseOpenHelper() {
        super(null,DATABASE_NAME, DATABASE_STORAGE_DIRECTORY,null,DATABASE_VERSION);
+    }
+
+    @Inject
+    public DatabaseOpenHelper(@Named("ApplicationContext") Context context) {
+        super(context, DATABASE_NAME, DATABASE_STORAGE_DIRECTORY, null, DATABASE_VERSION);
     }
 }

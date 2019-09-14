@@ -23,18 +23,13 @@ import dagger.Provides;
 public class FoodNutriDAO {
 
     private SQLiteOpenHelper openHelper;
-    private static FoodNutriDAO instance;
+
     private static final String TABLE_NAME = "food_nutri";
 
-    /**
-     * private constructor so that object creation from outside the class is avoided
-     */
     @Inject
-    public FoodNutriDAO() {
-        this.openHelper = new DatabaseOpenHelper();
+    public FoodNutriDAO(SQLiteOpenHelper openHelper) {
+        this.openHelper = openHelper;
     }
-
-
 
     /**
      * Get Food Nutrition from Food Name

@@ -1,18 +1,37 @@
 package com.thinh.foodnutrientfact.di;
 
+import android.app.Activity;
 import android.app.Application;
 
-public class FoodNutriApplication extends Application {
+import javax.inject.Inject;
 
-    private FNServiceComponent fnServiceComponent;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
+
+public class FoodNutriApplication extends Application implements HasActivityInjector {
+
+    protected FoodNutriApplicationComponent mApplicationComponent;
+
+    @Inject
+    DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
-        fnServiceComponent = DaggerFNServiceComponent.builder().serviceModule(new ServiceModule()).build();
-
+        mApplicationComponent = DaggerFoodNutriApplicationComponent
+                .builder()
+                .foodNutriApplicationModule(new FoodNutriApplicationModule(this))
+                .databaseModule(new DatabaseModule(this))
+                .build();
     }
 
-    public FNServiceComponent getComponent() {
-        return fnServiceComponent;
-    }}
+    public FoodNutriApplicationComponent getComponent() {
+        return mApplicationComponent;
+    }
+
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return activityDispatchingAndroidInjector;
+    }
+}
