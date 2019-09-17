@@ -48,7 +48,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import dmax.dialog.SpotsDialog;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     CameraView cameraView;
     Button btnDetect;
@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             cameraView.start();
             cameraView.captureImage();
 
-
         });
 
     }
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
                             processDataResult(labels);
                         }else{
-                            showFoodNutri("Error",null);
+                            Toast.makeText(this,"Unable to detect the image ",Toast.LENGTH_LONG);
                             waitingDialog.dismiss();
                         }
                     })
@@ -208,36 +207,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getNutrition(String foodName){
 
         FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
+        showFoodNutri(foodNutri);
 
-        if(foodNutri==null){
-            showFoodNutri("Error",null);
-        }
-        else{
-            showFoodNutri("Nutrition Facts",foodNutri);
-        }
     }
 
     /**
      * Show nutritional results have just been obtained
-     * @param title
      * @param foodNutri detailed nutrition results have just been taken
      */
-    private void showFoodNutri(String title, FoodInfoDTO foodNutri){
-        ResultFoodnutri_Dialog resultFoodnutri_dialog = new ResultFoodnutri_Dialog();
-        Bundle args = new Bundle();//Use bundle to pass data
-        args.putSerializable("foodNutri", foodNutri);
-        resultFoodnutri_dialog.setArguments(args);
-        resultFoodnutri_dialog.show(getSupportFragmentManager(),"dialog");
+    private void showFoodNutri( FoodInfoDTO foodNutri){
+        if(foodNutri==null){
+           AlertDialog.Builder builder = new AlertDialog.Builder(this);
+           builder.setTitle("Error");
+           builder.setMessage("Not Found");
+           builder.show();
+        }
+        else{
+            ResultFoodnutri_Dialog resultFoodnutri_dialog = new ResultFoodnutri_Dialog();
+            Bundle args = new Bundle();//Use bundle to pass data
+            args.putSerializable("foodNutri", foodNutri);
+            resultFoodnutri_dialog.setArguments(args);
+            resultFoodnutri_dialog.show(getSupportFragmentManager(),"dialog");
+        }
+
     }
 
-    /**
-     * Show and Hide Result And Detail Result Layout
-     * @param view
-     */
-    @Override
-    public void onClick(View view) {
-
-    }
 
     /**
      * Declare Params

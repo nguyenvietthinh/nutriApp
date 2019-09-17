@@ -3,20 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-
+    android:background="#00FF0000"
     android:gravity="center"
     android:orientation="vertical" >
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:layout_centerInParent="true">
 
         <include
             android:id="@+id/resultLayout"
             layout="@layout/result_layout"
             android:gravity="center"
-
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +28,6 @@
             layout="@layout/detail_result_layout"
             android:visibility="invisible"
             android:gravity="center"
-
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
-
+            android:background="@null"
             android:clickable="true"
             android:src="@drawable/closebutton" />
     </FrameLayout>

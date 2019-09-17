@@ -3,6 +3,7 @@ package com.thinh.foodnutrientfact.model;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,17 +30,22 @@ public class ResultFoodnutri_Dialog extends DialogFragment {
 
     @Inject
     FoodNutriService foodNutriService;
+
+
+    /**
+     * Create Alert Dialog Fragment For Result Food Nutrition
+     * @param savedInstanceState
+     * @return alert dialog result food nutrition for main activity
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-
         builder = new AlertDialog.Builder(getActivity()).create();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         viewDialog = inflater.inflate(R.layout.alertdialog_nutri_result_layout, null);
-        setParam();
+        init();
         Bundle args = getArguments();
-
         FoodInfoDTO foodNutri = (FoodInfoDTO) args.getSerializable("foodNutri");
         txtFoodName.setText(foodNutri.getFoodName());
         calories.setText(Double.toString(foodNutri.getCalories()));
@@ -98,21 +104,22 @@ public class ResultFoodnutri_Dialog extends DialogFragment {
             viewResult.setVisibility(View.VISIBLE);
             viewDetailRessult.setVisibility(View.GONE);
         });
-        viewDialog.setBackgroundColor(Color.TRANSPARENT);
-        viewResult.setBackgroundColor(Color.TRANSPARENT);
-        viewDetailRessult.setBackgroundColor(Color.TRANSPARENT);
+        builder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+// remove background dim
+        builder.getWindow().setDimAmount(0);
+
         builder.setView(viewDialog);
         return builder;
     }
 
     /**
-     *
+     * Initialize param
      */
-    public void setParam(){
+    public void init(){
         viewResult = viewDialog.findViewById(R.id.resultLayout);
         viewDetailRessult = viewDialog.findViewById(R.id.resultDetailLayout);
         viewDetailRessult.setVisibility(View.GONE);
-
         txtFoodName = viewDialog.findViewById(R.id.txtFoodName);
         calories = viewDialog.findViewById(R.id.txtCal);
         protein = viewDialog.findViewById(R.id.txtProtein);
@@ -128,7 +135,6 @@ public class ResultFoodnutri_Dialog extends DialogFragment {
         vitD = viewDialog.findViewById(R.id.txtVitaminD);
         vitB6 = viewDialog.findViewById(R.id.txtVitaminB6);
         vitB12 = viewDialog.findViewById(R.id.txtVitaminB12);
-
         txtDFoodNutri = viewDetailRessult.findViewById(R.id.txtFoodName);
         caloriesDetail = viewDetailRessult.findViewById(R.id.txtCal);
         proteinDetail = viewDetailRessult.findViewById(R.id.txtProtein);

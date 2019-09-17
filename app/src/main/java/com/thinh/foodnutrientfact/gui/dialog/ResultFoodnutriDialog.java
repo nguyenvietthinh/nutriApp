@@ -24,70 +24,69 @@ import javax.inject.Inject;
 public class ResultFoodnutriDialog extends DialogFragment {
 
     View viewResult,viewDetailRessult,viewDialog;
-    TextView txtDFoodNutri,txtFoodName, caloriesView,totalFat,cholesterol,protein,satFat,polyFat,monoFat,sodium,potassium,vitC,vitD,vitA,vitB6,
-            vitB12, caloriesDetail, proteinDetail, cholesterolDetail, totalFatDetail;
+    TextView DetailFoodNameView, FoodNameView, caloriesView, totalFatView, cholesterolView, proteinView, satFatView, polyFatView, monoFatView, sodiumView, potassiumView, vitCView, vitDView, vitAView,vitB6View,
+            vitB12View, caloriesDetailView, proteinDetailView, cholesterolDetailView, totalFatDetailView;
     ImageButton closeButton;
     AlertDialog builder;
 
     @Inject
     FoodNutriService foodNutriService;
+
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-
 
         builder = new AlertDialog.Builder(getActivity()).create();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         viewDialog = inflater.inflate(R.layout.alertdialog_nutri_result_layout, null);
         init();
         Bundle args = getArguments();
-
         FoodInfoDTO foodNutri = (FoodInfoDTO) args.getSerializable("foodNutri");
-        txtFoodName.setText(foodNutri.getFoodName());
+        FoodNameView.setText(foodNutri.getFoodName());
         caloriesView.setText(Double.toString(foodNutri.getCalories()));
-        protein.setText(Double.toString(foodNutri.getProtein()));
-        cholesterol.setText(Integer.toString(foodNutri.getCholesterol()));
-        totalFat.setText(Double.toString(foodNutri.getTotalFat()));
-        txtDFoodNutri.setText(foodNutri.getFoodName());
-        caloriesDetail.setText(Double.toString(foodNutri.getCalories()));
-        proteinDetail.setText(Double.toString(foodNutri.getProtein()));
-        cholesterolDetail.setText(Integer.toString(foodNutri.getCholesterol()));
-        totalFatDetail.setText(Double.toString(foodNutri.getTotalFat()));
+        proteinView.setText(Double.toString(foodNutri.getProtein()));
+        cholesterolView.setText(Integer.toString(foodNutri.getCholesterol()));
+        totalFatView.setText(Double.toString(foodNutri.getTotalFat()));
+        DetailFoodNameView.setText(foodNutri.getFoodName());
+        caloriesDetailView.setText(Double.toString(foodNutri.getCalories()));
+        proteinDetailView.setText(Double.toString(foodNutri.getProtein()));
+        cholesterolDetailView.setText(Integer.toString(foodNutri.getCholesterol()));
+        totalFatDetailView.setText(Double.toString(foodNutri.getTotalFat()));
         for (FatInfo fatInfo : foodNutri.getFatInfoList()) {
             switch (fatInfo.getFatType()){
                 case Sat:
-                    satFat.setText(Double.toString(fatInfo.getAmount()));
+                    satFatView.setText(Double.toString(fatInfo.getAmount()));
                     break;
                 case Poly:
-                    polyFat.setText(Double.toString(fatInfo.getAmount()));
+                    polyFatView.setText(Double.toString(fatInfo.getAmount()));
                     break;
                 case Mono:
-                    monoFat.setText(Double.toString(fatInfo.getAmount()));
+                    monoFatView.setText(Double.toString(fatInfo.getAmount()));
                     break;
             }
         }
-        sodium.setText(Integer.toString(foodNutri.getSodium()));
-        potassium.setText(Integer.toString(foodNutri.getPotassium()));
+        sodiumView.setText(Integer.toString(foodNutri.getSodium()));
+        potassiumView.setText(Integer.toString(foodNutri.getPotassium()));
         for (VitaminInfo vitaminInfo : foodNutri.getVitaminInfoList()) {
             switch (vitaminInfo.getVitaminType()){
                 case C:
-                    vitC.setText(Double.toString(vitaminInfo.getAmount()));
+                    vitCView.setText(Double.toString(vitaminInfo.getAmount()));
                     break;
                 case A:
-                    vitA.setText(Double.toString(vitaminInfo.getAmount()));
+                    vitAView.setText(Double.toString(vitaminInfo.getAmount()));
                     break;
                 case D:
-                    vitD.setText(Double.toString(vitaminInfo.getAmount()));
+                    vitDView.setText(Double.toString(vitaminInfo.getAmount()));
                     break;
                 case B6:
-                    vitB6.setText(Double.toString(vitaminInfo.getAmount()));
+                    vitB6View.setText(Double.toString(vitaminInfo.getAmount()));
                     break;
                 case B12:
-                    vitB12.setText(Double.toString(vitaminInfo.getAmount()));
+                    vitB12View.setText(Double.toString(vitaminInfo.getAmount()));
                     break;
             }
         }
-
 
         builder.setView(viewDialog);
         closeButton = viewDialog.findViewById(R.id.imageButton_close);
@@ -114,28 +113,26 @@ public class ResultFoodnutriDialog extends DialogFragment {
         viewResult = viewDialog.findViewById(R.id.resultLayout);
         viewDetailRessult = viewDialog.findViewById(R.id.resultDetailLayout);
         viewDetailRessult.setVisibility(View.GONE);
-
-        txtFoodName = viewDialog.findViewById(R.id.txtFoodName);
+        FoodNameView = viewDialog.findViewById(R.id.txtFoodName);
         caloriesView = viewDialog.findViewById(R.id.txtCal);
-        protein = viewDialog.findViewById(R.id.txtProtein);
-        cholesterol = viewDialog.findViewById(R.id.txtCholesterol);
-        totalFat = viewDialog.findViewById(R.id.txtTotalFat);
-        satFat = viewDialog.findViewById(R.id.txtSaturatedFat);
-        polyFat = viewDialog.findViewById(R.id.txtPolyunsaturatedFat);
-        monoFat = viewDialog.findViewById(R.id.txtMonounsaturatedFat);
-        sodium = viewDialog.findViewById(R.id.txtSodium);
-        potassium = viewDialog.findViewById(R.id.txtPotassium);
-        vitA = viewDialog.findViewById(R.id.txtVitaminA);
-        vitC = viewDialog.findViewById(R.id.txtVitaminC);
-        vitD = viewDialog.findViewById(R.id.txtVitaminD);
-        vitB6 = viewDialog.findViewById(R.id.txtVitaminB6);
-        vitB12 = viewDialog.findViewById(R.id.txtVitaminB12);
-
-        txtDFoodNutri = viewDetailRessult.findViewById(R.id.txtFoodName);
-        caloriesDetail = viewDetailRessult.findViewById(R.id.txtCal);
-        proteinDetail = viewDetailRessult.findViewById(R.id.txtProtein);
-        cholesterolDetail = viewDetailRessult.findViewById(R.id.txtCholesterol);
-        totalFatDetail = viewDetailRessult.findViewById(R.id.txtTotalFat);
+        proteinView = viewDialog.findViewById(R.id.txtProtein);
+        cholesterolView = viewDialog.findViewById(R.id.txtCholesterol);
+        totalFatView = viewDialog.findViewById(R.id.txtTotalFat);
+        satFatView = viewDialog.findViewById(R.id.txtSaturatedFat);
+        polyFatView = viewDialog.findViewById(R.id.txtPolyunsaturatedFat);
+        monoFatView = viewDialog.findViewById(R.id.txtMonounsaturatedFat);
+        sodiumView = viewDialog.findViewById(R.id.txtSodium);
+        potassiumView = viewDialog.findViewById(R.id.txtPotassium);
+        vitAView = viewDialog.findViewById(R.id.txtVitaminA);
+        vitCView = viewDialog.findViewById(R.id.txtVitaminC);
+        vitDView = viewDialog.findViewById(R.id.txtVitaminD);
+        vitB6View = viewDialog.findViewById(R.id.txtVitaminB6);
+        vitB12View = viewDialog.findViewById(R.id.txtVitaminB12);
+        DetailFoodNameView = viewDetailRessult.findViewById(R.id.txtFoodName);
+        caloriesDetailView = viewDetailRessult.findViewById(R.id.txtCal);
+        proteinDetailView = viewDetailRessult.findViewById(R.id.txtProtein);
+        cholesterolDetailView = viewDetailRessult.findViewById(R.id.txtCholesterol);
+        totalFatDetailView = viewDetailRessult.findViewById(R.id.txtTotalFat);
     }
 
 }
