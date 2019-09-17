@@ -3,6 +3,7 @@ package com.thinh.foodnutrientfact.gui.dialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,28 +22,31 @@ import com.thinh.foodnutrientfact.service.FoodNutriService;
 
 import javax.inject.Inject;
 
-public class ResultFoodnutriDialog extends DialogFragment {
+public class FoodNutriResultDialog extends DialogFragment {
 
     View viewResult,viewDetailRessult,viewDialog;
     TextView DetailFoodNameView, FoodNameView, caloriesView, totalFatView, cholesterolView, proteinView, satFatView, polyFatView, monoFatView, sodiumView, potassiumView, vitCView, vitDView, vitAView,vitB6View,
             vitB12View, caloriesDetailView, proteinDetailView, cholesterolDetailView, totalFatDetailView;
-    ImageButton closeButton;
-    AlertDialog builder;
-
+    ImageButton btnCloseDialog;
+    AlertDialog dialog;
+    FoodInfoDTO foodNutri;
     @Inject
     FoodNutriService foodNutriService;
 
-
+    /**
+     * Create Alert Dialog Fragment For Result Food Nutrition
+     * @param savedInstanceState
+     * @return alert dialog result food nutrition for main activity
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-        builder = new AlertDialog.Builder(getActivity()).create();
+        dialog = new AlertDialog.Builder(getActivity()).create();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         viewDialog = inflater.inflate(R.layout.alertdialog_nutri_result_layout, null);
         init();
-        Bundle args = getArguments();
-        FoodInfoDTO foodNutri = (FoodInfoDTO) args.getSerializable("foodNutri");
+        foodNutri = getDataFromActivity();
         FoodNameView.setText(foodNutri.getFoodName());
         caloriesView.setText(Double.toString(foodNutri.getCalories()));
         proteinView.setText(Double.toString(foodNutri.getProtein()));
@@ -87,27 +91,26 @@ public class ResultFoodnutriDialog extends DialogFragment {
                     break;
             }
         }
-
-        builder.setView(viewDialog);
-        closeButton = viewDialog.findViewById(R.id.imageButton_close);
-        closeButton.setOnClickListener(view -> builder.cancel());
+        dialog.setView(viewDialog);
+        btnCloseDialog = viewDialog.findViewById(R.id.imageButton_close);
+        btnCloseDialog.setOnClickListener(view -> dialog.cancel());
         viewResult.setOnClickListener(view -> {
             viewDetailRessult.setVisibility(View.VISIBLE);
-            viewResult.setVisibility(View.INVISIBLE);
+            viewResult.setVisibility(View.GONE);
         });
         viewDetailRessult.setOnClickListener(view -> {
             viewResult.setVisibility(View.VISIBLE);
             viewDetailRessult.setVisibility(View.GONE);
         });
-        viewDialog.setBackgroundColor(Color.TRANSPARENT);
-        viewResult.setBackgroundColor(Color.TRANSPARENT);
-        viewDetailRessult.setBackgroundColor(Color.TRANSPARENT);
-        builder.setView(viewDialog);
-        return builder;
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //set background color transparent
+        dialog.getWindow().setDimAmount(0);  // remove background dim
+        dialog.setView(viewDialog);
+        return dialog;
     }
 
     /**
-     *
+     * Initialize param
      */
     public void init(){
         viewResult = viewDialog.findViewById(R.id.resultLayout);
@@ -135,4 +138,13 @@ public class ResultFoodnutriDialog extends DialogFragment {
         totalFatDetailView = viewDetailRessult.findViewById(R.id.txtTotalFat);
     }
 
+    /**
+     * Get data passed from Activity
+     * @return foodNutri
+     */
+    private FoodInfoDTO getDataFromActivity(){
+        Bundle args = getArguments();
+        foodNutri = (FoodInfoDTO) args.getSerializable("foodNutri");
+        return foodNutri;
+    }
 }

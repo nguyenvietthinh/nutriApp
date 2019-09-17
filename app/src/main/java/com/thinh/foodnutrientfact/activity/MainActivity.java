@@ -1,19 +1,10 @@
 package com.thinh.foodnutrientfact.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Application;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,11 +18,9 @@ import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceImageLabelerOpt
 import com.thinh.foodnutrientfact.R;
 import com.thinh.foodnutrientfact.di.FoodNutriApplication;
 import com.thinh.foodnutrientfact.enums.ImageDetectEngine;
+import com.thinh.foodnutrientfact.gui.dialog.FoodNutriResultDialog;
 import com.thinh.foodnutrientfact.helper.InternetCheck;
-import com.thinh.foodnutrientfact.model.FatInfo;
 import com.thinh.foodnutrientfact.model.FoodInfoDTO;
-import com.thinh.foodnutrientfact.model.ResultFoodnutri_Dialog;
-import com.thinh.foodnutrientfact.model.VitaminInfo;
 import com.thinh.foodnutrientfact.service.FoodNutriService;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
@@ -45,7 +34,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjection;
 import dmax.dialog.SpotsDialog;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,10 +41,7 @@ public class MainActivity extends AppCompatActivity {
     CameraView cameraView;
     Button btnDetect;
     AlertDialog waitingDialog;
-    View viewResult,viewDetailRessult,viewDialog;
-    TextView  txtDFoodNutri,txtFoodName,calories,totalFat,cholesterol,protein,satFat,polyFat,monoFat,sodium,potassium,vitC,vitD,vitA,vitB6,
-            vitB12, caloriesDetail, proteinDetail, cholesterolDetail, totalFatDetail;
-    ImageButton closeButton;
+
     @Inject
     FoodNutriService foodNutriService;
     @Override
@@ -223,11 +208,11 @@ public class MainActivity extends AppCompatActivity {
            builder.show();
         }
         else{
-            ResultFoodnutri_Dialog resultFoodnutri_dialog = new ResultFoodnutri_Dialog();
-            Bundle args = new Bundle();//Use bundle to pass data
+            FoodNutriResultDialog foodnutriDialog = new FoodNutriResultDialog();
+            Bundle args = new Bundle();   //Use bundle to pass data
             args.putSerializable("foodNutri", foodNutri);
-            resultFoodnutri_dialog.setArguments(args);
-            resultFoodnutri_dialog.show(getSupportFragmentManager(),"dialog");
+            foodnutriDialog.setArguments(args);
+            foodnutriDialog.show(getSupportFragmentManager(),"dialog");
         }
 
     }
