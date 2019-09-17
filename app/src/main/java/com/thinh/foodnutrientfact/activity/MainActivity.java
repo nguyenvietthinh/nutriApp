@@ -1,14 +1,20 @@
 package com.thinh.foodnutrientfact.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +28,10 @@ import com.thinh.foodnutrientfact.R;
 import com.thinh.foodnutrientfact.di.FoodNutriApplication;
 import com.thinh.foodnutrientfact.enums.ImageDetectEngine;
 import com.thinh.foodnutrientfact.helper.InternetCheck;
+import com.thinh.foodnutrientfact.model.FatInfo;
+import com.thinh.foodnutrientfact.model.FoodInfoDTO;
+import com.thinh.foodnutrientfact.model.ResultFoodnutri_Dialog;
+import com.thinh.foodnutrientfact.model.VitaminInfo;
 import com.thinh.foodnutrientfact.service.FoodNutriService;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
@@ -43,9 +53,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     CameraView cameraView;
     Button btnDetect;
     AlertDialog waitingDialog;
-    View viewResult,viewDetailRessult;
-    TextView  txtFoodName,calories,totalFat,cholesterol,protein;
-
+    View viewResult,viewDetailRessult,viewDialog;
+    TextView  txtDFoodNutri,txtFoodName,calories,totalFat,cholesterol,protein,satFat,polyFat,monoFat,sodium,potassium,vitC,vitD,vitA,vitB6,
+            vitB12, caloriesDetail, proteinDetail, cholesterolDetail, totalFatDetail;
+    ImageButton closeButton;
     @Inject
     FoodNutriService foodNutriService;
     @Override
@@ -100,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         });
+
     }
 
     /**
@@ -128,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
                             processDataResult(labels);
                         }else{
-                            showFoodNutri("Error","Cannot detect the object");
+                            showFoodNutri("Error",null);
                             waitingDialog.dismiss();
                         }
                     })
@@ -195,13 +207,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void getNutrition(String foodName){
 
-        //create  the instance of databases access class and open databases connection
-//        FoodNutriDAO databaseAccess = FoodNutriDAO.getInstance(getApplicationContext());
-//        FoodInfoDTO foodNutri = databaseAccess.getFoodNutri(foodName);
-        String foodNutri = foodNutriService.getFoodNutri(foodName);
+        FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
 
         if(foodNutri==null){
-            showFoodNutri("Error","Not Found");
+            showFoodNutri("Error",null);
         }
         else{
             showFoodNutri("Nutrition Facts",foodNutri);
@@ -211,15 +220,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * Show nutritional results have just been obtained
      * @param title
-     * @param content detailed nutrition results have just been taken
+     * @param foodNutri detailed nutrition results have just been taken
      */
-    private void showFoodNutri(String title, String content){
-         AlertDialog builder = new AlertDialog.Builder(this,R.style.CustomDialog).create();
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(content);
-        builder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        builder.show();
+    private void showFoodNutri(String title, FoodInfoDTO foodNutri){
+        ResultFoodnutri_Dialog resultFoodnutri_dialog = new ResultFoodnutri_Dialog();
+        Bundle args = new Bundle();//Use bundle to pass data
+        args.putSerializable("foodNutri", foodNutri);
+        resultFoodnutri_dialog.setArguments(args);
+        resultFoodnutri_dialog.show(getSupportFragmentManager(),"dialog");
     }
 
     /**
@@ -240,4 +248,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage("Analyzing the object...").setCancelable(false).build();
 
     }
+
+
 }

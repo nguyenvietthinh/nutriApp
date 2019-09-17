@@ -1,36 +1,42 @@
 package com.thinh.foodnutrientfact.service;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.thinh.foodnutrientfact.R;
 import com.thinh.foodnutrientfact.model.FoodInfoDTO;
 
 import javax.inject.Inject;
 
-public class FoodNutriService {
+public class FoodNutriService extends Activity {
 
     private FoodNutriRepository foodNutriRepository;
+    TextView txtFoodName,calories, protein, cholesterol,totalFat;
+    View view;
 
     @Inject
     public FoodNutriService(FoodNutriRepository foodNutriRepository) {
         this.foodNutriRepository = foodNutriRepository;
     }
 
-    public String getFoodNutri(String foodName){
+
+    public FoodInfoDTO getFoodNutri(String foodName){
+
+//        StringBuffer buffer = new StringBuffer();
 
         FoodInfoDTO foodNutri = foodNutriRepository.getFoodNutri(foodName);
-        StringBuffer buffer = new StringBuffer();
         if(foodNutri==null){
             return null;
         }
         else{
-
-            buffer.append("Food Name: "+ foodName +"\n");
-            buffer.append("Calories: "+ foodNutri.getCalories()+"\n");
-            buffer.append("Protein: "+ foodNutri.getProtein()+"\n");
-            buffer.append("Cholesterol: "+ foodNutri.getCholesterol()+"\n");
-            buffer.append("Total Fat: "+ foodNutri.getTotalFat()+"\n");;
-
+            return foodNutri;
         }
 
 //        buffer.append("Potassium_(mg): "+ cursor.getString(14)+"\n");
@@ -49,6 +55,6 @@ public class FoodNutriService {
 //        buffer.append("Cholestrl_(mg): "+ cursor.getString(46)+"\n");
 
 
-        return buffer.toString();
+
     }
 }
