@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/btn_settingCamera"
+        android:icon="@drawable/ic_setting_camera"
+        app:showAsAction="always"
+        android:title="Setting Camera">
+        <menu>
+            <item android:title="Photo Size"
+                android:id="@+id/photoSize"></item>
+            <item android:title="Photo .."
+                android:id="@+id/photo.."></item>
+        </menu>
+
+    </item>
+
+
+
+
+</menu>
