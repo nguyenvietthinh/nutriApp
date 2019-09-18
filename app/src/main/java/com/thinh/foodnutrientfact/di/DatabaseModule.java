@@ -3,6 +3,8 @@ package com.thinh.foodnutrientfact.di;
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.thinh.foodnutrientfact.helper.database.CalorieSettingDAO;
+import com.thinh.foodnutrientfact.helper.database.DatabaseCalorieAccess;
 import com.thinh.foodnutrientfact.helper.database.DatabaseOpenHelper;
 import com.thinh.foodnutrientfact.helper.database.FoodNutriDAO;
 
@@ -33,5 +35,19 @@ public class DatabaseModule {
     FoodNutriDAO provideFoodNutriDAO(){
         return new FoodNutriDAO(provideSQLiteOpenHelper());
     }
+
+    @Provides
+    @Singleton
+    SQLiteOpenHelper provideSQLiteOpenHelperCalorieDb(){
+        return new DatabaseCalorieAccess(mContext);
+    }
+
+    @Provides
+    @Singleton
+    CalorieSettingDAO provideCalorieDAO(){
+        return new CalorieSettingDAO(provideSQLiteOpenHelperCalorieDb());
+    }
+
+
 
 }

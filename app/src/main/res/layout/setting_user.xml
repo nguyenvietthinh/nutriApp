@@ -1,0 +1,67 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:tools = "http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height = "match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User daily calories setting"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:gravity="center"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/txtCalorieLabel"
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Calorie:"
+            android:textColor="#F7252323"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/txtCalSetting"
+            android:inputType = "numberDecimal"
+            android:layout_width="178dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:focusable="true"
+            android:textColorHighlight="#ff7eff15"
+            android:textColorHint="#ffff25e6" />
+        <TextView
+            android:id="@+id/txtKcal"
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:text="Kcal"
+            android:textColor="#F7252323"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/btnAdd"
+        android:gravity="center"
+        android:layout_below = "@+id/editText"
+        android:layout_toLeftOf="@+id/textview"
+        android:layout_toStartOf="@+id/textview"
+        android:layout_centerHorizontal="true"/>
+
+
+
+</LinearLayout>

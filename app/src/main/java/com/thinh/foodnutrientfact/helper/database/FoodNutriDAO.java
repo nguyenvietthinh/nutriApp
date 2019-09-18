@@ -68,7 +68,6 @@ public class FoodNutriDAO {
         }catch (SQLException e){
             e.printStackTrace();
         }
-
         return foodInfoDTO;
     }
 

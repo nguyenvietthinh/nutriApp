@@ -1,32 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-xmlns:tools="http://schemas.android.com/tools"
-android:orientation="vertical"
-android:gravity="center"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="#a6dfdfdf"
-android:layout_margin="10dp"
-tools:context=".activity.MainActivity"
-xmlns:android="http://schemas.android.com/apk/res/android">
-<Button
-    android:id="@+id/btnDetect"
-    android:background="#dc9e1a"
-    android:text="B1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
-<Button
-    android:id="@+id/btnSetting"
-    android:background="#00c853"
-    android:text="B1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
-
-<TextView
-    android:id="@+id/textView"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Aaaaa" />
+    android:layout_height="match_parent"
+    android:background="#a6dfdfdf"
+    android:layout_margin="10dp"
+    tools:context=".activity.MainActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <Button
+        android:id="@+id/btnDetect"
+        android:background="#dc9e1a"
+        android:text="B1"
+        android:layout_marginBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnSetting"
+        android:background="#00c853"
+        android:text="B1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

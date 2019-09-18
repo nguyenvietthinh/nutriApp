@@ -34,11 +34,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Switch to other activity
+     * @param aClass destination activity
+     */
     public void doOpenOtherActivity(Class aClass)
     {
         Intent intent =new Intent(this, aClass);
         startActivity(intent);
     }
+
+    /**
+     * Declare Params
+     */
     public void setupParam(){
         btnDetect = findViewById(R.id.btnDetect);
         btnSetting = findViewById(R.id.btnSetting);

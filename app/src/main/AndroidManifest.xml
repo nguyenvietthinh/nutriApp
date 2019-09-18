@@ -17,6 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.DetectActivity"></activity>
+        <activity android:name=".activity.SettingActivity"></activity>
+        <activity android:name=".activity.AddToCartActivity"></activity>
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="label" />

@@ -2,11 +2,13 @@ package com.thinh.foodnutrientfact.gui.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.thinh.foodnutrientfact.R;
+import com.thinh.foodnutrientfact.activity.AddToCartActivity;
 import com.thinh.foodnutrientfact.model.FatInfo;
 import com.thinh.foodnutrientfact.model.FoodInfoDTO;
 import com.thinh.foodnutrientfact.model.VitaminInfo;
@@ -28,6 +31,7 @@ public class FoodNutriResultDialog extends DialogFragment {
     TextView DetailFoodNameView, FoodNameView, caloriesView, totalFatView, cholesterolView, proteinView, satFatView, polyFatView, monoFatView, sodiumView, potassiumView, vitCView, vitDView, vitAView,vitB6View,
             vitB12View, caloriesDetailView, proteinDetailView, cholesterolDetailView, totalFatDetailView;
     ImageButton btnCloseDialog;
+    Button btnAdd, btnDetailAdd;
     AlertDialog dialog;
     FoodInfoDTO foodNutri;
     @Inject
@@ -92,8 +96,14 @@ public class FoodNutriResultDialog extends DialogFragment {
             }
         }
         dialog.setView(viewDialog);
-        btnCloseDialog = viewDialog.findViewById(R.id.imageButton_close);
         btnCloseDialog.setOnClickListener(view -> dialog.cancel());
+        btnAdd.setOnClickListener(view -> {
+            doOpenOtherActivity(AddToCartActivity.class);
+        });
+        btnDetailAdd.setOnClickListener(view -> {
+            doOpenOtherActivity(AddToCartActivity.class);
+        });
+
         viewResult.setOnClickListener(view -> {
             viewDetailRessult.setVisibility(View.VISIBLE);
             viewResult.setVisibility(View.GONE);
@@ -136,6 +146,9 @@ public class FoodNutriResultDialog extends DialogFragment {
         proteinDetailView = viewDetailRessult.findViewById(R.id.txtProtein);
         cholesterolDetailView = viewDetailRessult.findViewById(R.id.txtCholesterol);
         totalFatDetailView = viewDetailRessult.findViewById(R.id.txtTotalFat);
+        btnCloseDialog = viewDialog.findViewById(R.id.imageButton_close);
+        btnAdd = viewDialog.findViewById(R.id.btnAdd);
+        btnDetailAdd = viewDetailRessult.findViewById(R.id.btnAdd);
     }
 
     /**
@@ -146,5 +159,15 @@ public class FoodNutriResultDialog extends DialogFragment {
         Bundle args = getArguments();
         foodNutri = (FoodInfoDTO) args.getSerializable("foodNutri");
         return foodNutri;
+    }
+
+    /**
+     * Switch to other activity
+     * @param aClass destination activity
+     */
+    public void doOpenOtherActivity(Class aClass)
+    {
+        Intent intent =new Intent(getActivity(), aClass);
+        startActivity(intent);
     }
 }

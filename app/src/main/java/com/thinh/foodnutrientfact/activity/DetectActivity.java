@@ -226,7 +226,6 @@ public class DetectActivity extends AppCompatActivity {
 
     }
 
-
     /**
      * Declare Params
      */
