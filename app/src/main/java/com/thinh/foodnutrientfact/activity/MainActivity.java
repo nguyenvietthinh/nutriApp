@@ -16,6 +16,11 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnDetect, btnSetting;
 
+
+    /**
+     * Switch from home screen to calorie setting and detect components
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

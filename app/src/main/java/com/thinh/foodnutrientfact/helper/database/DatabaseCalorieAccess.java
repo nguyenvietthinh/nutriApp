@@ -7,6 +7,10 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+
+/**
+ * Connect with sqlite database nutri_app_db
+ */
 public class DatabaseCalorieAccess extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "nutri_app_db.db";

@@ -31,15 +31,19 @@ public class CalorieSettingDAO {
      * @param amount calorie amount entered by user
      */
     public boolean insertCalorieSetting(Double amount){
-        try(SQLiteDatabase db = openHelper.getWritableDatabase()){
+
+        String query = "SELECT * from calorie_setting";
+        try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ })){
             ContentValues contentValues = new ContentValues();
             contentValues.put("amount",amount);
             long result = db.insert("calorie_setting", null, contentValues);
-            if(result == -1)
-                return false;
-            else
-                return true;
-
+            if (cursor.moveToFirst()) { // Move to first row
+                do {
+                    cursor.getCount();
+                    cursor.getString(cursor.getColumnIndex("amount"));
+                } while (cursor.moveToNext());
+            }
+          return (result == -1)? false : true;
         }catch (SQLException e){
             e.printStackTrace();
         }

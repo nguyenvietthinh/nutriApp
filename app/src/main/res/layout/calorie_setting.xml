@@ -57,6 +57,7 @@
         android:text="Save"
         android:id="@+id/btnAdd"
         android:gravity="center"
+        android:background="@drawable/buttons"
         android:layout_below = "@+id/editText"
         android:layout_toLeftOf="@+id/textview"
         android:layout_toStartOf="@+id/textview"

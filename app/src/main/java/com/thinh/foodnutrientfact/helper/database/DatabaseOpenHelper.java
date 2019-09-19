@@ -8,6 +8,10 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+
+/**
+ * Connect with sqlite database food_nutri_fact_db
+ */
 public class DatabaseOpenHelper extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "food_nutri_fact_db.db";

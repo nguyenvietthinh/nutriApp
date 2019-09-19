@@ -25,10 +25,14 @@ public class SettingActivity extends AppCompatActivity {
     @Inject
     CalorieSettingService calorieSettingService;
 
+    /**
+     * Save user's calorie needs to database
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.setting_user);
+        setContentView(R.layout.calorie_setting);
         setUpParam();
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);

@@ -7,6 +7,7 @@
     >
 
     <RelativeLayout
+        android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,6 +19,7 @@
             />
         <Button
             android:id="@+id/btnDetect"
+            android:background="@drawable/buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

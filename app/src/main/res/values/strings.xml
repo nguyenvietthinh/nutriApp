@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">FilebaseImageLabeling</string>
     <string-array name="planets_array">
-        <item>Kg</item>
         <item>Gram</item>
+        <item>Kg</item>
     </string-array>
 </resources>

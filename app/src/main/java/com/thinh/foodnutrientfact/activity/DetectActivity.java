@@ -58,6 +58,15 @@ public class DetectActivity extends AppCompatActivity {
         cameraView.stop();
     }
 
+
+    /**
+     * <ul>
+     *     <li>Capture image</li>
+     *     <li>Detect image</li>
+     *     <li>Show food nutrient result from detect result</li>
+     * </ul>
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
