@@ -208,6 +208,7 @@ public class DetectActivity extends AppCompatActivity {
                 break;
             }
         }
+        //TODO: log what the foodName ,that is detected, to file, log info
         if (waitingDialog.isShowing()){
             waitingDialog.dismiss();
         }
@@ -221,10 +222,9 @@ public class DetectActivity extends AppCompatActivity {
      * @param foodName label after detect image
      */
     private void getNutrition(String foodName){
-
         FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
+        //TODO: log what the foodNutri to file (using toDebugString), log info
         showFoodNutri(foodNutri);
-
     }
 
     /**

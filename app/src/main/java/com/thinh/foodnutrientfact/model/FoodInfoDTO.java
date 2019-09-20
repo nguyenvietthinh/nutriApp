@@ -118,4 +118,18 @@ public class FoodInfoDTO implements Serializable {
     public void setCholesterol(int cholesterol) {
         this.cholesterol = cholesterol;
     }
+
+    public String toDebugString() {
+        return "FoodInfoDTO{" +
+                "foodName='" + foodName + '\'' +
+                ", calories=" + calories +
+                ", totalFat=" + totalFat +
+                ", protein=" + protein +
+                ", fatInfoList=" + fatInfoList +
+                ", cholesterol=" + cholesterol +
+                ", sodium=" + sodium +
+                ", potassium=" + potassium +
+                ", vitaminInfoList=" + vitaminInfoList +
+                '}';
+    }
 }
