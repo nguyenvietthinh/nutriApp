@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +19,14 @@ import androidx.fragment.app.DialogFragment;
 
 import com.thinh.foodnutrientfact.R;
 import com.thinh.foodnutrientfact.activity.AddToCartActivity;
+import com.thinh.foodnutrientfact.activity.SettingActivity;
+import com.thinh.foodnutrientfact.di.FoodNutriApplication;
 import com.thinh.foodnutrientfact.model.FatInfo;
 import com.thinh.foodnutrientfact.model.FoodInfoDTO;
+import com.thinh.foodnutrientfact.model.Order;
 import com.thinh.foodnutrientfact.model.VitaminInfo;
 import com.thinh.foodnutrientfact.service.FoodNutriService;
+import com.thinh.foodnutrientfact.service.OrderService;
 
 import javax.inject.Inject;
 
@@ -34,8 +39,14 @@ public class FoodNutriResultDialog extends DialogFragment {
     Button btnAdd, btnDetailAdd;
     AlertDialog dialog;
     FoodInfoDTO foodNutri;
+    Order order;
+
     @Inject
     FoodNutriService foodNutriService;
+
+    @Inject
+    OrderService orderService;
+
 
     /**
      * Create Alert Dialog Fragment For Result Food Nutrition
@@ -45,7 +56,8 @@ public class FoodNutriResultDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-
+        FoodNutriApplication application = (FoodNutriApplication)getActivity().getApplication();
+        application.getComponent().inject(this);
         dialog = new AlertDialog.Builder(getActivity()).create();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         viewDialog = inflater.inflate(R.layout.alertdialog_nutri_result_layout, null);
@@ -98,10 +110,21 @@ public class FoodNutriResultDialog extends DialogFragment {
         dialog.setView(viewDialog);
         btnCloseDialog.setOnClickListener(view -> dialog.cancel());
         btnAdd.setOnClickListener(view -> {
-            doOpenOtherActivity(AddToCartActivity.class);
+            if(orderService.addOrderToCard(new Order(foodNutri.getFoodName(),foodNutri.getCalories(),100))){
+                Toast.makeText(getActivity(), "Added to cart", Toast.LENGTH_LONG).show();
+                viewDialog.setVisibility(View.GONE);
+            }else{
+                Toast.makeText(getActivity(), "Can not add to cart", Toast.LENGTH_LONG).show();
+                viewDialog.setVisibility(View.GONE);
+            }
+
         });
         btnDetailAdd.setOnClickListener(view -> {
-            doOpenOtherActivity(AddToCartActivity.class);
+            if(orderService.addOrderToCard(new Order(foodNutri.getFoodName(),foodNutri.getCalories(),100))){
+                Toast.makeText(getActivity(), "Added to cart", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(getActivity(), "Can not add to cart", Toast.LENGTH_LONG).show();
+            }
         });
 
         viewResult.setOnClickListener(view -> {

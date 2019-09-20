@@ -7,6 +7,7 @@ import com.thinh.foodnutrientfact.helper.database.CalorieSettingDAO;
 import com.thinh.foodnutrientfact.helper.database.DatabaseCalorieAccess;
 import com.thinh.foodnutrientfact.helper.database.DatabaseOpenHelper;
 import com.thinh.foodnutrientfact.helper.database.FoodNutriDAO;
+import com.thinh.foodnutrientfact.helper.database.OrderDAO;
 
 import javax.inject.Singleton;
 
@@ -46,6 +47,12 @@ public class DatabaseModule {
     @Singleton
     CalorieSettingDAO provideCalorieDAO(){
         return new CalorieSettingDAO(provideSQLiteOpenHelperCalorieDb());
+    }
+
+    @Provides
+    @Singleton
+    OrderDAO provideOrderDAO(){
+        return new OrderDAO(provideSQLiteOpenHelperCalorieDb());
     }
 
 

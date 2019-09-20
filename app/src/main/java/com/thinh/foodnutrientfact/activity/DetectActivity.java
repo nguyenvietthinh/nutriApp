@@ -1,6 +1,7 @@
 package com.thinh.foodnutrientfact.activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.andremion.counterfab.CounterFab;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.ml.vision.FirebaseVision;
@@ -26,6 +28,7 @@ import com.thinh.foodnutrientfact.gui.dialog.FoodNutriResultDialog;
 import com.thinh.foodnutrientfact.helper.InternetCheck;
 import com.thinh.foodnutrientfact.model.FoodInfoDTO;
 import com.thinh.foodnutrientfact.service.FoodNutriService;
+import com.thinh.foodnutrientfact.service.OrderService;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
 import com.wonderkiln.camerakit.CameraKitEventListener;
@@ -45,14 +48,20 @@ public class DetectActivity extends AppCompatActivity {
     CameraView cameraView;
     Button btnDetect;
     AlertDialog waitingDialog;
+    CounterFab counterFab;
 
 
     @Inject
     FoodNutriService foodNutriService;
+
+    @Inject
+    OrderService orderService;
+
     @Override
     protected void onResume() {
         super.onResume();
         cameraView.start();
+        counterFab.setCount(orderService.getCountCart());
     }
 
     @Override
@@ -77,16 +86,8 @@ public class DetectActivity extends AppCompatActivity {
         setUpParam();
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
+        counterFab.setCount(orderService.getCountCart());
 
-        //To set button cart in the future
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         cameraView.addCameraKitListener(new CameraKitEventListener() {
             @Override
@@ -258,6 +259,11 @@ public class DetectActivity extends AppCompatActivity {
         cameraView = findViewById(R.id.camemraView);
         btnDetect = findViewById(R.id.btnDetect);
         waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage("Analyzing the object...").setCancelable(false).build();
+        counterFab = findViewById(R.id.fab);
+        counterFab.setOnClickListener(view -> {
+            Intent intent = new Intent(DetectActivity.this,AddToCartActivity.class);
+            startActivity(intent);
+        });
 
     }
 

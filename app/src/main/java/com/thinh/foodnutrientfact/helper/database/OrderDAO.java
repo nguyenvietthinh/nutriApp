@@ -28,7 +28,7 @@ public class OrderDAO {
      * @param order
      * @return
      */
-    public boolean insertCalorieSetting(Order order){
+    public boolean addOrderToCard(Order order){
 
 
         try(SQLiteDatabase db = openHelper.getWritableDatabase()){
@@ -48,13 +48,16 @@ public class OrderDAO {
      * Get cart from database
      * @return
      */
-    public List<Order> getCarts(){
+    public List<Order> getOrderList(){
         List<Order> orders = new ArrayList<>();
         String query = "SELECT * from "+TABLE_NAME+"";
-        try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{})){
+        try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ })){
             if (cursor.moveToFirst()) { // Move to first row
                 do {
-                    orders.add(new Order(cursor.getString(cursor.getColumnIndex("food_name")),Double.parseDouble(cursor.getString(cursor.getColumnIndex("amount"))),Double.parseDouble(cursor.getString(cursor.getColumnIndex("amount")))));
+                    String foodName = cursor.getString(cursor.getColumnIndex("food_name"));
+                    double calAmount = Double.parseDouble(cursor.getString(cursor.getColumnIndex("calorie_amount")));
+                    double foodWeight = Double.parseDouble(cursor.getString(cursor.getColumnIndex("food_weight")));
+                    orders.add(new Order(foodName,calAmount,foodWeight));
                 } while (cursor.moveToNext());
             }
         }catch (SQLException e){
@@ -63,9 +66,35 @@ public class OrderDAO {
         return orders;
     }
 
+    /**
+     * Delete all order from cart
+     * @return
+     */
     public void clearCart(){
-        String query = "Delete from "+TABLE_NAME+"";
+        try(SQLiteDatabase db = openHelper.getWritableDatabase()){
+             db.delete(TABLE_NAME, null, null);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 
+    /**
+     * Get total item of cart
+     * @return
+     */
+    public int getCountCart(){
+        int count = 0;
+        String query = "SELECT count(*) from "+TABLE_NAME+"";
+        try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ })){
+            if (cursor.moveToFirst()) { // Move to first row
+                do {
+                    count = cursor.getInt(0);
+                } while (cursor.moveToNext());
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return count;
     }
 
 }
