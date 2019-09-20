@@ -1,5 +1,8 @@
 package com.thinh.foodnutrientfact.model;
 
+/**
+ * Detail order in cart
+ */
 public class Order {
     private String foodName;
     private double calorieAmount;

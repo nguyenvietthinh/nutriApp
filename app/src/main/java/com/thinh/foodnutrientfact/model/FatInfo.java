@@ -2,6 +2,9 @@ package com.thinh.foodnutrientfact.model;
 
 import java.io.Serializable;
 
+/**
+ * Content
+ */
 public class FatInfo implements Serializable {
 
     private FatType fatType;

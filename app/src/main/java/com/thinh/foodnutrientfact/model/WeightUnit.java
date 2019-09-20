@@ -1,5 +1,8 @@
 package com.thinh.foodnutrientfact.model;
 
+/**
+ * Kind of weight unit
+ */
 public enum WeightUnit {
     Kg("Kg"),
     Gram("Gram");

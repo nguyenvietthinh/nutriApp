@@ -3,6 +3,9 @@ package com.thinh.foodnutrientfact.model;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Food information
+ */
 public class FoodInfoDTO implements Serializable {
 
     public static FoodInfoDTO constructFoodWithBasicInfo(String foodName, double calories, double totalFat, double protein){

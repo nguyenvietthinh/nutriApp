@@ -1,5 +1,8 @@
 package com.thinh.foodnutrientfact.model;
 
+/**
+ * Kind of Vitamins
+ */
 public enum VitaminType {
     A("Vitamin A"),
     B6("Vitamin B6"),

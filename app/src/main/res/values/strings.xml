@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">FilebaseImageLabeling</string>
+    <string name="app_name">Food Nutrient Fact</string>
     <string-array name="planets_array">
         <item>Gram</item>
         <item>Kg</item>
     </string-array>
-    <string name="title_activity_main2">Main2Activity</string>
 </resources>

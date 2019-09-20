@@ -16,6 +16,7 @@ import javax.inject.Inject;
 
 public class OrderDAO {
     private SQLiteOpenHelper openHelper;
+    public static final String TABLE_NAME = "order_detail";
 
     @Inject
     public OrderDAO(SQLiteOpenHelper openHelper) {
@@ -23,21 +24,19 @@ public class OrderDAO {
     }
 
     /**
-     * Insert order to DB
-     * @param foodName
-     * @param calAmount
-     * @param foodWeight
+     * Insert Order to DB
+     * @param order
      * @return
      */
-    public boolean insertCalorieSetting(String foodName,double calAmount, double foodWeight){
+    public boolean insertCalorieSetting(Order order){
 
 
         try(SQLiteDatabase db = openHelper.getWritableDatabase()){
             ContentValues contentValues = new ContentValues();
-            contentValues.put("food_name",foodName);
-            contentValues.put("calorie_amount",calAmount);
-            contentValues.put("food_weight",foodWeight);
-            long result = db.insert("order_detail", null, contentValues);
+            contentValues.put("food_name",order.getFoodName());
+            contentValues.put("calorie_amount",order.getCalorieAmount());
+            contentValues.put("food_weight",order.getFoodWeight());
+            long result = db.insert(TABLE_NAME, null, contentValues);
             return (result == -1)? false : true;
         }catch (SQLException e){
             e.printStackTrace();
@@ -50,9 +49,8 @@ public class OrderDAO {
      * @return
      */
     public List<Order> getCarts(){
-
         List<Order> orders = new ArrayList<>();
-        String query = "SELECT * from order_detail";
+        String query = "SELECT * from "+TABLE_NAME+"";
         try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{})){
             if (cursor.moveToFirst()) { // Move to first row
                 do {
@@ -64,4 +62,10 @@ public class OrderDAO {
         }
         return orders;
     }
+
+    public void clearCart(){
+        String query = "Delete from "+TABLE_NAME+"";
+
+    }
+
 }

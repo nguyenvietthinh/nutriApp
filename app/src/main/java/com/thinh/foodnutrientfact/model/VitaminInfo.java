@@ -2,6 +2,9 @@ package com.thinh.foodnutrientfact.model;
 
 import java.io.Serializable;
 
+/**
+ * Vitamin information
+ */
 public class VitaminInfo implements Serializable {
 
     public VitaminInfo(VitaminType vitaminType, double amount) {

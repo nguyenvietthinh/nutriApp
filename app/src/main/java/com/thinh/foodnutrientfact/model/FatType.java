@@ -1,5 +1,9 @@
 package com.thinh.foodnutrientfact.model;
 
+
+/**
+ *
+ */
 public enum FatType {
     Sat("Saturated fat"),
     Poly("Polyunsaturated fat"),
