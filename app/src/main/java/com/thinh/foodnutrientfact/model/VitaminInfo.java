@@ -3,7 +3,7 @@ package com.thinh.foodnutrientfact.model;
 import java.io.Serializable;
 
 /**
- * Vitamin information
+ * Vitamin information only used for display on UI
  */
 public class VitaminInfo implements Serializable {
 

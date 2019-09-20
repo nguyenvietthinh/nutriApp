@@ -3,7 +3,7 @@ package com.thinh.foodnutrientfact.model;
 import java.io.Serializable;
 
 /**
- * Content
+ * Fat information only used for display on UI
  */
 public class FatInfo implements Serializable {
 

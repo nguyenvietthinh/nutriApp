@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Food information
+ * Food information only used for display on UI
  */
 public class FoodInfoDTO implements Serializable {
 

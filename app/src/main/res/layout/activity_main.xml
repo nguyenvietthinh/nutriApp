@@ -10,18 +10,20 @@
     android:layout_margin="10dp"
     tools:context=".activity.MainActivity"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <Button
         android:id="@+id/btnDetect"
+        android:layout_width="124dp"
+        android:layout_height="77dp"
+        android:layout_marginBottom="50dp"
         android:background="#dc9e1a"
-        android:text="B1"
-        android:layout_marginBottom="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="Detect" />
+
     <Button
         android:id="@+id/btnSetting"
+        android:layout_width="125dp"
+        android:layout_height="76dp"
         android:background="#00c853"
-        android:text="B1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="User Setting" />
 
 </LinearLayout>

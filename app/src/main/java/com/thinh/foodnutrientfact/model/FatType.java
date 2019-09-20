@@ -2,7 +2,7 @@ package com.thinh.foodnutrientfact.model;
 
 
 /**
- *
+ * Kind of Fat
  */
 public enum FatType {
     Sat("Saturated fat"),

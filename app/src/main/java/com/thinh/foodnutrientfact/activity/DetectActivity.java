@@ -78,6 +78,7 @@ public class DetectActivity extends AppCompatActivity {
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
 
+        //To set button cart in the future
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +145,7 @@ public class DetectActivity extends AppCompatActivity {
             if(detectImageLabeler == null)
             {
                 //TODO: log the error
-                Log.d("Error","Detect Image Labeler cannot be null");
+                Log.e("Error","Detect Image Labeler cannot be null");
                 return;
             }
             detectImageLabeler.processImage(image)
@@ -159,7 +160,7 @@ public class DetectActivity extends AppCompatActivity {
                             waitingDialog.dismiss();
                         }
                     })
-                    .addOnFailureListener(e -> Log.d("EDMTERROR",e.getMessage()));
+                    .addOnFailureListener(e -> Log.e("DETECTERROR",e.getMessage()));
         });
 
     }
@@ -209,6 +210,7 @@ public class DetectActivity extends AppCompatActivity {
             }
         }
         //TODO: log what the foodName ,that is detected, to file, log info
+        Log.i("foodName", foodName);
         if (waitingDialog.isShowing()){
             waitingDialog.dismiss();
         }
@@ -224,6 +226,7 @@ public class DetectActivity extends AppCompatActivity {
     private void getNutrition(String foodName){
         FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
         //TODO: log what the foodNutri to file (using toDebugString), log info
+        Log.i("foodNutri", foodNutri.toDebugString());
         showFoodNutri(foodNutri);
     }
 
