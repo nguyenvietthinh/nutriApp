@@ -39,12 +39,24 @@
                 />
 
         </LinearLayout>
-        <ImageView
-            android:id="@+id/cart_item_count"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="16dp"
-            android:layout_width="25dp"
-            android:layout_height="25dp" />
+
+
+            <EditText
+                android:id="@+id/txtCalSetting"
+                android:inputType="number"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:focusable="false"
+                android:textColorHighlight="#ff7eff15"
+                android:textColorHint="#ffff25e6" />
+            <Spinner
+                android:id="@+id/planets_spinner"
+                android:layout_width="120dp"
+                android:layout_height="match_parent" />
 
     </LinearLayout>
 

@@ -3,20 +3,26 @@ package com.thinh.foodnutrientfact.viewholder;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amulyakhare.textdrawable.TextDrawable;
+
 import com.thinh.foodnutrientfact.R;
+import com.thinh.foodnutrientfact.activity.AddToCartActivity;
 import com.thinh.foodnutrientfact.model.Order;
+import com.thinh.foodnutrientfact.model.WeightUnit;
 import com.thinh.foodnutrientfact.service.ItemClickListener;
 
 import java.text.DecimalFormat;
@@ -32,7 +38,11 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 
     public TextView foodNameItemView, calAmountItemView;
     public ImageView cartItemCount;
-    private ItemClickListener itemClickListener;
+    Spinner spinner;
+
+
+
+
 
     public void setFoodNameItemView(TextView foodNameItemView) {
         this.foodNameItemView = foodNameItemView;
@@ -42,7 +52,9 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
         super(itemView);
         foodNameItemView = itemView.findViewById(R.id.cart_item_food_name);
         calAmountItemView = itemView.findViewById(R.id.cart_item_cal_amount);
-        cartItemCount = itemView.findViewById(R.id.cart_item_count);
+        spinner =  itemView.findViewById(R.id.planets_spinner);
+
+
         itemView.setOnCreateContextMenuListener(this);
     }
 
@@ -60,35 +72,54 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 }
 public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
     private List<Order> orderList = new ArrayList<>();
-    private Context context;
+    private Context mcontext;
+    private ArrayAdapter<CharSequence> adapter;
 
     public CartAdapter(List<Order> orderList, Context context) {
         this.orderList = orderList;
-        this.context = context;
+        this.mcontext = context;
+        adapter = ArrayAdapter.createFromResource(mcontext,
+                R.array.weight_unit_array, android.R.layout.simple_spinner_item);//Create an ArrayAdapter using the string array and a default spinner layout
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //Specify the layout to use when the list of choices appears
     }
 
     @NonNull
     @Override
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        LayoutInflater layoutInflater = LayoutInflater.from(mcontext);
         View itemView = layoutInflater.inflate(R.layout.cart_item_layout,parent,false);
         return new CartViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
-        TextDrawable textDrawable = TextDrawable.builder()
-                .buildRound(""+orderList.get(position).getFoodWeight(), Color.RED);
-        holder.cartItemCount.setImageDrawable(textDrawable);
 
+        holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String unit = holder.spinner.getSelectedItem().toString();
+                WeightUnit weightUnit = WeightUnit.fromDescription(unit);
+                Toast.makeText(holder.itemView.getContext(),"Please Fill All The "+orderList.get(position).getFoodName()+" Fields.", Toast.LENGTH_LONG).show();
+                //TODO: log weightUnit amount to file
+                Log.i("WeightUnit", weightUnit.toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         NumberFormat numberFormat = new DecimalFormat("0.00");
         double calAmount = (orderList.get(position).getFoodWeight())*(orderList.get(position).getCalorieAmount())/100.0;
         holder.calAmountItemView.setText(numberFormat.format(calAmount));
         holder.foodNameItemView.setText(orderList.get(position).getFoodName());
+        holder.spinner.setAdapter(adapter); // Apply the adapter to the spinner
+
     }
 
     @Override
     public int getItemCount() {
         return orderList.size();
     }
+
 }

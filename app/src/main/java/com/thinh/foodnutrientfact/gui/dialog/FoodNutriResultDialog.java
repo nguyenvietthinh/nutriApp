@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,8 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.andremion.counterfab.CounterFab;
 import com.thinh.foodnutrientfact.R;
 import com.thinh.foodnutrientfact.activity.AddToCartActivity;
+import com.thinh.foodnutrientfact.activity.MainActivity;
 import com.thinh.foodnutrientfact.activity.SettingActivity;
 import com.thinh.foodnutrientfact.di.FoodNutriApplication;
 import com.thinh.foodnutrientfact.model.FatInfo;
@@ -28,18 +31,22 @@ import com.thinh.foodnutrientfact.model.VitaminInfo;
 import com.thinh.foodnutrientfact.service.FoodNutriService;
 import com.thinh.foodnutrientfact.service.OrderService;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 public class FoodNutriResultDialog extends DialogFragment {
 
-    View viewResult,viewDetailRessult,viewDialog;
+    View viewResult,viewDetailRessult,viewDialog, popupInputDialogView;
     TextView DetailFoodNameView, FoodNameView, caloriesView, totalFatView, cholesterolView, proteinView, satFatView, polyFatView, monoFatView, sodiumView, potassiumView, vitCView, vitDView, vitAView,vitB6View,
-            vitB12View, caloriesDetailView, proteinDetailView, cholesterolDetailView, totalFatDetailView;
+            vitB12View, caloriesDetailView, proteinDetailView, cholesterolDetailView, totalFatDetailView,popupDialogFoodName;
     ImageButton btnCloseDialog;
-    Button btnAdd, btnDetailAdd;
-    AlertDialog dialog;
+    Button btnAdd, btnDetailAdd,btnpopupDialogCancel,btnpopupDialogAdd;
+    AlertDialog dialog, popupDialog ;
     FoodInfoDTO foodNutri;
     Order order;
+    CounterFab counterFab;
+    EditText popupDialogFoodWeight;
 
     @Inject
     FoodNutriService foodNutriService;
@@ -110,20 +117,24 @@ public class FoodNutriResultDialog extends DialogFragment {
         dialog.setView(viewDialog);
         btnCloseDialog.setOnClickListener(view -> dialog.cancel());
         btnAdd.setOnClickListener(view -> {
-            if(orderService.addOrderToCard(new Order(foodNutri.getFoodName(),foodNutri.getCalories(),100))){
-                Toast.makeText(getActivity(), "Added to cart", Toast.LENGTH_LONG).show();
-                viewDialog.setVisibility(View.GONE);
-            }else{
-                Toast.makeText(getActivity(), "Can not add to cart", Toast.LENGTH_LONG).show();
-                viewDialog.setVisibility(View.GONE);
-            }
+            showPopupDialog();
 
         });
         btnDetailAdd.setOnClickListener(view -> {
+            showPopupDialog();
+
+        });
+
+        btnpopupDialogCancel.setOnClickListener(view -> popupDialog.cancel());
+
+        btnpopupDialogAdd.setOnClickListener(view -> {
             if(orderService.addOrderToCard(new Order(foodNutri.getFoodName(),foodNutri.getCalories(),100))){
                 Toast.makeText(getActivity(), "Added to cart", Toast.LENGTH_LONG).show();
+                viewDialog.setVisibility(View.GONE);
+                counterFab.setCount(orderService.getCountCart());
             }else{
                 Toast.makeText(getActivity(), "Can not add to cart", Toast.LENGTH_LONG).show();
+                viewDialog.setVisibility(View.GONE);
             }
         });
 
@@ -172,6 +183,7 @@ public class FoodNutriResultDialog extends DialogFragment {
         btnCloseDialog = viewDialog.findViewById(R.id.imageButton_close);
         btnAdd = viewDialog.findViewById(R.id.btnAdd);
         btnDetailAdd = viewDetailRessult.findViewById(R.id.btnAdd);
+        counterFab = getActivity().findViewById(R.id.fab);
     }
 
     /**
@@ -192,5 +204,57 @@ public class FoodNutriResultDialog extends DialogFragment {
     {
         Intent intent =new Intent(getActivity(), aClass);
         startActivity(intent);
+    }
+
+    /**
+     *Initialize popup dialog.
+     */
+    private void initPopupDialog()
+    {
+        // Get layout inflater object.
+        LayoutInflater layoutInflater = getActivity().getLayoutInflater();;
+
+        // Inflate the popup dialog from a layout xml file.
+        popupInputDialogView = layoutInflater.inflate(R.layout.popup_input_food_weight_dialog, null);
+
+        setUpParamPopupDialog();
+
+        // Display values from the main activity list view in user input edittext.
+        initTextViewFoodNameInPopupDialog();
+    }
+
+    /**
+     *  Get current food name and set them in the popup dialog text view.
+     */
+    private void initTextViewFoodNameInPopupDialog()
+    {
+        FoodInfoDTO foodInfoDTO = getDataFromActivity();
+        popupDialogFoodName.setText(foodInfoDTO.getFoodName());
+
+    }
+
+    /**
+     * Declare Params for Popup dialog
+     */
+    private void setUpParamPopupDialog(){
+
+        popupDialogFoodName = popupInputDialogView.findViewById(R.id.popupFoodName);
+        popupDialogFoodWeight = popupInputDialogView.findViewById(R.id.userName);
+        btnpopupDialogAdd = popupInputDialogView.findViewById(R.id.btnAddToCart);
+        btnpopupDialogCancel = popupInputDialogView.findViewById(R.id.btnCancel);
+    }
+
+    /**
+     * Show popup dialog
+     */
+    private void showPopupDialog(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setTitle("Enter Food Weight.");
+        alertDialogBuilder.setIcon(R.drawable.ic_launcher_background);
+        alertDialogBuilder.setCancelable(false);
+        initPopupDialog();
+        alertDialogBuilder.setView(popupInputDialogView);
+        popupDialog = alertDialogBuilder.create();
+        popupDialog.show();
     }
 }

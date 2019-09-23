@@ -40,8 +40,7 @@ public class AddToCartActivity extends AppCompatActivity  {
     EditText txtCalSetting;
     TextView totalCalView;
     Button btnAdd;
-    Spinner spinner;
-    WeightUnit weightUnit;
+
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     List<Order> cart = new ArrayList<>();
@@ -74,14 +73,9 @@ public class AddToCartActivity extends AppCompatActivity  {
      * Declare Params
      */
     private void setUpParam(){
-        spinner =  findViewById(R.id.planets_spinner);
+
         btnAdd = findViewById(R.id.btnSave);
         txtCalSetting = findViewById(R.id.txtCalSetting);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.weight_unit_array, android.R.layout.simple_spinner_item);   //Create an ArrayAdapter using the string array and a default spinner layout
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //Specify the layout to use when the list of choices appears
-        spinner.setAdapter(adapter); // Apply the adapter to the spinner
-        spinner.setOnItemSelectedListener(setupOnItemSelectedSpinnerListener());
         btnAdd.setOnClickListener(setupBtnAddOnClickListener());
         recyclerView = findViewById(R.id.listOrder);
         recyclerView.setHasFixedSize(true);
@@ -107,33 +101,13 @@ public class AddToCartActivity extends AppCompatActivity  {
                 Toast.makeText(AddToCartActivity.this,"Please Fill All The Required Fields.", Toast.LENGTH_LONG).show();
             }
             else {
-                Toast.makeText(AddToCartActivity.this,"Data Inserted "+weightUnit+" ", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddToCartActivity.this,"Data Inserted", Toast.LENGTH_LONG).show();
 
             }
 
         };
     }
 
-    /**
-     *Set on item selected listener for spinner
-     * @return
-     */
-    private AdapterView.OnItemSelectedListener setupOnItemSelectedSpinnerListener() {
-        return new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    String unit = spinner.getSelectedItem().toString();
-                    weightUnit = WeightUnit.fromDescription(unit);
-                    //TODO: log weightUnit amount to file
-                    Log.i("WeightUnit", weightUnit.toString());
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            };
-    }
 
     /**
      * Load list order to cart
