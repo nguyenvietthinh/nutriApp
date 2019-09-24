@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.thinh.foodnutrientfact"
+    package="com.tma.techday.foodnutrientfact"
     android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,23 +13,23 @@
 
     <application
 
-        android:name=".di.FoodNutriApplication"
+        android:name="com.tma.techday.foodnutrientfact.di.FoodNutriApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Food Nutrient Fact"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name="com.tma.techday.foodnutrientfact.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.DetectActivity" />
-        <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.AddToCartActivity" />
+        <activity android:name="com.tma.techday.foodnutrientfact.activity.DetectActivity" />
+        <activity android:name="com.tma.techday.foodnutrientfact.activity.SettingActivity" />
+        <activity android:name="com.tma.techday.foodnutrientfact.activity.AddToCartActivity" />
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"

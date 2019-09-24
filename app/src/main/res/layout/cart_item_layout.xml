@@ -42,7 +42,7 @@
 
 
             <EditText
-                android:id="@+id/txtCalSetting"
+                android:id="@+id/txtFoodWeight"
                 android:inputType="number"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:focusable="false"
+
                 android:textColorHighlight="#ff7eff15"
                 android:textColorHint="#ffff25e6" />
             <Spinner

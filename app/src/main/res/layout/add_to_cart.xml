@@ -46,23 +46,6 @@
             </LinearLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-    <TextView
-        android:id="@+id/addToCartLabel"
-        android:text = "User" android:layout_width="wrap_content"
-        android:layout_height = "wrap_content"
-        android:textSize = "35dp"
-        android:layout_alignParentTop = "true"
-        android:layout_centerHorizontal = "true" />
-
-    <TextView
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:text = "Add to Cart"
-        android:layout_below = "@+id/addToCartLabel"
-        android:layout_centerHorizontal = "true"
-        android:textColor = "#ff7aff24"
-        android:textSize = "35dp" />
-
 
 
     <Button
