@@ -18,9 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
+import com.tma.techday.foodnutrientfact.gui.event.CaloriesChangeEvent;
 import com.tma.techday.foodnutrientfact.model.Order;
 import com.tma.techday.foodnutrientfact.service.OrderService;
 import com.tma.techday.foodnutrientfact.viewholder.CartAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -31,13 +35,14 @@ import javax.inject.Inject;
 
 public class AddToCartActivity extends AppCompatActivity  {
     EditText txtCalSetting;
-    TextView totalCalView;
+    public  TextView totalCalView;
     Button btnAdd;
-
+    double total = 0.0;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     List<Order> cart = new ArrayList<>();
     CartAdapter cartAdapter;
+    NumberFormat numberFormat = new DecimalFormat("0.00");
 
     @Inject
     OrderService orderService;
@@ -60,13 +65,23 @@ public class AddToCartActivity extends AppCompatActivity  {
         loadCart();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
 
 
     /**
      * Declare Params
      */
     private void setUpParam(){
-
         btnAdd = findViewById(R.id.btnSave);
         txtCalSetting = findViewById(R.id.txtCalSetting);
         btnAdd.setOnClickListener(setupBtnAddOnClickListener());
@@ -95,7 +110,6 @@ public class AddToCartActivity extends AppCompatActivity  {
             }
             else {
                 Toast.makeText(AddToCartActivity.this,"Data Inserted", Toast.LENGTH_LONG).show();
-
             }
 
         };
@@ -110,11 +124,10 @@ public class AddToCartActivity extends AppCompatActivity  {
         cartAdapter = new CartAdapter(cart,this);
         recyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
-        double total = 0.0;
+
         for(Order order: cart){
-            total+= order.getCalorieAmount()*order.getFoodWeight();
+            total+= order.getCalorieAmount();
         }
-        NumberFormat numberFormat = new DecimalFormat("0.00");
         totalCalView.setText(numberFormat.format(total));
     }
 
@@ -142,5 +155,14 @@ public class AddToCartActivity extends AppCompatActivity  {
             orderService.addOrderToCard(order);
         }
         loadCart();
+    }
+
+    /**
+     * Receive calorie changed from adapter
+     */
+    @Subscribe
+    public void onEvent(CaloriesChangeEvent calChange){
+        total += calChange.getCaloriesChange();
+        totalCalView.setText(numberFormat.format(total));
     }
 }

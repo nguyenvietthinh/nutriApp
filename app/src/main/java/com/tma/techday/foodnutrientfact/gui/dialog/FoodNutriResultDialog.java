@@ -238,12 +238,14 @@ public class FoodNutriResultDialog extends DialogFragment {
 
         btnpopupDialogAdd.setOnClickListener(view -> {
             String foodWeight = popupDialogFoodWeight.getText().toString();
+
             Log.i("rawAmount", foodWeight);
             if(TextUtils.isEmpty(foodWeight)){
                 Toast.makeText(getActivity(), "Please Fill All The Required Fields.", Toast.LENGTH_LONG).show();
             }else{
                 double parseFoodWeight = Double.parseDouble(foodWeight);
-                if(orderService.addOrderToCard(new Order(foodNutri.getFoodName(),foodNutri.getCalories(),parseFoodWeight))){
+                double orderAmount = parseFoodWeight*(foodNutri.getCalories())/100.0;
+                if(orderService.addOrderToCard(new Order(foodNutri.getFoodName(),orderAmount,parseFoodWeight))){
                     Toast.makeText(getActivity(), "Added to cart", Toast.LENGTH_LONG).show();
                     viewDialog.setVisibility(View.GONE);
                     popupDialog.cancel();

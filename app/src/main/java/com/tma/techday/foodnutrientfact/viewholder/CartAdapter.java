@@ -2,6 +2,9 @@ package com.tma.techday.foodnutrientfact.viewholder;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -20,8 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.tma.techday.foodnutrientfact.R;
+import com.tma.techday.foodnutrientfact.activity.AddToCartActivity;
+import com.tma.techday.foodnutrientfact.gui.event.CaloriesChangeEvent;
 import com.tma.techday.foodnutrientfact.model.Order;
 import com.tma.techday.foodnutrientfact.model.WeightUnit;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -36,6 +43,7 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
     public TextView foodNameItemView, calAmountItemView;
     public EditText foodWeightText;
     public ImageView cartItemCount;
+
     Spinner spinner;
 
 
@@ -65,19 +73,21 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-            contextMenu.setHeaderTitle("Select Action");
-            contextMenu.add(0,0,getAdapterPosition(),"Delete");
+        contextMenu.setHeaderTitle("Select Action");
+        contextMenu.add(0,0,getAdapterPosition(),"Delete");
     }
 }
 public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
     private List<Order> orderList = new ArrayList<>();
-    private Context mcontext;
+    private AddToCartActivity cart;
     private ArrayAdapter<CharSequence> adapter;
-
-    public CartAdapter(List<Order> orderList, Context context) {
+    Double calAmount;
+    int pos = -1;
+    public CartAdapter(List<Order> orderList, AddToCartActivity cart) {
         this.orderList = orderList;
-        this.mcontext = context;
-        adapter = ArrayAdapter.createFromResource(mcontext,
+        this.cart = cart;
+
+        adapter = ArrayAdapter.createFromResource(cart,
                 R.array.weight_unit_array, android.R.layout.simple_spinner_item);//Create an ArrayAdapter using the string array and a default spinner layout
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //Specify the layout to use when the list of choices appears
     }
@@ -85,7 +95,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
     @NonNull
     @Override
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(mcontext);
+        LayoutInflater layoutInflater = LayoutInflater.from(cart);
         View itemView = layoutInflater.inflate(R.layout.cart_item_layout,parent,false);
         return new CartViewHolder(itemView);
     }
@@ -93,6 +103,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
 
+        NumberFormat numberFormat = new DecimalFormat("0.00");
+        calAmount = orderList.get(position).getCalorieAmount();
+        holder.calAmountItemView.setText(numberFormat.format(calAmount));
+        holder.foodNameItemView.setText(orderList.get(position).getFoodName());
+        holder.foodWeightText.setText(numberFormat.format(orderList.get(position).getFoodWeight()));
+        holder.spinner.setAdapter(adapter); // Apply the adapter to the spinner
         holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -107,12 +123,45 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
 
             }
         });
-        NumberFormat numberFormat = new DecimalFormat("0.00");
-        double calAmount = (orderList.get(position).getFoodWeight())*(orderList.get(position).getCalorieAmount())/100.0;
-        holder.calAmountItemView.setText(numberFormat.format(calAmount));
-        holder.foodNameItemView.setText(orderList.get(position).getFoodName());
-        holder.foodWeightText.setText(numberFormat.format(orderList.get(position).getFoodWeight()));
-        holder.spinner.setAdapter(adapter); // Apply the adapter to the spinner
+
+        holder.foodWeightText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    holder.foodWeightText.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            Double newWeightfood = Double.parseDouble(holder.foodWeightText.getText().toString());
+                            Double newCalAmount = newWeightfood*calAmount/(orderList.get(position).getFoodWeight());
+                            if(pos == position){
+                                calAmount =  newCalAmount;
+                            }else{
+                                calAmount = orderList.get(position).getCalorieAmount();
+                                 pos = (int) holder.getAdapterPosition();
+                            }
+
+                            Double calChange = newCalAmount - calAmount;
+                            holder.calAmountItemView.setText(numberFormat.format(newCalAmount));
+                            EventBus.getDefault().post(new CaloriesChangeEvent(calChange));
+                        }
+                    });// code to execute when EditText loses focus
+                }
+            }
+        });
+
+
+
+
 
     }
 
