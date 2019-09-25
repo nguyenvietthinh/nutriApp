@@ -3,6 +3,7 @@ package com.tma.techday.foodnutrientfact.di;
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.tma.techday.foodnutrientfact.helper.database.CalorieDailyDAO;
 import com.tma.techday.foodnutrientfact.helper.database.CalorieSettingDAO;
 import com.tma.techday.foodnutrientfact.helper.database.DatabaseCalorieAccess;
 import com.tma.techday.foodnutrientfact.helper.database.DatabaseOpenHelper;
@@ -53,6 +54,12 @@ public class DatabaseModule {
     @Singleton
     OrderDAO provideOrderDAO(){
         return new OrderDAO(provideSQLiteOpenHelperCalorieDb());
+    }
+
+    @Provides
+    @Singleton
+    CalorieDailyDAO provideCalorieDailyDAO(){
+        return new CalorieDailyDAO(provideSQLiteOpenHelperCalorieDb());
     }
 
 

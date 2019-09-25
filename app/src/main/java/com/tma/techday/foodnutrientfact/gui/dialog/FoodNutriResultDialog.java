@@ -235,28 +235,35 @@ public class FoodNutriResultDialog extends DialogFragment {
         btnpopupDialogAdd = popupInputDialogView.findViewById(R.id.btnAddToCart);
         btnpopupDialogCancel = popupInputDialogView.findViewById(R.id.btnCancel);
         btnpopupDialogCancel.setOnClickListener(view -> popupDialog.cancel());
+        btnpopupDialogAdd.setOnClickListener(setClickBtnAddToCart());
+    }
 
-        btnpopupDialogAdd.setOnClickListener(view -> {
-            String foodWeight = popupDialogFoodWeight.getText().toString();
 
-            Log.i("rawAmount", foodWeight);
-            if(TextUtils.isEmpty(foodWeight)){
-                Toast.makeText(getActivity(), "Please Fill All The Required Fields.", Toast.LENGTH_LONG).show();
-            }else{
-                double parseFoodWeight = Double.parseDouble(foodWeight);
-                double orderAmount = parseFoodWeight*(foodNutri.getCalories())/100.0;
-                if(orderService.addOrderToCard(new Order(foodNutri.getFoodName(),orderAmount,parseFoodWeight))){
-                    Toast.makeText(getActivity(), "Added to cart", Toast.LENGTH_LONG).show();
-                    viewDialog.setVisibility(View.GONE);
-                    popupDialog.cancel();
-                    counterFab.setCount(orderService.getCountCart());
-                }else{
-                    Toast.makeText(getActivity(), "Can not add to cart", Toast.LENGTH_LONG).show();
-                    viewDialog.setVisibility(View.GONE);
+    /**
+     *  set on click listener for button add
+     * @return
+     */
+    private View.OnClickListener setClickBtnAddToCart() {
+        return view -> {
+                String foodWeight = popupDialogFoodWeight.getText().toString();
+                Log.i("rawAmount", foodWeight);
+                if (TextUtils.isEmpty(foodWeight)) {
+                    Toast.makeText(getActivity(), "Please Fill All The Required Fields.", Toast.LENGTH_LONG).show();
+                } else {
+                    double parseFoodWeight = Double.parseDouble(foodWeight);
+                    double orderAmount = parseFoodWeight * (foodNutri.getCalories()) / 100.0;
+                    if (orderService.addOrderToCard(new Order(foodNutri.getFoodName(), orderAmount, parseFoodWeight))) {
+                        Toast.makeText(getActivity(), "Added to cart", Toast.LENGTH_LONG).show();
+                        viewDialog.setVisibility(View.GONE);
+                        popupDialog.cancel();
+                        counterFab.setCount(orderService.getCountCart());
+                    } else {
+                        Toast.makeText(getActivity(), "Can not add to cart", Toast.LENGTH_LONG).show();
+                        viewDialog.setVisibility(View.GONE);
+                    }
                 }
-            }
 
-        });
+            };
     }
 
     /**
@@ -264,7 +271,7 @@ public class FoodNutriResultDialog extends DialogFragment {
      */
     private void showPopupDialog(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setTitle("Enter Food Weight.");
+        alertDialogBuilder.setTitle("Add food.");
         alertDialogBuilder.setIcon(R.drawable.ic_launcher_background);
         alertDialogBuilder.setCancelable(false);
         initPopupDialog();

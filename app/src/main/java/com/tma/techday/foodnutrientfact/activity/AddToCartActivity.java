@@ -7,45 +7,55 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
 import com.tma.techday.foodnutrientfact.gui.event.CaloriesChangeEvent;
+import com.tma.techday.foodnutrientfact.model.CalorieDaily;
 import com.tma.techday.foodnutrientfact.model.Order;
+import com.tma.techday.foodnutrientfact.service.CalorieDailyService;
 import com.tma.techday.foodnutrientfact.service.OrderService;
 import com.tma.techday.foodnutrientfact.viewholder.CartAdapter;
+import com.tma.techday.foodnutrientfact.viewholder.CartItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class AddToCartActivity extends AppCompatActivity  {
+public class AddToCartActivity extends AppCompatActivity {
     EditText txtCalSetting;
     public  TextView totalCalView;
     Button btnAdd;
     double total = 0.0;
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
     List<Order> cart = new ArrayList<>();
-    CartAdapter cartAdapter;
     NumberFormat numberFormat = new DecimalFormat("0.00");
+    LinearLayout layOutOrderItems;
 
     @Inject
     OrderService orderService;
+
+    @Inject
+    CalorieDailyService calorieDailyService;
 
     /**
      * <ul>
@@ -85,10 +95,7 @@ public class AddToCartActivity extends AppCompatActivity  {
         btnAdd = findViewById(R.id.btnSave);
         txtCalSetting = findViewById(R.id.txtCalSetting);
         btnAdd.setOnClickListener(setupBtnAddOnClickListener());
-        recyclerView = findViewById(R.id.listOrder);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        layOutOrderItems = findViewById(R.id.layout_order_items);
         totalCalView = findViewById(R.id.txtTotal);
     }
 
@@ -98,21 +105,28 @@ public class AddToCartActivity extends AppCompatActivity  {
      */
     private View.OnClickListener setupBtnAddOnClickListener() {
         return view -> {
-            if(cart.size()>0){
-                Toast.makeText(AddToCartActivity.this,"Save successfully.", Toast.LENGTH_LONG).show();
-            }else
+            boolean hasItems = cart.size() > 0;
+            if(hasItems) {
+                CalorieDaily calorieDaily = buildCalorieDaily();
+                if (calorieDailyService.addCalDaily(calorieDaily)) {
+                    Toast.makeText(AddToCartActivity.this,"Save successfully.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(AddToCartActivity.this, "Save failed", Toast.LENGTH_LONG).show();
+                }
+            } else {
                 Toast.makeText(AddToCartActivity.this,"Your cart is empty.", Toast.LENGTH_LONG).show();
-            String calAmount = txtCalSetting.getText().toString();
-            //TODO: log raw amount to file
-            int c = Log.i("AmountAddToCart", calAmount);
-            if(TextUtils.isEmpty(calAmount)){
-                Toast.makeText(AddToCartActivity.this,"Please Fill All The Required Fields.", Toast.LENGTH_LONG).show();
             }
-            else {
-                Toast.makeText(AddToCartActivity.this,"Data Inserted", Toast.LENGTH_LONG).show();
-            }
-
         };
+    }
+
+    /**
+     * Build Calorie Daily
+     * @return
+     */
+    private CalorieDaily buildCalorieDaily() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy G 'at' HH:mm:ss z");
+        String currentDateandTime = sdf.format(new Date());
+        return new CalorieDaily(currentDateandTime,Math.round(total * 100.0) / 100.0);
     }
 
 
@@ -121,28 +135,20 @@ public class AddToCartActivity extends AppCompatActivity  {
      */
     private void loadCart() {
         cart = orderService.getOrderList();
-        cartAdapter = new CartAdapter(cart,this);
-        recyclerView.setAdapter(cartAdapter);
-        cartAdapter.notifyDataSetChanged();
-
-        for(Order order: cart){
-            total+= order.getCalorieAmount();
+        if(cart.size()!= 0) {
+            for (Order order : cart) {
+                Fragment cartItemFragment = new CartItem(order);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.layout_order_items, cartItemFragment);
+                transaction.commit();
+                total += order.getCalorieAmount();
+            }
+        }else {
+            total = 0.0;
         }
         totalCalView.setText(numberFormat.format(total));
     }
 
-    /**
-     * Delete selected item of cart
-     * @param item
-     * @return
-     */
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if(item.getTitle().equals("Delete")){
-            deleteCart(item.getOrder());
-        }
-        return true;
-    }
 
     /**
      * Delete Item of cart
@@ -165,4 +171,21 @@ public class AddToCartActivity extends AppCompatActivity  {
         total += calChange.getCaloriesChange();
         totalCalView.setText(numberFormat.format(total));
     }
+
+    /**
+     * Delete Item of cart
+     * @param order
+     */
+    @Subscribe(priority = 1)
+    public void onEvent(Order order){
+        cart.remove(order);
+        orderService.clearCart();
+        layOutOrderItems.removeAllViews();
+        for(Order orderInCart:cart){
+            orderService.addOrderToCard(orderInCart);
+        }
+        loadCart();
+    }
+
+
 }

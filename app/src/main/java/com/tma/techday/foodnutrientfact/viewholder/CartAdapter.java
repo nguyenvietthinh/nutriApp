@@ -1,8 +1,7 @@
 package com.tma.techday.foodnutrientfact.viewholder;
 
 
-import android.content.Context;
-import android.content.Intent;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -16,20 +15,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.activity.AddToCartActivity;
 import com.tma.techday.foodnutrientfact.gui.event.CaloriesChangeEvent;
 import com.tma.techday.foodnutrientfact.model.Order;
 import com.tma.techday.foodnutrientfact.model.WeightUnit;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -42,13 +35,7 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 
     public TextView foodNameItemView, calAmountItemView;
     public EditText foodWeightText;
-    public ImageView cartItemCount;
-
     Spinner spinner;
-
-
-
-
 
     public void setFoodNameItemView(TextView foodNameItemView) {
         this.foodNameItemView = foodNameItemView;
@@ -143,13 +130,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
                         public void afterTextChanged(Editable editable) {
                             Double newWeightfood = Double.parseDouble(holder.foodWeightText.getText().toString());
                             Double newCalAmount = newWeightfood*calAmount/(orderList.get(position).getFoodWeight());
-                            if(pos == position){
-                                calAmount =  newCalAmount;
-                            }else{
-                                calAmount = orderList.get(position).getCalorieAmount();
-                                 pos = (int) holder.getAdapterPosition();
-                            }
-
+                            calAmount = orderList.get(position).getCalorieAmount();
+                            pos = (int) holder.getAdapterPosition();
+                            calAmount =  newCalAmount;
                             Double calChange = newCalAmount - calAmount;
                             holder.calAmountItemView.setText(numberFormat.format(newCalAmount));
                             EventBus.getDefault().post(new CaloriesChangeEvent(calChange));

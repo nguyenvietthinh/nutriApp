@@ -207,7 +207,6 @@ public class DetectActivity extends AppCompatActivity {
                 break;
             }
         }
-        //TODO: log what the foodName ,that is detected, to file, log info
         Log.i("foodName", foodName);
         if (waitingDialog.isShowing()){
             waitingDialog.dismiss();
@@ -223,9 +222,11 @@ public class DetectActivity extends AppCompatActivity {
      */
     private void getNutrition(String foodName){
         FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
-        //TODO: log what the foodNutri to file (using toDebugString), log info
-        Log.i("foodNutri", foodNutri.toDebugString());
-        showFoodNutri(foodNutri);
+        if(foodNutri != null)
+        {
+            Log.i("foodNutri", foodNutri.toDebugString());
+            showFoodNutri(foodNutri);
+        }
     }
 
     /**

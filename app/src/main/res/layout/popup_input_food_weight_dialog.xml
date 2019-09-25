@@ -28,6 +28,9 @@
             android:id="@+id/popupFoodWeight"
             android:inputType ="numberDecimal"
             android:focusable="true"/>
+        <TextView
+            android:gravity="end"
+            android:text="Gram" />
 
     </TableRow>
 

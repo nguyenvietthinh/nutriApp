@@ -1,11 +1,15 @@
 package com.tma.techday.foodnutrientfact.di;
 
+import com.tma.techday.foodnutrientfact.helper.database.CalorieDailyDAO;
 import com.tma.techday.foodnutrientfact.helper.database.CalorieSettingDAO;
 import com.tma.techday.foodnutrientfact.helper.database.FoodNutriDAO;
 import com.tma.techday.foodnutrientfact.helper.database.OrderDAO;
+import com.tma.techday.foodnutrientfact.helper.database.SqlCalorieDailyRepositoryImp;
 import com.tma.techday.foodnutrientfact.helper.database.SqlCalorieSettingRepositoryImp;
 import com.tma.techday.foodnutrientfact.helper.database.SqlFoodNutriRepositoryImp;
 import com.tma.techday.foodnutrientfact.helper.database.SqlOrderRepositoryImp;
+import com.tma.techday.foodnutrientfact.service.CalorieDailyRepository;
+import com.tma.techday.foodnutrientfact.service.CalorieDailyService;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingRepository;
 import com.tma.techday.foodnutrientfact.service.FoodNutriRepository;
@@ -49,6 +53,16 @@ public class ServiceModule {
     @Provides @Singleton
     OrderService provideOrderService(OrderRepository orderRepository){
         return new OrderService(orderRepository);
+    }
+
+    @Provides @Singleton
+    CalorieDailyRepository provideCalorieDailyRepository (CalorieDailyDAO calorieDailyDAO){
+        return new SqlCalorieDailyRepositoryImp(calorieDailyDAO);
+    }
+
+    @Provides @Singleton
+    CalorieDailyService provideCalorieDailyService(CalorieDailyRepository calorieDailyRepository){
+        return new CalorieDailyService(calorieDailyRepository);
     }
 
 }
