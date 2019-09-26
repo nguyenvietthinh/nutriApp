@@ -13,7 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
+import com.tma.techday.foodnutrientfact.model.CalorieDaily;
+import com.tma.techday.foodnutrientfact.model.CalorieSetting;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -63,14 +68,38 @@ public class SettingActivity extends AppCompatActivity {
                     Toast.makeText(SettingActivity.this, "Please Fill All The Required Fields.", Toast.LENGTH_LONG).show();
                 } else {
                     double parseCalories = Double.parseDouble(calAmount);
-                    boolean isInserted = calorieSettingService.insertCalorieSetting(parseCalories);
-                    if (isInserted) {
-                        Toast.makeText(SettingActivity.this, "Save Data Successfully", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(SettingActivity.this, "Save To Data Failed", Toast.LENGTH_LONG).show();
-                    }
+                    CalorieSetting calorieSetting = buildCalorieSetting(parseCalories);
+                    if(calorieSetting!= null) {
+                        boolean isInserted = calorieSettingService.insertCalorieSetting(calorieSetting);
+                        if (isInserted) {
+                            Toast.makeText(SettingActivity.this, "Save Data Successfully", Toast.LENGTH_LONG).show();
 
+                        } else {
+                            Toast.makeText(SettingActivity.this, "Save To Data Failed", Toast.LENGTH_LONG).show();
+                        }
+                    }else {
+                        Toast.makeText(SettingActivity.this, "Today you entered calorie", Toast.LENGTH_LONG).show();
+                    }
                 }
             };
+    }
+
+    /**
+     * Build Calorie Setting
+     * @return
+     */
+    private CalorieSetting buildCalorieSetting(double calorieSettingAmount) {
+        Date currentDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(currentDate);
+        if(calorieSettingService.getCalorieSetting()!= null){
+            Date dateAdded = calorieSettingService.getCalorieSetting().getDate();
+            String dateAdd = sdf.format(dateAdded);
+            if(date.equals(dateAdd)){
+                return null;
+            }
+        }
+
+        return new CalorieSetting(currentDate,calorieSettingAmount);
     }
 }

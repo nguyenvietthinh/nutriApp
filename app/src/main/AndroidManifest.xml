@@ -30,6 +30,7 @@
         <activity android:name="com.tma.techday.foodnutrientfact.activity.DetectActivity" />
         <activity android:name="com.tma.techday.foodnutrientfact.activity.SettingActivity" />
         <activity android:name="com.tma.techday.foodnutrientfact.activity.AddToCartActivity" />
+        <activity android:name="com.tma.techday.foodnutrientfact.activity.CalorieComparisionActivity" />
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"

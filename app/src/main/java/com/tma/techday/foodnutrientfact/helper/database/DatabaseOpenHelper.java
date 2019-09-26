@@ -14,7 +14,7 @@ import javax.inject.Named;
 public class DatabaseOpenHelper extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "food_nutri_fact_db.db";
-    private static final String DATABASE_STORAGE_DIRECTORY = "/data/user/0/com.thinh.filebaseimagelabeling/databases";
+    private static final String DATABASE_STORAGE_DIRECTORY = "/data/user/0/com.tma.techday.foodnutrientfact/databases";
     private static final int DATABASE_VERSION = 1;
 
 

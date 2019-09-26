@@ -1,5 +1,6 @@
 package com.tma.techday.foodnutrientfact.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,9 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
 import com.tma.techday.foodnutrientfact.gui.event.CaloriesChangeEvent;
@@ -27,7 +25,6 @@ import com.tma.techday.foodnutrientfact.model.CalorieDaily;
 import com.tma.techday.foodnutrientfact.model.Order;
 import com.tma.techday.foodnutrientfact.service.CalorieDailyService;
 import com.tma.techday.foodnutrientfact.service.OrderService;
-import com.tma.techday.foodnutrientfact.viewholder.CartAdapter;
 import com.tma.techday.foodnutrientfact.viewholder.CartItem;
 
 import org.greenrobot.eventbus.EventBus;
@@ -110,6 +107,8 @@ public class AddToCartActivity extends AppCompatActivity {
                 CalorieDaily calorieDaily = buildCalorieDaily();
                 if (calorieDailyService.addCalDaily(calorieDaily)) {
                     Toast.makeText(AddToCartActivity.this,"Save successfully.", Toast.LENGTH_LONG).show();
+                    Intent intent =new Intent(this, CalorieComparisionActivity.class);
+                    startActivity(intent);
                 } else {
                     Toast.makeText(AddToCartActivity.this, "Save failed", Toast.LENGTH_LONG).show();
                 }
@@ -124,9 +123,7 @@ public class AddToCartActivity extends AppCompatActivity {
      * @return
      */
     private CalorieDaily buildCalorieDaily() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy G 'at' HH:mm:ss z");
-        String currentDateandTime = sdf.format(new Date());
-        return new CalorieDaily(currentDateandTime,Math.round(total * 100.0) / 100.0);
+        return new CalorieDaily(new Date(),Math.round(total * 100.0) / 100.0);
     }
 
 
@@ -150,18 +147,6 @@ public class AddToCartActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Delete Item of cart
-     * @param position
-     */
-    private void deleteCart(int position) {
-        cart.remove(position);
-        orderService.clearCart();
-        for(Order order:cart){
-            orderService.addOrderToCard(order);
-        }
-        loadCart();
-    }
 
     /**
      * Receive calorie changed from adapter

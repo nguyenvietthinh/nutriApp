@@ -2,6 +2,9 @@ package com.tma.techday.foodnutrientfact.service;
 
 import com.tma.techday.foodnutrientfact.model.CalorieDaily;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.inject.Inject;
 
 public class CalorieDailyService {
@@ -14,5 +17,8 @@ public class CalorieDailyService {
 
     public boolean addCalDaily(CalorieDaily calorieDaily){
         return calorieDailyRepository.addCalDaily(calorieDaily);
+    }
+    public List<CalorieDaily> getCalorieDaily(Date date){
+        return calorieDailyRepository.getCalorieDaily(date);
     }
 }

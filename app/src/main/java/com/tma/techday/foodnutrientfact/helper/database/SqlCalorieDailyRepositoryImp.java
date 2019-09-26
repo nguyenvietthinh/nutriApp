@@ -3,6 +3,9 @@ package com.tma.techday.foodnutrientfact.helper.database;
 import com.tma.techday.foodnutrientfact.model.CalorieDaily;
 import com.tma.techday.foodnutrientfact.service.CalorieDailyRepository;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.inject.Inject;
 
 public class SqlCalorieDailyRepositoryImp implements CalorieDailyRepository {
@@ -17,5 +20,10 @@ public class SqlCalorieDailyRepositoryImp implements CalorieDailyRepository {
     @Override
     public boolean addCalDaily(CalorieDaily calorieDaily) {
         return calorieDailyDAO.addCalDaily(calorieDaily);
+    }
+
+    @Override
+    public List<CalorieDaily> getCalorieDaily(Date date) {
+        return calorieDailyDAO.getCalorieDaily(date);
     }
 }

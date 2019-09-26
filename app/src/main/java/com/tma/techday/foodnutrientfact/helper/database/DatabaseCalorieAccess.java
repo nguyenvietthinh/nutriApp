@@ -14,7 +14,7 @@ import javax.inject.Named;
 public class DatabaseCalorieAccess extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "nutri_app_db.db";
-    private static final String DATABASE_STORAGE_DIRECTORY = "/data/user/0/com.thinh.filebaseimagelabeling/databases";
+    private static final String DATABASE_STORAGE_DIRECTORY = "/data/user/0/com.tma.techday.foodnutrientfact/databases";
     private static final int DATABASE_VERSION = 1;
 
 

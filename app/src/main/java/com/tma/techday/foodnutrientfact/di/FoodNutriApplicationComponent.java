@@ -1,6 +1,7 @@
 package com.tma.techday.foodnutrientfact.di;
 
 import com.tma.techday.foodnutrientfact.activity.AddToCartActivity;
+import com.tma.techday.foodnutrientfact.activity.CalorieComparisionActivity;
 import com.tma.techday.foodnutrientfact.activity.DetectActivity;
 import com.tma.techday.foodnutrientfact.activity.MainActivity;
 import com.tma.techday.foodnutrientfact.activity.SettingActivity;
@@ -22,4 +23,6 @@ public interface FoodNutriApplicationComponent  {
     void inject(SettingActivity settingActivity);
 
     void inject(FoodNutriResultDialog foodNutriResultDialog);
+
+    void inject(CalorieComparisionActivity calorieComparisionActivity);
 }
