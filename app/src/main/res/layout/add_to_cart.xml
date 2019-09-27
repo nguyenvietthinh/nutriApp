@@ -4,67 +4,88 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="bottom|center"
+    android:layout_marginBottom="20dp">
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="5dp">
+        <LinearLayout
+            android:id="@+id/layout_order_items"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-   <ScrollView
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="36dp"
-       android:layout_marginBottom="5dp">
-       <LinearLayout
-           android:id="@+id/layout_order_items"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:orientation="vertical">
-
-       </LinearLayout>
-   </ScrollView>
+        </LinearLayout>
+    </ScrollView>
 
     <androidx.cardview.widget.CardView
 
         android:layout_width="match_parent"
         android:layout_height="100dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Total: "
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
+
                 <TextView
                     android:id="@+id/txtTotal"
-                    android:text="100000"
-                    android:textSize="24sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    />
+                    android:text="100000"
+                    android:textSize="24sp" />
+
                 <TextView
-                    android:text=" Kcal"
-                    android:textSize="20sp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text=" Kcal"
+                    android:textSize="20sp" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <ImageButton
+                    android:id="@+id/btnResearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/cerclebackground"
+                    android:src="@drawable/cart" />
+
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSave"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editText"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_toStartOf="@+id/textview"
+                android:layout_toLeftOf="@+id/textview"
+                android:gravity="center"
+                android:text="Save" />
         </RelativeLayout>
+
     </androidx.cardview.widget.CardView>
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:id="@+id/btnSave"
-        android:gravity="center"
-        android:layout_below = "@+id/editText"
-        android:layout_toLeftOf="@+id/textview"
-        android:layout_toStartOf="@+id/textview"
-        android:layout_centerHorizontal="true"/>
+
 
 </LinearLayout>

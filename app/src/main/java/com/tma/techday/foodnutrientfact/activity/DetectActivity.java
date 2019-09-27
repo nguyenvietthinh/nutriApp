@@ -114,8 +114,10 @@ public class DetectActivity extends AppCompatActivity {
         });
 
         btnDetect.setOnClickListener((view)->{
+
             cameraView.start();
             cameraView.captureImage();
+
 
         });
 
@@ -154,8 +156,12 @@ public class DetectActivity extends AppCompatActivity {
                             labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
                             processDataResult(labels);
                         }else{
-                            Toast.makeText(this,"Unable to detect the image ",Toast.LENGTH_LONG);
                             waitingDialog.dismiss();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            builder.setTitle("Error");
+                            builder.setMessage("Unable to detect the image ");
+                            builder.show();
+
                         }
                     })
                     .addOnFailureListener(e -> Log.e("DETECTERROR",e.getMessage()));
@@ -226,6 +232,11 @@ public class DetectActivity extends AppCompatActivity {
         {
             Log.i("foodNutri", foodNutri.toDebugString());
             showFoodNutri(foodNutri);
+        }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Error");
+            builder.setMessage("Not Found Food");
+            builder.show();
         }
     }
 
@@ -234,19 +245,12 @@ public class DetectActivity extends AppCompatActivity {
      * @param foodNutri detailed nutrition results have just been taken
      */
     private void showFoodNutri( FoodInfoDTO foodNutri){
-        if(foodNutri==null){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Error");
-            builder.setMessage("Not Found");
-            builder.show();
-        }
-        else{
+
             FoodNutriResultDialog foodnutriDialog = new FoodNutriResultDialog();
             Bundle args = new Bundle();   //Use bundle to pass data
             args.putSerializable("foodNutri", foodNutri);
             foodnutriDialog.setArguments(args);
             foodnutriDialog.show(getSupportFragmentManager(),"dialog");
-        }
 
     }
 

@@ -1,5 +1,7 @@
 package com.tma.techday.foodnutrientfact.viewholder;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -86,7 +88,7 @@ public class CartItem extends Fragment {
             }
         });
         btnDeleteOrder.setOnClickListener(view1 -> {
-            EventBus.getDefault().post(order);
+           builDialogConfirm();
         });
         foodWeightText.setOnFocusChangeListener(setOnFocusFoodWeightText(numberFormat));
     }
@@ -132,6 +134,29 @@ public class CartItem extends Fragment {
                 }
             }
         };
+    }
+
+
+    private void builDialogConfirm(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Confirm dialog !");
+        builder.setMessage("Do you really want to delete ?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EventBus.getDefault().post(order);
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                builder.create().cancel();
+            }
+        });
+
+        builder.show();
     }
 
 }

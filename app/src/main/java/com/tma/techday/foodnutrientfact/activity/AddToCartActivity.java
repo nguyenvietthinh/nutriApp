@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
+import com.tma.techday.foodnutrientfact.gui.dialog.CalorieComparisionDialog;
 import com.tma.techday.foodnutrientfact.gui.event.CaloriesChangeEvent;
 import com.tma.techday.foodnutrientfact.model.CalorieDaily;
 import com.tma.techday.foodnutrientfact.model.Order;
@@ -43,6 +45,7 @@ public class AddToCartActivity extends AppCompatActivity {
     EditText txtCalSetting;
     public  TextView totalCalView;
     Button btnAdd;
+    ImageButton btnResearch;
     double total = 0.0;
     List<Order> cart = new ArrayList<>();
     NumberFormat numberFormat = new DecimalFormat("0.00");
@@ -94,6 +97,36 @@ public class AddToCartActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(setupBtnAddOnClickListener());
         layOutOrderItems = findViewById(R.id.layout_order_items);
         totalCalView = findViewById(R.id.txtTotal);
+        btnResearch = findViewById(R.id.btnResearch);
+
+        btnResearch.setOnClickListener(setBtnResearchOnClickListener());
+    }
+
+    /**
+     * set onclick listener for image button research
+     * @return
+     */
+    private View.OnClickListener setBtnResearchOnClickListener() {
+        return view -> {
+//                showCalComparisionDialog();
+            CalorieDaily calorieDaily = buildCalorieDaily();
+            Intent intent =new Intent(this, CalorieComparisionActivity.class);
+            intent.putExtra("CalorieDaily", calorieDaily);
+            startActivity(intent);
+            };
+    }
+
+    /**
+     * show calorie comparision dialog
+     */
+    private void showCalComparisionDialog() {
+        CalorieComparisionDialog calorieComparisionDialog = new CalorieComparisionDialog();
+        Bundle args = new Bundle();   //Use bundle to pass data
+        CalorieDaily calorieDaily = buildCalorieDaily();
+        args.putSerializable("calDaily", calorieDaily);
+        calorieComparisionDialog.setArguments(args);
+        calorieComparisionDialog.show(getSupportFragmentManager(),"dialog");
+
     }
 
     /**
@@ -106,7 +139,10 @@ public class AddToCartActivity extends AppCompatActivity {
             if(hasItems) {
                 CalorieDaily calorieDaily = buildCalorieDaily();
                 if (calorieDailyService.addCalDaily(calorieDaily)) {
-                    Toast.makeText(AddToCartActivity.this,"Save successfully.", Toast.LENGTH_LONG).show();
+                    layOutOrderItems.removeAllViews();
+                    totalCalView.setText(numberFormat.format(0.0));
+                    orderService.clearCart();
+                    Toast.makeText(AddToCartActivity.this,"Save successfully.", Toast.LENGTH_SHORT).show();
                     Intent intent =new Intent(this, CalorieComparisionActivity.class);
                     startActivity(intent);
                 } else {

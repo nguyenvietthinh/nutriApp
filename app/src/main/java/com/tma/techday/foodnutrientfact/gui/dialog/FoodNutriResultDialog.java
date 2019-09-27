@@ -113,7 +113,6 @@ public class FoodNutriResultDialog extends DialogFragment {
                     break;
             }
         }
-        dialog.setView(viewDialog);
         dialog.setCancelable(true);
         btnCloseDialog.setOnClickListener(view -> dialog.cancel());
         btnAdd.setOnClickListener(view -> {
