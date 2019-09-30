@@ -84,7 +84,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         calSettingView.setText(numberFormat.format(calorieSetting));
         if(calorieSetting != 0.0){
 
-            getEntries(totalCalDaily,(calorieSetting-totalCalDaily));
+            getEntries(totalCalDaily,calorieSetting);
             pieDataSet = new PieDataSet(pieEntriesCalories, " ");
             pieData = new PieData(pieDataSet);
             pieData.setValueFormatter(new PercentFormatter(pieChartCalorie));
@@ -119,8 +119,13 @@ public class CalorieComparisionActivity extends AppCompatActivity {
      */
     private void getEntries(double totalCalDaily, double calorieSetting) {
         float calDailyPercent = (float) (totalCalDaily/calorieSetting*100);
-        pieEntriesCalories.add(new PieEntry(calDailyPercent,"Calorie Daily"));
-        pieEntriesCalories.add(new PieEntry(100 - calDailyPercent," Missing"));
+        if(calDailyPercent >= 100){
+            pieEntriesCalories.add(new PieEntry(100,"Calorie Daily"));
+        }else{
+            pieEntriesCalories.add(new PieEntry(calDailyPercent,"Calorie Daily"));
+            pieEntriesCalories.add(new PieEntry(100 - calDailyPercent," Missing"));
+        }
+
 
     }
 }

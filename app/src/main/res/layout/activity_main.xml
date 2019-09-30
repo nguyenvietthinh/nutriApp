@@ -1,29 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#a6dfdfdf"
     android:layout_margin="10dp"
     tools:context=".activity.MainActivity"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Button
-        android:id="@+id/btnDetect"
-        android:layout_width="124dp"
-        android:layout_height="77dp"
-        android:layout_marginBottom="50dp"
-        android:background="#dc9e1a"
-        android:text="Detect" />
 
-    <Button
-        android:id="@+id/btnSetting"
-        android:layout_width="125dp"
-        android:layout_height="76dp"
-        android:background="#00c853"
-        android:text="User Setting" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewDetect"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="8dp"
+            android:layout_width="340dp"
+            android:layout_height="200dp"
+            android:layout_margin="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/cerclebackgroundgreen"
+                android:src="@drawable/ic_search_black_24dp"
+                android:padding="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:text="DETECT"/>
+        </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewCalSetting"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="8dp"
+        android:layout_width="340dp"
+        android:layout_height="200dp"
+        android:layout_margin="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/cerclebackgroundblue"
+                android:src="@drawable/ic_edit_black_24dp"
+                android:padding="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:text="CALORIE SETTING"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+        
+
 
 </LinearLayout>

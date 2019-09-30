@@ -49,7 +49,7 @@ public class SettingActivity extends AppCompatActivity {
      * Declare Params
      */
     private void setUpParam(){
-        btnSave = findViewById(R.id.btnAdd);
+        btnSave = findViewById(R.id.btnSave);
         txtCalSetting = findViewById(R.id.txtCalSetting);
         btnSave.setOnClickListener(setBtnSaveOnclickListener());
     }

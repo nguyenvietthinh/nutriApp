@@ -5,7 +5,6 @@ import com.tma.techday.foodnutrientfact.activity.CalorieComparisionActivity;
 import com.tma.techday.foodnutrientfact.activity.DetectActivity;
 import com.tma.techday.foodnutrientfact.activity.MainActivity;
 import com.tma.techday.foodnutrientfact.activity.SettingActivity;
-import com.tma.techday.foodnutrientfact.gui.dialog.CalorieComparisionDialog;
 import com.tma.techday.foodnutrientfact.gui.dialog.FoodNutriResultDialog;
 
 import javax.inject.Singleton;
@@ -27,5 +26,4 @@ public interface FoodNutriApplicationComponent  {
 
     void inject(CalorieComparisionActivity calorieComparisionActivity);
 
-    void inject(CalorieComparisionDialog calorieComparisionDialog);
 }

@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
@@ -16,7 +17,7 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnDetect, btnSetting;
+    CardView cardViewDetect, cardViewCalSetting;
 
 
     /**
@@ -58,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // not accessible
         }
-        btnDetect.setOnClickListener(view -> {
+        cardViewDetect.setOnClickListener(view -> {
             doOpenOtherActivity(DetectActivity.class);
         });
 
-        btnSetting.setOnClickListener(view -> {
+        cardViewCalSetting.setOnClickListener(view -> {
             doOpenOtherActivity(SettingActivity.class);
         });
 
@@ -83,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
      * Declare Params
      */
     public void setupParam(){
-        btnDetect = findViewById(R.id.btnDetect);
-        btnSetting = findViewById(R.id.btnSetting);
+        cardViewDetect = findViewById(R.id.cardViewDetect);
+        cardViewCalSetting = findViewById(R.id.cardViewCalSetting);
     }
 
     /**

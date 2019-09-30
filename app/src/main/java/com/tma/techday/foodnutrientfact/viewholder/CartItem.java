@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.activity.AddToCartActivity;
 import com.tma.techday.foodnutrientfact.gui.event.CaloriesChangeEvent;
+import com.tma.techday.foodnutrientfact.gui.event.DeleteOrderEvent;
 import com.tma.techday.foodnutrientfact.model.Order;
 import com.tma.techday.foodnutrientfact.model.WeightUnit;
 
@@ -120,7 +121,9 @@ public class CartItem extends Fragment {
         };
     }
 
-
+    /**
+     * Create confirm dialog delete cart item
+     */
     private void builDialogConfirm(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Confirm dialog !");
@@ -129,7 +132,8 @@ public class CartItem extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                EventBus.getDefault().post(order);
+
+                EventBus.getDefault().post(new DeleteOrderEvent(order));
             }
         });
 

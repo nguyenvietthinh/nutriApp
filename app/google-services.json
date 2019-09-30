@@ -1,6 +1,6 @@
 {
   "project_info": {
-    "project_number": "50598331231875967",
+    "project_number": "505983875967",
     "firebase_url": "https://food-nutrient-app-983fb.firebaseio.com",
     "project_id": "food-nutrient-app-983fb",
     "storage_bucket": "food-nutrient-app-983fb.appspot.com"
@@ -8,27 +8,27 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:505983875967:android:3c175bea3eb73e78431131c784a",
+        "mobilesdk_app_id": "1:505983875967:android:3c175bea3eb73e784c784a",
         "android_client_info": {
           "package_name": "com.tma.techday.foodnutrientfact"
         }
       },
       "oauth_client": [
         {
-          "client_id": "505983875967-n1o8d6u2160kbm5ju13134c0m5t4o5ii65jdu.apps.googleusercontent.com",
+          "client_id": "505983875967-n1o8d6u2160kbm5juc0m5t4o5ii65jdu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAeQLaw_QJqCGEICZo3WxdsdadOC1YZ414yMiuWV18"
+          "current_key": "AIzaSyAeQLaw_QJqCGEICZo3WxOC1YZyMiuWV18"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "505983875967-n1o8d6u2160kbm5juc0m5t4o5ii65jdu1412.apps.googleusercontent.com",
+              "client_id": "505983875967-n1o8d6u2160kbm5juc0m5t4o5ii65jdu.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
