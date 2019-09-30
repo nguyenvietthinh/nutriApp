@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.15'
     implementation 'com.google.dagger:dagger-android:2.15'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
-    implementation group: 'com.github.andremion', name: 'counterfab', version: '1.0.0'
+    implementation 'com.github.andremion:counterfab:1.0.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
