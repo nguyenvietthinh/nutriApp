@@ -40,7 +40,6 @@ public class CartItem extends Fragment {
     private Order order;
     private TextView foodNameItemView, calAmountItemView;
     private EditText foodWeightText;
-    Spinner spinner;
     private ArrayAdapter<CharSequence> adapter;
     private ImageButton btnDeleteOrder;
     public CartItem(Order order) {
@@ -68,25 +67,10 @@ public class CartItem extends Fragment {
         foodWeightText.setText(numberFormat.format(order.getFoodWeight()));
         foodNameItemView.setText(order.getFoodName());
         calAmountItemView.setText(numberFormat.format(order.getCalorieAmount()));
-        spinner =  view.findViewById(R.id.planets_spinner);
+
         adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.weight_unit_array, android.R.layout.simple_spinner_item);//Create an ArrayAdapter using the string array and a default spinner layout
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //Specify the layout to use when the list of choices appears
-        spinner.setAdapter(adapter); // Apply the adapter to the spinner
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String unit = spinner.getSelectedItem().toString();
-                WeightUnit weightUnit = WeightUnit.fromDescription(unit);
-                //TODO: log weightUnit amount to file
-                Log.i("WeightUnit", weightUnit.toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
         btnDeleteOrder.setOnClickListener(view1 -> {
            builDialogConfirm();
         });

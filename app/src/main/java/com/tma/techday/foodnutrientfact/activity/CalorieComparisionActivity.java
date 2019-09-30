@@ -120,7 +120,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
     private void getEntries(double totalCalDaily, double calorieSetting) {
         float calDailyPercent = (float) (totalCalDaily/calorieSetting*100);
         pieEntriesCalories.add(new PieEntry(calDailyPercent,"Calorie Daily"));
-        pieEntriesCalories.add(new PieEntry(100 - calDailyPercent,"Missing"));
+        pieEntriesCalories.add(new PieEntry(100 - calDailyPercent," Missing"));
 
     }
 }

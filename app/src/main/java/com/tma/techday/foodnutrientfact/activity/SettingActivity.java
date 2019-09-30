@@ -27,7 +27,7 @@ public class SettingActivity extends AppCompatActivity {
 
     EditText txtCalSetting;
     Button btnSave;
-    Spinner spinner;
+
 
     @Inject
     CalorieSettingService calorieSettingService;
@@ -49,7 +49,6 @@ public class SettingActivity extends AppCompatActivity {
      * Declare Params
      */
     private void setUpParam(){
-        spinner =  findViewById(R.id.planets_spinner);
         btnSave = findViewById(R.id.btnAdd);
         txtCalSetting = findViewById(R.id.txtCalSetting);
         btnSave.setOnClickListener(setBtnSaveOnclickListener());

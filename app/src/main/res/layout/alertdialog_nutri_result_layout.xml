@@ -26,13 +26,13 @@
         <include
             android:id="@+id/resultDetailLayout"
             layout="@layout/detail_result_layout"
-            android:visibility="invisible"
-            android:gravity="center"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible" />
 
 
         <ImageButton
@@ -41,6 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
             android:background="@null"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="3dp"
             android:clickable="true"
             android:src="@drawable/closebutton" />
     </FrameLayout>
