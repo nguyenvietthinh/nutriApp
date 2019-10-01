@@ -102,7 +102,7 @@ public class CartItem extends Fragment {
                         @Override
                         public void afterTextChanged(Editable editable) {
                             if(TextUtils.isEmpty(foodWeightText.getText().toString())) {
-                                Toast.makeText(getActivity(),"Please Fill All The Required Fields.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(),getString(R.string.required_empty_text), Toast.LENGTH_LONG).show();
                                 calAmountItemView.setText(numberFormat.format(0.0));
                             }else {
                                 Double calAmount = order.getCalorieAmount();
@@ -126,8 +126,8 @@ public class CartItem extends Fragment {
      */
     private void builDialogConfirm(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Confirm dialog !");
-        builder.setMessage("Do you really want to delete ?");
+        builder.setTitle(getString(R.string.confirm_dialog_title));
+        builder.setMessage(getString(R.string.confirm_dialog_content));
         builder.setCancelable(false);
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override

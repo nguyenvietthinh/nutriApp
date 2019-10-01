@@ -119,7 +119,7 @@ public class FoodNutriResultDialog extends DialogFragment {
             if (checkFoodNameExist()){
                 showPopupDialog();
             } else {
-                Toast.makeText(getActivity(), "Food already exists", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.food_exists), Toast.LENGTH_LONG).show();
             }
 
         });
@@ -127,7 +127,7 @@ public class FoodNutriResultDialog extends DialogFragment {
             if (checkFoodNameExist()) {
                 showPopupDialog();
             } else {
-                Toast.makeText(getActivity(), "Food already exists", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.food_exists), Toast.LENGTH_LONG).show();
             }
 
         });
@@ -188,7 +188,7 @@ public class FoodNutriResultDialog extends DialogFragment {
      */
     private FoodInfoDTO getDataFromActivity(){
         Bundle args = getArguments();
-        foodNutri = (FoodInfoDTO) args.getSerializable("foodNutri");
+        foodNutri = (FoodInfoDTO) args.getSerializable(getString(R.string.food_nutri));
         return foodNutri;
     }
 
@@ -247,17 +247,17 @@ public class FoodNutriResultDialog extends DialogFragment {
                 String foodWeight = popupDialogFoodWeight.getText().toString();
                 Log.i("rawAmount", foodWeight);
                 if (TextUtils.isEmpty(foodWeight)) {
-                    Toast.makeText(getActivity(), "Please Fill All The Required Fields.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getString(R.string.required_empty_text), Toast.LENGTH_LONG).show();
                 } else {
                     double parseFoodWeight = Double.parseDouble(foodWeight);
                     double orderAmount = parseFoodWeight * (foodNutri.getCalories()) / 100.0;
                     if (orderService.addOrderToCard(new Order(foodNutri.getFoodName(), orderAmount, parseFoodWeight))) {
-                        Toast.makeText(getActivity(), "Added to cart", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),getString(R.string.added_to_cart), Toast.LENGTH_LONG).show();
                         viewDialog.setVisibility(View.GONE);
                         popupDialog.cancel();
                         counterFab.setCount(orderService.getCountCart());
                     } else {
-                        Toast.makeText(getActivity(), "Can not add to cart", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),getString(R.string.cannot_add_to_cart), Toast.LENGTH_LONG).show();
                         viewDialog.setVisibility(View.GONE);
                     }
                 }
@@ -270,7 +270,7 @@ public class FoodNutriResultDialog extends DialogFragment {
      */
     private void showPopupDialog(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setTitle("Add food.");
+        alertDialogBuilder.setTitle(getString(R.string.add_food_title));
         alertDialogBuilder.setIcon(R.drawable.ic_launcher_background);
         alertDialogBuilder.setCancelable(false);
         initPopupDialog();

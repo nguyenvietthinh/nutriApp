@@ -32,7 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class CalorieComparisionActivity extends AppCompatActivity {
-    TextView dateView, calDailyView, calSettingView;
+    TextView dateView, calDailyView, calSettingView,pieChartTitle;
     NumberFormat numberFormat = new DecimalFormat("0.00");
     List<CalorieDaily> calorieDailyList = new ArrayList<>();
     PieChart pieChartCalorie;
@@ -65,6 +65,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(currentDate);
         pieChartCalorie = findViewById(R.id.pieChartCal);
+        pieChartTitle = findViewById(R.id.pieChartTitle);
         dateView = findViewById(R.id.date);
         calDailyView = findViewById(R.id.txtCalDaily);
         calSettingView = findViewById(R.id.txtCalSetting);
@@ -84,33 +85,38 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         calSettingView.setText(numberFormat.format(calorieSetting));
         if(calorieSetting != 0.0){
 
-            getEntries(totalCalDaily,calorieSetting);
-            pieDataSet = new PieDataSet(pieEntriesCalories, " ");
-            pieData = new PieData(pieDataSet);
-            pieData.setValueFormatter(new PercentFormatter(pieChartCalorie));
-            pieChartCalorie.setUsePercentValues(true);
-            pieChartCalorie.setData(pieData);
-            pieChartCalorie.setCenterText("Calorie Comparision Chart");
-            pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-            pieDataSet.setSliceSpace(2f);
-            pieDataSet.setValueTextColor(Color.WHITE);
-            pieDataSet.setValueTextSize(13f);
-            pieDataSet.setSliceSpace(5f);
-            Description description = new Description();
-            description.setText("Pie Chart Calorie");
-            pieChartCalorie.setDescription(description);
+            constructPieChart();
 
         }else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Error");
-            builder.setMessage("Please Enter Your Calorie Setting.");
+            builder.setTitle(getString(R.string.error_title));
+            builder.setMessage(getString(R.string.require_enter_calorie_setting));
             builder.show();
-//            Intent intent =new Intent(this, SettingActivity.class);
-//            startActivity(intent);
         }
 
 
 
+    }
+
+    /**
+     * Build pie chart
+     */
+    private void constructPieChart() {
+        getEntries(totalCalDaily,calorieSetting);
+        pieDataSet = new PieDataSet(pieEntriesCalories, " ");
+        pieData = new PieData(pieDataSet);
+        pieData.setValueFormatter(new PercentFormatter(pieChartCalorie));
+        pieChartCalorie.setUsePercentValues(true);
+        pieChartCalorie.setData(pieData);
+        pieChartCalorie.setCenterText(getString(R.string.pie_chart_title));
+        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        pieDataSet.setSliceSpace(2f);
+        pieDataSet.setValueTextColor(Color.WHITE);
+        pieDataSet.setValueTextSize(13f);
+        pieDataSet.setSliceSpace(5f);
+        Description description = new Description();
+        description.setText(getString(R.string.pie_chart_des));
+        pieChartCalorie.setDescription(description);
     }
 
 
@@ -119,11 +125,11 @@ public class CalorieComparisionActivity extends AppCompatActivity {
      */
     private void getEntries(double totalCalDaily, double calorieSetting) {
         float calDailyPercent = (float) (totalCalDaily/calorieSetting*100);
-        if(calDailyPercent >= 100){
-            pieEntriesCalories.add(new PieEntry(100,"Calorie Daily"));
+        if(Float.compare(calDailyPercent,100) >= 0){
+            pieEntriesCalories.add(new PieEntry(100,getString(R.string.calorie_daily)));
         }else{
-            pieEntriesCalories.add(new PieEntry(calDailyPercent,"Calorie Daily"));
-            pieEntriesCalories.add(new PieEntry(100 - calDailyPercent," Missing"));
+            pieEntriesCalories.add(new PieEntry(calDailyPercent,getString(R.string.calorie_daily)));
+            pieEntriesCalories.add(new PieEntry(100 - calDailyPercent,getString(R.string.calorie_missing)));
         }
 
 

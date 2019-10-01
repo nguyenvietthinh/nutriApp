@@ -143,8 +143,7 @@ public class DetectActivity extends AppCompatActivity {
             FirebaseVisionImageLabeler detectImageLabeler = getFirebaseVisionImageLabeler(connectInternet ? ImageDetectEngine.COULD_ENGINE : ImageDetectEngine.DEVICE_ENGINE);
             if(detectImageLabeler == null)
             {
-                //TODO: log the error
-                Log.e("Error","Detect Image Labeler cannot be null");
+                Log.e("Error",getString(R.string.detect_labeler_cannot_null));
                 return;
             }
             detectImageLabeler.processImage(image)
@@ -157,8 +156,8 @@ public class DetectActivity extends AppCompatActivity {
                         }else{
                             waitingDialog.dismiss();
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setTitle("Error");
-                            builder.setMessage("Unable to detect the image ");
+                            builder.setTitle(getString(R.string.error_title));
+                            builder.setMessage(getString(R.string.unable_detect_image));
                             builder.show();
 
                         }
@@ -174,7 +173,7 @@ public class DetectActivity extends AppCompatActivity {
      */
     private FirebaseVisionImageLabeler getFirebaseVisionImageLabeler(ImageDetectEngine imageDetectEngine) {
         if(imageDetectEngine == null)
-            throw new IllegalArgumentException("Engine must be specified");
+            throw new IllegalArgumentException(getString(R.string.engine_must_be_specified));
         switch (imageDetectEngine)
         {
             case COULD_ENGINE:
@@ -229,12 +228,12 @@ public class DetectActivity extends AppCompatActivity {
         FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
         if(foodNutri != null)
         {
-            Log.i("foodNutri", foodNutri.toDebugString());
+            Log.i(getString(R.string.food_nutri), foodNutri.toDebugString());
             showFoodNutri(foodNutri);
         }else{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Error");
-            builder.setMessage("Not Found Food");
+            builder.setTitle(getString(R.string.error_title));
+            builder.setMessage(getString(R.string.not_found_food));
             builder.show();
         }
     }
@@ -247,7 +246,7 @@ public class DetectActivity extends AppCompatActivity {
 
             FoodNutriResultDialog foodnutriDialog = new FoodNutriResultDialog();
             Bundle args = new Bundle();   //Use bundle to pass data
-            args.putSerializable("foodNutri", foodNutri);
+            args.putSerializable(getString(R.string.food_nutri), foodNutri);
             foodnutriDialog.setArguments(args);
             foodnutriDialog.show(getSupportFragmentManager(),"dialog");
 
@@ -259,7 +258,7 @@ public class DetectActivity extends AppCompatActivity {
     public void setUpParam(){
         cameraView = findViewById(R.id.camemraView);
         btnDetect = findViewById(R.id.btnDetect);
-        waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage("Analyzing the object...").setCancelable(false).build();
+        waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage(getString(R.string.analyzing_dialog)).setCancelable(false).build();
         counterFab = findViewById(R.id.fab);
         counterFab.setOnClickListener(view -> {
             Intent intent = new Intent(DetectActivity.this,AddToCartActivity.class);

@@ -5,4 +5,27 @@
         <item>Gram</item>
         <item>Kg</item>
     </string-array>
+    <string name="save_successfully">Save Data Successfully.</string>
+    <string name="save_fail">Save To Data Failed.</string>
+    <string name="cart_empty">Your cart is empty.</string>
+    <string name="required_empty_text">Please Fill All The Required Fields.</string>
+    <string name="exists_calorie_setting">Today you entered calorie.</string>
+    <string name="add_food_title">Add food.</string>
+    <string name="added_to_cart">Added to cart.</string>
+    <string name="cannot_add_to_cart">Can not add to cart.</string>
+    <string name="food_exists">Food already exists.</string>
+    <string name="unable_detect_image">Unable to detect the image.</string>
+    <string name="error_title">Error</string>
+    <string name="detect_labeler_cannot_null">Detect Image Labeler cannot be null.</string>
+    <string name="food_nutri">foodNutri</string>
+    <string name="analyzing_dialog">Analyzing the object...</string>
+    <string name="not_found_food">Not Found Food.</string>
+    <string name="engine_must_be_specified">Engine must be specified.</string>
+    <string name="calorie_daily">Calorie Daily</string>
+    <string name="calorie_missing">Missing</string>
+    <string name="pie_chart_des">Pie Chart Calorie</string>
+    <string name="pie_chart_title">Calorie Comparision Chart</string>
+    <string name="require_enter_calorie_setting">Please Enter Your Calorie Setting.</string>
+    <string name="confirm_dialog_title">Confirm dialog !</string>
+    <string name="confirm_dialog_content"> Do you really want to delete ?</string>
 </resources>

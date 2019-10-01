@@ -125,14 +125,14 @@ public class AddToCartActivity extends AppCompatActivity {
                     layOutOrderItems.removeAllViews();
                     totalCalView.setText(numberFormat.format(0.0));
                     orderService.clearCart();
-                    Toast.makeText(AddToCartActivity.this,"Save successfully.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddToCartActivity.this,getString(R.string.save_successfully), Toast.LENGTH_SHORT).show();
                     Intent intent =new Intent(this, CalorieComparisionActivity.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(AddToCartActivity.this, "Save failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddToCartActivity.this, getString(R.string.save_fail), Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(AddToCartActivity.this,"Your cart is empty.", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddToCartActivity.this,getString(R.string.cart_empty), Toast.LENGTH_LONG).show();
             }
         };
     }
