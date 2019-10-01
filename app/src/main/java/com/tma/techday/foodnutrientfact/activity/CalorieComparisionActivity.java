@@ -82,35 +82,35 @@ public class CalorieComparisionActivity extends AppCompatActivity {
             calorieSetting = calorieSettingService.getCalorieSetting().getCalorieSettingAmount();
         }
         calSettingView.setText(numberFormat.format(calorieSetting));
-        if(calorieSetting != 0.0){
-
-            getEntries(totalCalDaily,calorieSetting);
-            pieDataSet = new PieDataSet(pieEntriesCalories, " ");
-            pieData = new PieData(pieDataSet);
-            pieData.setValueFormatter(new PercentFormatter(pieChartCalorie));
-            pieChartCalorie.setUsePercentValues(true);
-            pieChartCalorie.setData(pieData);
-            pieChartCalorie.setCenterText("Calorie Comparision Chart");
-            pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-            pieDataSet.setSliceSpace(2f);
-            pieDataSet.setValueTextColor(Color.WHITE);
-            pieDataSet.setValueTextSize(13f);
-            pieDataSet.setSliceSpace(5f);
-            Description description = new Description();
-            description.setText("Pie Chart Calorie");
-            pieChartCalorie.setDescription(description);
-
-        }else {
+        if(calorieSetting != 0.0) {
+            constructPieChart();
+        } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Error");
             builder.setMessage("Please Enter Your Calorie Setting.");
             builder.show();
-//            Intent intent =new Intent(this, SettingActivity.class);
-//            startActivity(intent);
         }
+    }
 
-
-
+    /**
+     * ....
+     */
+    private void constructPieChart() {
+        getEntries(totalCalDaily,calorieSetting);
+        pieDataSet = new PieDataSet(pieEntriesCalories, " ");
+        pieData = new PieData(pieDataSet);
+        pieData.setValueFormatter(new PercentFormatter(pieChartCalorie));
+        pieChartCalorie.setUsePercentValues(true);
+        pieChartCalorie.setData(pieData);
+        pieChartCalorie.setCenterText("Calorie Comparision Chart");
+        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        pieDataSet.setSliceSpace(2f);
+        pieDataSet.setValueTextColor(Color.WHITE);
+        pieDataSet.setValueTextSize(13f);
+        pieDataSet.setSliceSpace(5f);
+        Description description = new Description();
+        description.setText("Pie Chart Calorie");
+        pieChartCalorie.setDescription(description);
     }
 
 
@@ -118,10 +118,11 @@ public class CalorieComparisionActivity extends AppCompatActivity {
      * Get Entries of Chart
      */
     private void getEntries(double totalCalDaily, double calorieSetting) {
-        float calDailyPercent = (float) (totalCalDaily/calorieSetting*100);
+        float calDailyPercent = (float)  ((totalCalDaily/calorieSetting) *100 );
+        //TODO: research this comparision of float number
         if(calDailyPercent >= 100){
             pieEntriesCalories.add(new PieEntry(100,"Calorie Daily"));
-        }else{
+        } else {
             pieEntriesCalories.add(new PieEntry(calDailyPercent,"Calorie Daily"));
             pieEntriesCalories.add(new PieEntry(100 - calDailyPercent," Missing"));
         }
