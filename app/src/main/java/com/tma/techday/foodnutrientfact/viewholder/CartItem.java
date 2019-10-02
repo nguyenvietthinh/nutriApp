@@ -6,45 +6,38 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.tma.techday.foodnutrientfact.R;
-import com.tma.techday.foodnutrientfact.activity.AddToCartActivity;
 import com.tma.techday.foodnutrientfact.gui.event.CaloriesChangeEvent;
 import com.tma.techday.foodnutrientfact.gui.event.DeleteOrderEvent;
 import com.tma.techday.foodnutrientfact.model.Order;
-import com.tma.techday.foodnutrientfact.model.WeightUnit;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class CartItem extends Fragment {
     private Order order;
+    private Double calAmountFinal;
+    private Double foodWeightFinal;
     private TextView foodNameItemView, calAmountItemView;
     private EditText foodWeightText;
     private ArrayAdapter<CharSequence> adapter;
     private ImageButton btnDeleteOrder;
-    public CartItem(Order order) {
+
+    public CartItem(Order order, Double calAmountFinal, Double foodWeightFinal) {
         this.order = order;
+        this.calAmountFinal = calAmountFinal;
+        this.foodWeightFinal = foodWeightFinal;
     }
 
     @Nullable
@@ -52,7 +45,6 @@ public class CartItem extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.cart_item_layout,container,false);
         setUpParam(view);
-
         return view;
     }
 
@@ -68,12 +60,11 @@ public class CartItem extends Fragment {
         foodWeightText.setText(numberFormat.format(order.getFoodWeight()));
         foodNameItemView.setText(order.getFoodName());
         calAmountItemView.setText(numberFormat.format(order.getCalorieAmount()));
-
         adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.weight_unit_array, android.R.layout.simple_spinner_item);//Create an ArrayAdapter using the string array and a default spinner layout
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //Specify the layout to use when the list of choices appears
         btnDeleteOrder.setOnClickListener(view1 -> {
-           builDialogConfirm();
+            builDialogConfirm();
         });
         foodWeightText.setOnFocusChangeListener(setOnFocusFoodWeightText(numberFormat));
     }
@@ -101,16 +92,25 @@ public class CartItem extends Fragment {
 
                         @Override
                         public void afterTextChanged(Editable editable) {
-                            if(TextUtils.isEmpty(foodWeightText.getText().toString())) {
+                            if (TextUtils.isEmpty(foodWeightText.getText().toString())) {
                                 Toast.makeText(getActivity(),getString(R.string.required_empty_text), Toast.LENGTH_LONG).show();
+                                foodWeightText.setText(numberFormat.format(100.0));
                                 calAmountItemView.setText(numberFormat.format(0.0));
-                            }else {
-                                Double calAmount = order.getCalorieAmount();
+                            } else {
                                 Double newWeightfood = Double.parseDouble(foodWeightText.getText().toString());
-                                Double newCalAmount = newWeightfood * calAmount / (order.getFoodWeight());
+                                Double calAmount  = order.getCalorieAmount();
+                                Double newCalAmount = 0.0;
+                                if (Double.compare(newWeightfood,0.0) == 0 ) {
+                                    newCalAmount = 0.0;
+                                    order.setCalorieAmount(newCalAmount);
+                                    foodNameItemView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.info, 0);
+                                } else {
+                                    newCalAmount = newWeightfood * calAmountFinal / (foodWeightFinal);
+                                    foodNameItemView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                                    order.setCalorieAmount(newCalAmount);
+                                    order.setFoodWeight(newWeightfood);
+                                }
                                 Double calChange = newCalAmount - calAmount;
-                                order.setCalorieAmount(newCalAmount);
-                                order.setFoodWeight(newWeightfood);
                                 calAmountItemView.setText(numberFormat.format(order.getCalorieAmount()));
                                 EventBus.getDefault().post(new CaloriesChangeEvent(calChange));
                             }

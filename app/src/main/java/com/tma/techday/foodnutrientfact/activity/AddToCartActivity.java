@@ -3,7 +3,6 @@ package com.tma.techday.foodnutrientfact.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -11,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -159,7 +157,7 @@ public class AddToCartActivity extends AppCompatActivity {
             // for each order in the card, create a fragment and add to view
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             for (Order order : cart) {
-                Fragment cartItemFragment = new CartItem(order);
+                Fragment cartItemFragment = new CartItem(order,order.getCalorieAmount(),order.getFoodWeight());
                 transaction.add(R.id.layout_order_items, cartItemFragment);
             }
             transaction.commit();

@@ -4,10 +4,8 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
@@ -20,14 +18,12 @@ import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
 import com.tma.techday.foodnutrientfact.model.CalorieDaily;
 import com.tma.techday.foodnutrientfact.service.CalorieDailyService;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.inject.Inject;
 
 public class CalorieComparisionActivity extends AppCompatActivity {
@@ -41,6 +37,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
 
     @Inject
     CalorieSettingService calorieSettingService;
+
     @Inject
     CalorieDailyService calorieDailyService;
 
@@ -48,7 +45,6 @@ public class CalorieComparisionActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calorie_comparision_layout);
-
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
         setUpParam();
@@ -66,6 +62,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         calSettingView = findViewById(R.id.txtCalSetting);
         CalorieDaily calorieDailyReview = (CalorieDaily) getIntent().getSerializableExtra(getString(R.string.calorie_daily_intent));
         pieChartTitle.setText(R.string.pie_chart_title);
+
         Date currentDate = new Date();
         calorieDailyList = calorieDailyService.getCalorieDaily(currentDate);
 
@@ -88,7 +85,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
             calorieSetting = calorieSettingService.getCalorieSetting().getCalorieSettingAmount();
         }
         calSettingView.setText(numberFormat.format(calorieSetting));
-        if (calorieSetting != 0.0) {
+        if (Float.compare((float) calorieSetting,0.0f) != 0) {
             constructPieChart(totalCalDaily,calorieSetting);
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -123,16 +120,15 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         pieChartCalorie.setDescription(description);
     }
 
-
     /**
      * Get Entries of Chart
      */
     private void getEntries(double totalCalDaily, double calorieSetting) {
         float calDailyPercent = (float) (totalCalDaily/calorieSetting*100);
         if (Float.compare(calDailyPercent,100) >= 0) {
-            pieEntriesCalories.add(new PieEntry(100,getString(R.string.calorie_daily)));
+            pieEntriesCalories.add(new PieEntry(100," "));
         } else {
-            pieEntriesCalories.add(new PieEntry(calDailyPercent,getString(R.string.calorie_daily)));
+            pieEntriesCalories.add(new PieEntry(calDailyPercent,getString(R.string.current)));
             pieEntriesCalories.add(new PieEntry(100 - calDailyPercent,getString(R.string.calorie_missing)));
         }
     }

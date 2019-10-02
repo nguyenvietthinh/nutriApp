@@ -31,15 +31,12 @@ public class MainActivity extends AppCompatActivity {
         setupParam();
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
-
         cardViewDetect.setOnClickListener(view -> {
             doOpenOtherActivity(DetectActivity.class);
         });
-
         cardViewCalSetting.setOnClickListener(view -> {
             doOpenOtherActivity(SettingActivity.class);
         });
-
 
     }
 
@@ -60,7 +57,5 @@ public class MainActivity extends AppCompatActivity {
         cardViewDetect = findViewById(R.id.cardViewDetect);
         cardViewCalSetting = findViewById(R.id.cardViewCalSetting);
     }
-
-
 
 }
