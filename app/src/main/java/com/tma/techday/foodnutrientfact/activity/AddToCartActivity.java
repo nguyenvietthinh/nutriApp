@@ -103,12 +103,11 @@ public class AddToCartActivity extends AppCompatActivity {
      */
     private View.OnClickListener setBtnResearchOnClickListener() {
         return view -> {
-//                showCalComparisionDialog();
             CalorieDaily calorieDaily = buildCalorieDaily();
             Intent intent =new Intent(this, CalorieComparisionActivity.class);
             intent.putExtra("CalorieDaily", calorieDaily);
             startActivity(intent);
-            };
+        };
     }
 
 
@@ -121,12 +120,13 @@ public class AddToCartActivity extends AppCompatActivity {
             boolean hasItems = cart.size() > 0;
             if(hasItems) {
                 CalorieDaily calorieDaily = buildCalorieDaily();
-                if (calorieDailyService.addCalDaily(calorieDaily)) {
+                boolean saveResult = calorieDailyService.addCalDaily(calorieDaily);
+                if (saveResult) {
                     layOutOrderItems.removeAllViews();
                     totalCalView.setText(numberFormat.format(0.0));
                     orderService.clearCart();
                     Toast.makeText(AddToCartActivity.this,getString(R.string.save_successfully), Toast.LENGTH_SHORT).show();
-                    Intent intent =new Intent(this, CalorieComparisionActivity.class);
+                    Intent intent = new Intent(this, CalorieComparisionActivity.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(AddToCartActivity.this, getString(R.string.save_fail), Toast.LENGTH_LONG).show();
@@ -151,15 +151,19 @@ public class AddToCartActivity extends AppCompatActivity {
      */
     private void loadCart() {
         cart = orderService.getOrderList();
-        if(cart.size()!= 0) {
+        if(!cart.isEmpty()) {
+
+            // Calculate total calories
+            total = cart.stream().mapToDouble( order -> order.getCalorieAmount()).sum();
+
+            // for each order in the card, create a fragment and add to view
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             for (Order order : cart) {
                 Fragment cartItemFragment = new CartItem(order);
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.add(R.id.layout_order_items, cartItemFragment);
-                transaction.commit();
-                total += order.getCalorieAmount();
             }
-        }else {
+            transaction.commit();
+        } else {
             total = 0.0;
         }
         totalCalView.setText(numberFormat.format(total));

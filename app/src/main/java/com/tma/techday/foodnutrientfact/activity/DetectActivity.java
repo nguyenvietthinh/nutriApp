@@ -113,11 +113,8 @@ public class DetectActivity extends AppCompatActivity {
         });
 
         btnDetect.setOnClickListener((view)->{
-
             cameraView.start();
             cameraView.captureImage();
-
-
         });
 
     }
@@ -249,7 +246,6 @@ public class DetectActivity extends AppCompatActivity {
             args.putSerializable(getString(R.string.food_nutri), foodNutri);
             foodnutriDialog.setArguments(args);
             foodnutriDialog.show(getSupportFragmentManager(),"dialog");
-
     }
 
     /**
