@@ -9,31 +9,32 @@ import javax.inject.Inject;
 
 public class SqlOrderRepositoryImp implements OrderRepository {
 
-    private OrderDAO orderDAO;
+    private OrderSharePreferenceDAO orderSharePreferenceDAO;
+
 
     @Inject
-    public SqlOrderRepositoryImp(OrderDAO orderDAO) {
-        this.orderDAO = orderDAO;
+    public SqlOrderRepositoryImp(OrderSharePreferenceDAO orderSharePreferenceDAO) {
+        this.orderSharePreferenceDAO = orderSharePreferenceDAO;
     }
 
     @Override
     public boolean addOrderToCard(Order order) {
-        return orderDAO.addOrderToCard(order);
+        return orderSharePreferenceDAO.addOrderToCard(order);
     }
 
     @Override
     public List<Order> getOrderList() {
-        return orderDAO.getOrderList();
+        return orderSharePreferenceDAO.getCart();
     }
 
     @Override
     public void clearCart() {
-        orderDAO.clearCart();
+        orderSharePreferenceDAO.clearCart();
     }
 
     @Override
     public int getCountCart() {
-        return orderDAO.getCountCart();
+        return orderSharePreferenceDAO.getCountCart();
     }
 
 }

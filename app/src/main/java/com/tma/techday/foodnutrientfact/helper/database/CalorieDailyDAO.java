@@ -32,7 +32,7 @@ public class CalorieDailyDAO {
      */
     public boolean addCalDaily(CalorieDaily calorieDaily){
 
-        try(SQLiteDatabase db = openHelper.getWritableDatabase()){
+        try (SQLiteDatabase db = openHelper.getWritableDatabase()) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String date = sdf.format(calorieDaily.getDate());
             ContentValues contentValues = new ContentValues();
@@ -40,7 +40,7 @@ public class CalorieDailyDAO {
             contentValues.put("calorie_daily_amount",calorieDaily.getCalorieDailyAmount());
             long result = db.insert(TABLE_NAME, null, contentValues);
             return (result == -1)? false : true;
-        }catch (SQLException e){
+        } catch (SQLException e){
             e.printStackTrace();
         }
         return false;
@@ -56,7 +56,7 @@ public class CalorieDailyDAO {
         String query = "SELECT * from calorie_daily WHERE date  LIKE ?";
         CalorieDaily calorieDaily = null;
         List<CalorieDaily> calorieDailyList = new ArrayList<>();
-        try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ "%" + dateCalDaily + "%" })){
+        try (SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ "%" + dateCalDaily + "%" })) {
             if (cursor.moveToFirst()) { // Move to first row
                 do {
                     double calorieSettingAmount = Double.parseDouble(cursor.getString(cursor.getColumnIndex("calorie_daily_amount")));
@@ -65,7 +65,7 @@ public class CalorieDailyDAO {
                 } while (cursor.moveToNext());
                 return calorieDailyList;
             }
-        }catch (SQLException e){
+        } catch (SQLException e){
             e.printStackTrace();
         }
         return calorieDailyList;

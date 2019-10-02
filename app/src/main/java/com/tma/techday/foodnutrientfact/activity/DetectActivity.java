@@ -138,19 +138,19 @@ public class DetectActivity extends AppCompatActivity {
         // If have internet, we will use COULD_ENGINE mode Else we will use DEVICE_ENGINE mode
         new InternetCheck(connectInternet -> {
             FirebaseVisionImageLabeler detectImageLabeler = getFirebaseVisionImageLabeler(connectInternet ? ImageDetectEngine.COULD_ENGINE : ImageDetectEngine.DEVICE_ENGINE);
-            if(detectImageLabeler == null)
+            if (detectImageLabeler == null)
             {
                 Log.e("Error",getString(R.string.detect_labeler_cannot_null));
                 return;
             }
             detectImageLabeler.processImage(image)
                     .addOnSuccessListener(labels -> {
-                        if(labels != null && !labels.isEmpty())
+                        if (labels != null && !labels.isEmpty())
                         {
                             // Image that is 'More correct' ia put at the top
                             labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
                             processDataResult(labels);
-                        }else{
+                        } else {
                             waitingDialog.dismiss();
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
                             builder.setTitle(getString(R.string.error_title));
@@ -169,7 +169,7 @@ public class DetectActivity extends AppCompatActivity {
      * @param imageDetectEngine types of image labeler
      */
     private FirebaseVisionImageLabeler getFirebaseVisionImageLabeler(ImageDetectEngine imageDetectEngine) {
-        if(imageDetectEngine == null)
+        if (imageDetectEngine == null)
             throw new IllegalArgumentException(getString(R.string.engine_must_be_specified));
         switch (imageDetectEngine)
         {
@@ -200,7 +200,7 @@ public class DetectActivity extends AppCompatActivity {
         String foodName = "";
         List<String> itemNames = labels.stream().map(lbl -> lbl.getText()).collect(Collectors.toList());
         for (String itemName : itemNames){
-            if (itemName.equalsIgnoreCase("food") || itemName.equalsIgnoreCase("cup")){
+            if (itemName.equalsIgnoreCase("food") || itemName.equalsIgnoreCase("cup")) {
                 continue;
             }
             else {
@@ -209,10 +209,10 @@ public class DetectActivity extends AppCompatActivity {
             }
         }
         Log.i("foodName", foodName);
-        if (waitingDialog.isShowing()){
+        if (waitingDialog.isShowing()) {
             waitingDialog.dismiss();
         }
-        if(!foodName.equals("")){
+        if (!foodName.equals("")) {
             getNutrition(foodName);
         }
     }
@@ -223,11 +223,11 @@ public class DetectActivity extends AppCompatActivity {
      */
     private void getNutrition(String foodName){
         FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
-        if(foodNutri != null)
+        if (foodNutri != null)
         {
             Log.i(getString(R.string.food_nutri), foodNutri.toDebugString());
             showFoodNutri(foodNutri);
-        }else{
+        } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.error_title));
             builder.setMessage(getString(R.string.not_found_food));
@@ -241,11 +241,11 @@ public class DetectActivity extends AppCompatActivity {
      */
     private void showFoodNutri( FoodInfoDTO foodNutri){
 
-            FoodNutriResultDialog foodnutriDialog = new FoodNutriResultDialog();
-            Bundle args = new Bundle();   //Use bundle to pass data
-            args.putSerializable(getString(R.string.food_nutri), foodNutri);
-            foodnutriDialog.setArguments(args);
-            foodnutriDialog.show(getSupportFragmentManager(),"dialog");
+        FoodNutriResultDialog foodNutriResultDialog = new FoodNutriResultDialog();
+        Bundle args = new Bundle();   //Use bundle to pass data for food nutrient result dialog
+        args.putSerializable(getString(R.string.food_nutri), foodNutri);
+        foodNutriResultDialog.setArguments(args);
+        foodNutriResultDialog.show(getSupportFragmentManager(),"dialog");
     }
 
     /**

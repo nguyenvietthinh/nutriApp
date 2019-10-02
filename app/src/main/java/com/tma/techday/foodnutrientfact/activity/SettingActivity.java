@@ -65,7 +65,7 @@ public class SettingActivity extends AppCompatActivity {
                 } else {
                     double parseCalories = Double.parseDouble(calAmount);
                     CalorieSetting calorieSetting = buildCalorieSetting(parseCalories);
-                    if(calorieSetting!= null) {
+                    if (calorieSetting!= null) {
                         boolean isInserted = calorieSettingService.insertCalorieSetting(calorieSetting);
                         if (isInserted) {
                             Toast.makeText(SettingActivity.this, getString(R.string.save_successfully), Toast.LENGTH_LONG).show();
@@ -88,10 +88,10 @@ public class SettingActivity extends AppCompatActivity {
         Date currentDate = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(currentDate);
-        if(calorieSettingService.getCalorieSetting()!= null){
+        if (calorieSettingService.getCalorieSetting()!= null) {
             Date dateAdded = calorieSettingService.getCalorieSetting().getDate();
             String dateAdd = sdf.format(dateAdded);
-            if(date.equals(dateAdd)){
+            if (date.equals(dateAdd)) {
                 return null;
             }
         }

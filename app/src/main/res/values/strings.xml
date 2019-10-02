@@ -28,4 +28,5 @@
     <string name="require_enter_calorie_setting">Please Enter Your Calorie Setting.</string>
     <string name="confirm_dialog_title">Confirm dialog !</string>
     <string name="confirm_dialog_content"> Do you really want to delete ?</string>
+    <string name="calorie_daily_intent">CalorieDaily</string>
 </resources>

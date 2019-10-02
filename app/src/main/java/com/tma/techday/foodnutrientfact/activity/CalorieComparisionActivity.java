@@ -64,8 +64,8 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         dateView = findViewById(R.id.date);
         calDailyView = findViewById(R.id.txtCalDaily);
         calSettingView = findViewById(R.id.txtCalSetting);
-        CalorieDaily calorieDailyReview = (CalorieDaily) getIntent().getSerializableExtra("CalorieDaily");
-
+        CalorieDaily calorieDailyReview = (CalorieDaily) getIntent().getSerializableExtra(getString(R.string.calorie_daily_intent));
+        pieChartTitle.setText(R.string.pie_chart_title);
         Date currentDate = new Date();
         calorieDailyList = calorieDailyService.getCalorieDaily(currentDate);
 
@@ -73,17 +73,18 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         String date = sdf.format(currentDate);
         dateView.setText(date);
 
-        double totalCalDaily = 0.0f ;
-        if(calorieDailyReview != null){
+        double totalCalDaily = 0.0f;
+        if (calorieDailyReview != null) {
             totalCalDaily = calorieDailyReview.getCalorieDailyAmount();
         }
-        for(CalorieDaily calorieDaily: calorieDailyList){
+
+        for (CalorieDaily calorieDaily: calorieDailyList){
             totalCalDaily+= calorieDaily.getCalorieDailyAmount();
         }
         calDailyView.setText(numberFormat.format(totalCalDaily));
 
         double calorieSetting = 0.0f;
-        if( calorieSettingService.getCalorieSetting()!= null ) {
+        if ( calorieSettingService.getCalorieSetting()!= null ) {
             calorieSetting = calorieSettingService.getCalorieSetting().getCalorieSettingAmount();
         }
         calSettingView.setText(numberFormat.format(calorieSetting));
@@ -109,12 +110,14 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         pieData.setValueFormatter(new PercentFormatter(pieChartCalorie));
         pieChartCalorie.setUsePercentValues(true);
         pieChartCalorie.setData(pieData);
-        pieChartCalorie.setCenterText(getString(R.string.pie_chart_title));
         pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-        pieDataSet.setSliceSpace(2f);
+        pieDataSet.setSliceSpace(3f);
         pieDataSet.setValueTextColor(Color.WHITE);
         pieDataSet.setValueTextSize(13f);
         pieDataSet.setSliceSpace(5f);
+        pieChartCalorie.setDrawHoleEnabled(true);
+        pieChartCalorie.setTransparentCircleRadius(0f);
+        pieChartCalorie.setHoleRadius(0f);
         Description description = new Description();
         description.setText(getString(R.string.pie_chart_des));
         pieChartCalorie.setDescription(description);
@@ -126,7 +129,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
      */
     private void getEntries(double totalCalDaily, double calorieSetting) {
         float calDailyPercent = (float) (totalCalDaily/calorieSetting*100);
-        if(Float.compare(calDailyPercent,100) >= 0) {
+        if (Float.compare(calDailyPercent,100) >= 0) {
             pieEntriesCalories.add(new PieEntry(100,getString(R.string.calorie_daily)));
         } else {
             pieEntriesCalories.add(new PieEntry(calDailyPercent,getString(R.string.calorie_daily)));

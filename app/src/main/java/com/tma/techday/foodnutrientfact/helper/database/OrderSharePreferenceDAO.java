@@ -1,8 +1,10 @@
 package com.tma.techday.foodnutrientfact.helper.database;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,41 +12,75 @@ import androidx.fragment.app.Fragment;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.model.Order;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public class OrderSharePreferenceDAO extends Fragment {
+public class OrderSharePreferenceDAO  {
 
 
     public static final String orderpreference = "orderpref";
-    public static final String foodName = "foodName";
-    public static final String calorieAmount = "calorieAmount";
-    public static final String foodWeight = "foodWeight";
     public static final String ORDERS = "orders";
-    List<Order> orders = new ArrayList<>();
-    Gson gson = new Gson();
-    SharedPreferences sharedpreferences = getActivity().getSharedPreferences(orderpreference,
-            Context.MODE_PRIVATE);
+      SharedPreferences sharedpreferences;
+      Gson gson = new Gson();
+      Context mcontext;
+
+
+    public OrderSharePreferenceDAO(Context context) {
+        this.sharedpreferences = context.getSharedPreferences(orderpreference, context.MODE_PRIVATE);
+        mcontext = context;
+    }
 
 
 
-    public boolean addOrderToCard(Order order){
+        //use the value of i where needed.
 
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        orders.add(order);
-        String json = gson.toJson(orders);
-        editor.putString(ORDERS, json);
-        editor.commit();
+
+
+
+
+
+    public  boolean addOrderToCard(Order order){
+
+
+        String json = gson.toJson(order);
+        sharedpreferences.edit().putString(order.getFoodName(), json).commit();
         return true;
     }
 
     public List<Order> getCart(){
-        String json = sharedpreferences.getString(ORDERS, "");
-        Type type = new TypeToken<List<Order>>(){}.getType();
-        List<Order> orders = gson.fromJson(json, type);
+        List<Order> orders = new ArrayList<>();
+        if (sharedpreferences != null) {
+            Map<String,?> entries = sharedpreferences.getAll();
+            Set<String> keys = entries.keySet();
+            Gson gson = new Gson();
+            for (String key : keys) {
+                String json = sharedpreferences.getString(key, "");
+                Order order = gson.fromJson(json, Order.class);
+                orders.add(order);
+            }
+        }
+
         return orders;
+    }
+
+    public void clearCart(){
+
+        sharedpreferences.edit().clear().commit();
+    }
+
+    public int getCountCart(){
+
+        int count = 0;
+        if (sharedpreferences != null) {
+            count = sharedpreferences.getAll().size();
+        }
+
+        return count;
     }
 }

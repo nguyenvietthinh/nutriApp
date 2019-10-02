@@ -105,7 +105,7 @@ public class AddToCartActivity extends AppCompatActivity {
         return view -> {
             CalorieDaily calorieDaily = buildCalorieDaily();
             Intent intent =new Intent(this, CalorieComparisionActivity.class);
-            intent.putExtra("CalorieDaily", calorieDaily);
+            intent.putExtra(getString(R.string.calorie_daily_intent), calorieDaily);
             startActivity(intent);
         };
     }

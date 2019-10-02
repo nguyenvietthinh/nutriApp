@@ -18,7 +18,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class FoodNutriDAO {
+public class  FoodNutriDAO {
 
     private SQLiteOpenHelper openHelper;
 
@@ -37,7 +37,7 @@ public class FoodNutriDAO {
     public FoodInfoDTO getFoodNutri(String foodName){
         String query = "SELECT Energ_Kcal, Lipid_Tot, Protein, FA_Sat, FA_Poly, FA_Mono, Cholestrl, Sodium, Potassium, Vit_C, Vit_A_RAE, Vit_D_IU, Vit_B6, Vit_B12  FROM " + TABLE_NAME + " WHERE Shrt_Desc LIKE ? LIMIT 1 ";
         FoodInfoDTO foodInfoDTO = null;
-        try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ "%" + foodName + "%"})){
+        try (SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ "%" + foodName + "%"})) {
             if (cursor.moveToFirst()) { // Move to first row
                 do {
                     double calories = Double.parseDouble(cursor.getString(cursor.getColumnIndex("Energ_Kcal")));//Energy
@@ -63,7 +63,7 @@ public class FoodNutriDAO {
                 } while (cursor.moveToNext());
                 return foodInfoDTO;
             }
-        }catch (SQLException e){
+        } catch (SQLException e){
             e.printStackTrace();
         }
         return foodInfoDTO;

@@ -278,12 +278,13 @@ public class FoodNutriResultDialog extends DialogFragment {
         popupDialog = alertDialogBuilder.create();
         popupDialog.show();
     }
+
     /**
      * Check Food Name Exist
      */
     private boolean checkFoodNameExist(){
-        for(Order order : orderService.getOrderList()){
-            if(order.getFoodName().equals(foodNutri.getFoodName())){
+        for (Order order : orderService.getOrderList()) {
+            if (order.getFoodName().equals(foodNutri.getFoodName())) {
                 return false;
             }
         }
