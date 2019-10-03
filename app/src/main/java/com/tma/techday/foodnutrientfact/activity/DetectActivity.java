@@ -72,10 +72,10 @@ public class DetectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detect_activity);
-        setUpParam();
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
-        counterFab.setCount(orderService.getCountCart());
+        setUpParam();
+
 
         cameraView.addCameraKitListener(new CameraKitEventListener() {
             @Override
@@ -256,6 +256,7 @@ public class DetectActivity extends AppCompatActivity {
             Intent intent = new Intent(DetectActivity.this,AddToCartActivity.class);
             startActivity(intent);
         });
+        counterFab.setCount(orderService.getCountCart());
     }
 
 }
