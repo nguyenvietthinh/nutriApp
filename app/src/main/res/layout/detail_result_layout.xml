@@ -35,7 +35,6 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray" />
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="32dp"
@@ -486,8 +485,6 @@
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
-
-
 
     <Button
         android:id="@+id/btnAdd"

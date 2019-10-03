@@ -149,7 +149,7 @@ public class AddToCartActivity extends AppCompatActivity {
      */
     private void loadCart() {
         cart = orderService.getOrderList();
-        if(!cart.isEmpty()) {
+        if (!cart.isEmpty()) {
 
             // Calculate total calories
             total = cart.stream().mapToDouble( order -> order.getCalorieAmount()).sum();
@@ -187,7 +187,7 @@ public class AddToCartActivity extends AppCompatActivity {
         cart.remove(deleteOrderEvent.getOrderDeleted());
         orderService.clearCart();
         layOutOrderItems.removeAllViews();
-        for(Order orderInCart:cart){
+        for (Order orderInCart:cart) {
             orderService.addOrderToCard(orderInCart);
             total = 0.0;
         }

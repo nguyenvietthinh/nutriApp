@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setupParam();
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
+
         cardViewDetect.setOnClickListener(view -> {
             doOpenOtherActivity(DetectActivity.class);
         });

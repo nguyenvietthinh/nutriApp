@@ -50,7 +50,6 @@
 
     </LinearLayout>
 
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,7 +61,5 @@
         android:layout_toLeftOf="@+id/textview"
         android:layout_toStartOf="@+id/textview"
         android:layout_centerHorizontal="true"/>
-
-
 
 </LinearLayout>

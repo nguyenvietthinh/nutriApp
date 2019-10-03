@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.andremion.counterfab.CounterFab;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
@@ -31,12 +29,9 @@ import com.wonderkiln.camerakit.CameraKitEventListener;
 import com.wonderkiln.camerakit.CameraKitImage;
 import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraView;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.inject.Inject;
-
 import dmax.dialog.SpotsDialog;
 
 public class DetectActivity extends AppCompatActivity {
@@ -45,7 +40,6 @@ public class DetectActivity extends AppCompatActivity {
     Button btnDetect;
     AlertDialog waitingDialog;
     CounterFab counterFab;
-
 
     @Inject
     FoodNutriService foodNutriService;
@@ -66,7 +60,6 @@ public class DetectActivity extends AppCompatActivity {
         cameraView.stop();
     }
 
-
     /**
      * <ul>
      *     <li>Capture image</li>
@@ -83,7 +76,6 @@ public class DetectActivity extends AppCompatActivity {
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
         counterFab.setCount(orderService.getCountCart());
-
 
         cameraView.addCameraKitListener(new CameraKitEventListener() {
             @Override
@@ -120,6 +112,11 @@ public class DetectActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Create menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main,menu);
@@ -240,7 +237,6 @@ public class DetectActivity extends AppCompatActivity {
      * @param foodNutri detailed nutrition results have just been taken
      */
     private void showFoodNutri( FoodInfoDTO foodNutri){
-
         FoodNutriResultDialog foodNutriResultDialog = new FoodNutriResultDialog();
         Bundle args = new Bundle();   //Use bundle to pass data for food nutrient result dialog
         args.putSerializable(getString(R.string.food_nutri), foodNutri);
@@ -260,8 +256,6 @@ public class DetectActivity extends AppCompatActivity {
             Intent intent = new Intent(DetectActivity.this,AddToCartActivity.class);
             startActivity(intent);
         });
-
     }
-
 
 }

@@ -4,13 +4,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import com.tma.techday.foodnutrientfact.model.FatInfo;
 import com.tma.techday.foodnutrientfact.model.FatType;
 import com.tma.techday.foodnutrientfact.model.FoodInfoDTO;
 import com.tma.techday.foodnutrientfact.model.VitaminInfo;
 import com.tma.techday.foodnutrientfact.model.VitaminType;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

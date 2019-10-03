@@ -9,7 +9,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,7 +20,9 @@ import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.gui.event.CaloriesChangeEvent;
 import com.tma.techday.foodnutrientfact.gui.event.DeleteOrderEvent;
 import com.tma.techday.foodnutrientfact.model.Order;
+
 import org.greenrobot.eventbus.EventBus;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -31,7 +32,6 @@ public class CartItem extends Fragment {
     private Double foodWeightFinal;
     private TextView foodNameItemView, calAmountItemView;
     private EditText foodWeightText;
-    private ArrayAdapter<CharSequence> adapter;
     private ImageButton btnDeleteOrder;
 
     public CartItem(Order order, Double calAmountFinal, Double foodWeightFinal) {
@@ -60,17 +60,15 @@ public class CartItem extends Fragment {
         foodWeightText.setText(numberFormat.format(order.getFoodWeight()));
         foodNameItemView.setText(order.getFoodName());
         calAmountItemView.setText(numberFormat.format(order.getCalorieAmount()));
-        adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.weight_unit_array, android.R.layout.simple_spinner_item);//Create an ArrayAdapter using the string array and a default spinner layout
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //Specify the layout to use when the list of choices appears
+
         btnDeleteOrder.setOnClickListener(view1 -> {
-            builDialogConfirm();
+            buildDialogConfirm();
         });
         foodWeightText.setOnFocusChangeListener(setOnFocusFoodWeightText(numberFormat));
     }
 
     /**
-     * set on focus change listener for food weight edit text
+     * Set on focus change listener for food weight edit text
      * @param numberFormat
      * @return
      */
@@ -92,10 +90,11 @@ public class CartItem extends Fragment {
 
                         @Override
                         public void afterTextChanged(Editable editable) {
+
                             if (TextUtils.isEmpty(foodWeightText.getText().toString())) {
                                 Toast.makeText(getActivity(),getString(R.string.required_empty_text), Toast.LENGTH_LONG).show();
                                 foodWeightText.setText(numberFormat.format(100.0));
-                                calAmountItemView.setText(numberFormat.format(0.0));
+                                calAmountItemView.setText(numberFormat.format((100.0 * calAmountFinal) / foodWeightFinal)); // Calorie of 100 gram food
                             } else {
                                 Double newWeightfood = Double.parseDouble(foodWeightText.getText().toString());
                                 Double calAmount  = order.getCalorieAmount();
@@ -105,17 +104,18 @@ public class CartItem extends Fragment {
                                     order.setCalorieAmount(newCalAmount);
                                     foodNameItemView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.info, 0);
                                 } else {
-                                    newCalAmount = newWeightfood * calAmountFinal / (foodWeightFinal);
+                                    newCalAmount =(newWeightfood * calAmountFinal ) / foodWeightFinal;
                                     foodNameItemView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                                     order.setCalorieAmount(newCalAmount);
                                     order.setFoodWeight(newWeightfood);
                                 }
+
                                 Double calChange = newCalAmount - calAmount;
                                 calAmountItemView.setText(numberFormat.format(order.getCalorieAmount()));
                                 EventBus.getDefault().post(new CaloriesChangeEvent(calChange));
                             }
                         }
-                    });// code to execute when EditText loses focus
+                    });
                 }
             }
         };
@@ -124,7 +124,7 @@ public class CartItem extends Fragment {
     /**
      * Create confirm dialog delete cart item
      */
-    private void builDialogConfirm(){
+    private void buildDialogConfirm(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.confirm_dialog_title));
         builder.setMessage(getString(R.string.confirm_dialog_content));
@@ -132,11 +132,9 @@ public class CartItem extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 EventBus.getDefault().post(new DeleteOrderEvent(order));
             }
         });
-
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

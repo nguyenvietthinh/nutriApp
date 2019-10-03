@@ -19,7 +19,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
                 android:id="@+id/dateLabel"
                 android:layout_width="match_parent"
@@ -74,14 +73,12 @@
                 android:text=" KCal"/>
         </LinearLayout>
 
-
     </LinearLayout>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChartCal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </com.github.mikephil.charting.charts.PieChart>
 
 </LinearLayout>

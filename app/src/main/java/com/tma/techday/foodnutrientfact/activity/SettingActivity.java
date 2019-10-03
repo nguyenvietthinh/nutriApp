@@ -22,10 +22,8 @@ import javax.inject.Inject;
 
 public class SettingActivity extends AppCompatActivity {
 
-
     EditText txtCalSetting;
     Button btnSave;
-
 
     @Inject
     CalorieSettingService calorieSettingService;

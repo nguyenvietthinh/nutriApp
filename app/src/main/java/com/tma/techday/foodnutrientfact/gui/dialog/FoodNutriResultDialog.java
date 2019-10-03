@@ -61,6 +61,7 @@ public class FoodNutriResultDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
         FoodNutriApplication application = (FoodNutriApplication)getActivity().getApplication();
         application.getComponent().inject(this);
         dialog = new AlertDialog.Builder(getActivity()).create();
@@ -250,7 +251,7 @@ public class FoodNutriResultDialog extends DialogFragment {
                     Toast.makeText(getActivity(), getString(R.string.required_empty_text), Toast.LENGTH_LONG).show();
                 } else {
                     double parseFoodWeight = Double.parseDouble(foodWeight);
-                    double orderAmount = parseFoodWeight * (foodNutri.getCalories()) / 100.0;
+                    double orderAmount = (parseFoodWeight * (foodNutri.getCalories())) / 100.0;
                     if (orderService.addOrderToCard(new Order(foodNutri.getFoodName(), orderAmount, parseFoodWeight))) {
                         Toast.makeText(getActivity(),getString(R.string.added_to_cart), Toast.LENGTH_LONG).show();
                         viewDialog.setVisibility(View.GONE);

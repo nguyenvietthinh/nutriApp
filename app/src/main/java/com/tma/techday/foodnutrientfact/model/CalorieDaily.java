@@ -3,6 +3,9 @@ package com.tma.techday.foodnutrientfact.model;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Contain and save Calorie Daily from DB
+ */
 public class CalorieDaily implements Serializable {
     private Date date;
     private double calorieDailyAmount;

@@ -24,8 +24,6 @@
             android:paddingBottom="-50dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
-        <!---add your views here-->
-
 
         <ImageButton
             android:id="@+id/imageButton_close"

@@ -14,6 +14,7 @@ import dagger.Component;
 @Singleton
 @Component(modules = { FoodNutriApplicationModule.class, ServiceModule.class,DatabaseModule.class})
 public interface FoodNutriApplicationComponent  {
+
     void inject(MainActivity target);
 
     void inject(DetectActivity detectActivity);
