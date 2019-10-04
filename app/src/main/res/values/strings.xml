@@ -9,7 +9,7 @@
     <string name="save_fail">Save To Data Failed.</string>
     <string name="cart_empty">Your cart is empty.</string>
     <string name="required_empty_text">Please Fill All The Required Fields.</string>
-    <string name="exists_calorie_setting">Today you entered calorie.</string>
+    <string name="update_calorie_setting">Update Calorie Setting Successfully.</string>
     <string name="add_food_title">Add food.</string>
     <string name="added_to_cart">Added to cart.</string>
     <string name="cannot_add_to_cart">Can not add to cart.</string>
@@ -28,6 +28,7 @@
     <string name="require_enter_calorie_setting">Please Enter Your Calorie Setting.</string>
     <string name="confirm_dialog_title">Confirm dialog !</string>
     <string name="confirm_dialog_content"> Do you really want to delete ?</string>
+    <string name="confirm_dialog_update_calsetting_content">You have entered calorie setting today.\n Do you really want to update calorie setting ?</string>
     <string name="calorie_daily_intent">CalorieDaily</string>
 
 </resources>

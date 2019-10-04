@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 public class CalorieSettingDAO {
     private SQLiteOpenHelper openHelper;
-
+    public static final String TABLE_NAME = "calorie_setting";
     @Inject
     public CalorieSettingDAO(SQLiteOpenHelper openHelper) {
         this.openHelper = openHelper;
@@ -34,7 +34,7 @@ public class CalorieSettingDAO {
             ContentValues contentValues = new ContentValues();
             contentValues.put("date",date);
             contentValues.put("calorie_setting_amount",calorieSetting.getCalorieSettingAmount());
-            long result = db.insert("calorie_setting", null, contentValues);
+            long result = db.insert(TABLE_NAME, null, contentValues);
             return (result == -1)? false : true;
         }catch (SQLException e){
             e.printStackTrace();
@@ -47,13 +47,13 @@ public class CalorieSettingDAO {
      * @return
      */
     public CalorieSetting getCalorieSetting(){
-        String query = "SELECT * from calorie_setting";
+        String query = "SELECT * from "+TABLE_NAME+"";
         CalorieSetting calorieSetting = null;
         try(SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ })){
             if (cursor.moveToFirst()) { // Move to first row
                 do {
-                     double calorieSettingAmount = Double.parseDouble( cursor.getString(cursor.getColumnIndex("calorie_setting_amount")));
-                     calorieSetting = CalorieSetting.of(new Date(),calorieSettingAmount);
+                    double calorieSettingAmount = Double.parseDouble( cursor.getString(cursor.getColumnIndex("calorie_setting_amount")));
+                    calorieSetting = CalorieSetting.of(new Date(),calorieSettingAmount);
                 } while (cursor.moveToNext());
                 return calorieSetting;
             }
@@ -61,5 +61,21 @@ public class CalorieSettingDAO {
             e.printStackTrace();
         }
         return calorieSetting;
+    }
+
+    /**
+     * Update calorie setting in the same day
+     * @param calorieSetting
+     */
+    public void updateCalorieSetting(CalorieSetting calorieSetting){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateCalSetting = sdf.format(calorieSetting.getDate());
+        try (SQLiteDatabase db = openHelper.getWritableDatabase()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("calorie_setting_amount", calorieSetting.getCalorieSettingAmount());
+            db.update(TABLE_NAME, contentValues, "date LIKE ?",new String[] { "%" + dateCalSetting + "%" });
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }

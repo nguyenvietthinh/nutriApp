@@ -15,14 +15,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.andremion.counterfab.CounterFab;
 import com.tma.techday.foodnutrientfact.R;
-import com.tma.techday.foodnutrientfact.activity.SettingActivity;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
 import com.tma.techday.foodnutrientfact.model.FatInfo;
 import com.tma.techday.foodnutrientfact.model.FoodInfoDTO;
@@ -36,7 +33,7 @@ import javax.inject.Inject;
 public class FoodNutriResultDialog extends DialogFragment {
 
     View viewResult,viewDetailRessult,viewDialog, popupInputDialogView;
-    TextView DetailFoodNameView, FoodNameView, caloriesView, totalFatView, cholesterolView, proteinView, satFatView, polyFatView, monoFatView, sodiumView, potassiumView, vitCView, vitDView, vitAView,vitB6View,
+    TextView detailFoodNameView, foodNameView, caloriesView, totalFatView, cholesterolView, proteinView, satFatView, polyFatView, monoFatView, sodiumView, potassiumView, vitCView, vitDView, vitAView,vitB6View,
             vitB12View, caloriesDetailView, proteinDetailView, cholesterolDetailView, totalFatDetailView,popupDialogFoodName;
     ImageButton btnCloseDialog;
     Button btnAdd, btnDetailAdd,btnpopupDialogCancel,btnpopupDialogAdd;
@@ -51,7 +48,6 @@ public class FoodNutriResultDialog extends DialogFragment {
 
     @Inject
     OrderService orderService;
-
 
     /**
      * Create Alert Dialog Fragment For Result Food Nutrition
@@ -68,14 +64,33 @@ public class FoodNutriResultDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         viewDialog = inflater.inflate(R.layout.alertdialog_nutri_result_layout, null);
         init();
+        setTextForTextView();
+        setClickListener();
+        setUpDialog();
+        return dialog;
+    }
 
+    /**
+     * Set up properties for dialog
+     */
+    private void setUpDialog() {
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //set background color transparent
+        dialog.getWindow().setDimAmount(0);  // remove background dim
+        dialog.setCancelable(true);
+        dialog.setView(viewDialog);
+    }
+
+    /**
+     * Set text for text View
+     */
+    private void setTextForTextView() {
         foodNutri = getDataFromActivity();
-        FoodNameView.setText(foodNutri.getFoodName());
+        foodNameView.setText(foodNutri.getFoodName());
         caloriesView.setText(Double.toString(foodNutri.getCalories()));
         proteinView.setText(Double.toString(foodNutri.getProtein()));
         cholesterolView.setText(Integer.toString(foodNutri.getCholesterol()));
         totalFatView.setText(Double.toString(foodNutri.getTotalFat()));
-        DetailFoodNameView.setText(foodNutri.getFoodName());
+        detailFoodNameView.setText(foodNutri.getFoodName());
         caloriesDetailView.setText(Double.toString(foodNutri.getCalories()));
         proteinDetailView.setText(Double.toString(foodNutri.getProtein()));
         cholesterolDetailView.setText(Integer.toString(foodNutri.getCholesterol()));
@@ -114,7 +129,12 @@ public class FoodNutriResultDialog extends DialogFragment {
                     break;
             }
         }
-        dialog.setCancelable(true);
+    }
+
+    /**
+     * Set click listener for view and button
+     */
+    private void setClickListener() {
         btnCloseDialog.setOnClickListener(view -> dialog.cancel());
         btnAdd.setOnClickListener(view -> {
             if (checkFoodNameExist()){
@@ -122,7 +142,6 @@ public class FoodNutriResultDialog extends DialogFragment {
             } else {
                 Toast.makeText(getActivity(), getString(R.string.food_exists), Toast.LENGTH_LONG).show();
             }
-
         });
         btnDetailAdd.setOnClickListener(view -> {
             if (checkFoodNameExist()) {
@@ -130,10 +149,7 @@ public class FoodNutriResultDialog extends DialogFragment {
             } else {
                 Toast.makeText(getActivity(), getString(R.string.food_exists), Toast.LENGTH_LONG).show();
             }
-
         });
-
-
 
         viewResult.setOnClickListener(view -> {
             viewDetailRessult.setVisibility(View.VISIBLE);
@@ -143,11 +159,6 @@ public class FoodNutriResultDialog extends DialogFragment {
             viewResult.setVisibility(View.VISIBLE);
             viewDetailRessult.setVisibility(View.GONE);
         });
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //set background color transparent
-        dialog.getWindow().setDimAmount(0);  // remove background dim
-        dialog.setView(viewDialog);
-        return dialog;
     }
 
     /**
@@ -157,7 +168,7 @@ public class FoodNutriResultDialog extends DialogFragment {
         viewResult = viewDialog.findViewById(R.id.resultLayout);
         viewDetailRessult = viewDialog.findViewById(R.id.resultDetailLayout);
         viewDetailRessult.setVisibility(View.GONE);
-        FoodNameView = viewDialog.findViewById(R.id.txtFoodName);
+        foodNameView = viewDialog.findViewById(R.id.txtFoodName);
         caloriesView = viewDialog.findViewById(R.id.txtCal);
         proteinView = viewDialog.findViewById(R.id.txtProtein);
         cholesterolView = viewDialog.findViewById(R.id.txtCholesterol);
@@ -172,7 +183,7 @@ public class FoodNutriResultDialog extends DialogFragment {
         vitDView = viewDialog.findViewById(R.id.txtVitaminD);
         vitB6View = viewDialog.findViewById(R.id.txtVitaminB6);
         vitB12View = viewDialog.findViewById(R.id.txtVitaminB12);
-        DetailFoodNameView = viewDetailRessult.findViewById(R.id.txtFoodName);
+        detailFoodNameView = viewDetailRessult.findViewById(R.id.txtFoodName);
         caloriesDetailView = viewDetailRessult.findViewById(R.id.txtCal);
         proteinDetailView = viewDetailRessult.findViewById(R.id.txtProtein);
         cholesterolDetailView = viewDetailRessult.findViewById(R.id.txtCholesterol);

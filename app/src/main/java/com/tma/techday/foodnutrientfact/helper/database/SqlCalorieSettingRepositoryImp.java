@@ -3,6 +3,8 @@ package com.tma.techday.foodnutrientfact.helper.database;
 import com.tma.techday.foodnutrientfact.model.CalorieSetting;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingRepository;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 public class SqlCalorieSettingRepositoryImp implements CalorieSettingRepository {
@@ -22,5 +24,10 @@ public class SqlCalorieSettingRepositoryImp implements CalorieSettingRepository 
     @Override
     public CalorieSetting getCalorieSetting() {
         return calorieSettingDAO.getCalorieSetting();
+    }
+
+    @Override
+    public void updateCalorieSetting(CalorieSetting calorieSetting) {
+        calorieSettingDAO.updateCalorieSetting(calorieSetting);
     }
 }
