@@ -15,6 +15,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
+import com.tma.techday.foodnutrientfact.helper.SystemConstant;
 import com.tma.techday.foodnutrientfact.model.CalorieDaily;
 import com.tma.techday.foodnutrientfact.service.CalorieDailyService;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
@@ -66,7 +67,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         Date currentDate = new Date();
         calorieDailyList = calorieDailyService.getCalorieDaily(currentDate);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(SystemConstant.DATE_FORMAT_YYYY_MM_DD);
         String date = sdf.format(currentDate);
         dateView.setText(date);
 
@@ -105,26 +106,46 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         pieDataSet = new PieDataSet(pieEntriesCalories, " ");
         pieData = new PieData(pieDataSet);
         pieData.setValueFormatter(new PercentFormatter(pieChartCalorie));
-        pieChartCalorie.setUsePercentValues(true);
+        pieData.setValueTextColor(Color.BLACK);
+
         pieChartCalorie.setData(pieData);
+
+        setupPieDataSet(pieDataSet);
+
+        setupPieChartCalorie(pieChartCalorie);
+
+        Description description = new Description();
+        description.setText(getString(R.string.pie_chart_des));
+        pieChartCalorie.setDescription(description);
+    }
+
+    /**
+     * ...
+     * @param pieChartCalorie pieChartCalorie
+     */
+    private static void setupPieChartCalorie(PieChart pieChartCalorie) {
+        pieChartCalorie.setUsePercentValues(true);
+        pieChartCalorie.setDrawHoleEnabled(true);
+        pieChartCalorie.setTransparentCircleRadius(0f);
+        pieChartCalorie.setHoleRadius(0f);
+        pieChartCalorie.setEntryLabelColor(Color.BLACK);
+    }
+
+    /**
+     * Set up: colors, text size, x y....
+     * @param pieDataSet pieDataSet
+     */
+    private static void setupPieDataSet(PieDataSet pieDataSet) {
         pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
         pieDataSet.setSliceSpace(3f);
         pieDataSet.setValueTextSize(13f);
         pieDataSet.setSliceSpace(5f);
-        pieData.setValueTextColor(Color.BLACK);
         pieDataSet.setValueLinePart1OffsetPercentage(90.f);
         pieDataSet.setValueLinePart1Length(1.2f);
         pieDataSet.setValueLinePart2Length(.4f);
         pieDataSet.setValueTextColor(Color.BLACK);
         pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        pieChartCalorie.setDrawHoleEnabled(true);
-        pieChartCalorie.setTransparentCircleRadius(0f);
-        pieChartCalorie.setHoleRadius(0f);
-        pieChartCalorie.setEntryLabelColor(Color.BLACK);
-        Description description = new Description();
-        description.setText(getString(R.string.pie_chart_des));
-        pieChartCalorie.setDescription(description);
     }
 
     /**

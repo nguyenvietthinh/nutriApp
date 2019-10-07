@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
+import com.tma.techday.foodnutrientfact.helper.SystemConstant;
 import com.tma.techday.foodnutrientfact.model.CalorieSetting;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
 
@@ -84,7 +85,7 @@ public class SettingActivity extends AppCompatActivity {
      */
     private CalorieSetting buildCalorieSetting(double calorieSettingAmount) {
         Date currentDate = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(SystemConstant.DATE_FORMAT_YYYY_MM_DD);
         String date = sdf.format(currentDate);
         if (calorieSettingService.getCalorieSetting()!= null) {
             Date dateAdded = calorieSettingService.getCalorieSetting().getDate();

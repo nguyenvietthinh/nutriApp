@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.tma.techday.foodnutrientfact.helper.SystemConstant;
 import com.tma.techday.foodnutrientfact.model.CalorieDaily;
 import com.tma.techday.foodnutrientfact.model.CalorieSetting;
 
@@ -33,7 +34,7 @@ public class CalorieDailyDAO {
     public boolean addCalDaily(CalorieDaily calorieDaily){
 
         try (SQLiteDatabase db = openHelper.getWritableDatabase()) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat(SystemConstant.DATE_FORMAT_YYYY_MM_DD);
             String date = sdf.format(calorieDaily.getDate());
             ContentValues contentValues = new ContentValues();
             contentValues.put("date",date);
@@ -51,7 +52,7 @@ public class CalorieDailyDAO {
      * @return
      */
     public List<CalorieDaily> getCalorieDaily(Date date){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(SystemConstant.DATE_FORMAT_YYYY_MM_DD);
         String dateCalDaily = sdf.format(date);
         String query = "SELECT * from calorie_daily WHERE date  LIKE ?";
         CalorieDaily calorieDaily = null;

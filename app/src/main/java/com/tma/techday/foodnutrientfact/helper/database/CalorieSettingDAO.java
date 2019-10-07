@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.tma.techday.foodnutrientfact.helper.SystemConstant;
 import com.tma.techday.foodnutrientfact.model.CalorieSetting;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +30,7 @@ public class CalorieSettingDAO {
 
 
         try(SQLiteDatabase db = openHelper.getWritableDatabase()){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat(SystemConstant.DATE_FORMAT_YYYY_MM_DD);
             String date = sdf.format(calorieSetting.getDate());
             ContentValues contentValues = new ContentValues();
             contentValues.put("date",date);
@@ -68,7 +69,7 @@ public class CalorieSettingDAO {
      * @param calorieSetting
      */
     public void updateCalorieSetting(CalorieSetting calorieSetting){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(SystemConstant.DATE_FORMAT_YYYY_MM_DD);
         String dateCalSetting = sdf.format(calorieSetting.getDate());
         try (SQLiteDatabase db = openHelper.getWritableDatabase()){
             ContentValues contentValues = new ContentValues();

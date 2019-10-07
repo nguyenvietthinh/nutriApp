@@ -2,7 +2,6 @@ package com.tma.techday.foodnutrientfact.gui.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,9 +14,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
 import com.andremion.counterfab.CounterFab;
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
@@ -95,21 +96,17 @@ public class FoodNutriResultDialog extends DialogFragment {
         proteinDetailView.setText(Double.toString(foodNutri.getProtein()));
         cholesterolDetailView.setText(Integer.toString(foodNutri.getCholesterol()));
         totalFatDetailView.setText(Double.toString(foodNutri.getTotalFat()));
-        for (FatInfo fatInfo : foodNutri.getFatInfoList()) {
-            switch (fatInfo.getFatType()){
-                case Sat:
-                    satFatView.setText(Double.toString(fatInfo.getAmount()));
-                    break;
-                case Poly:
-                    polyFatView.setText(Double.toString(fatInfo.getAmount()));
-                    break;
-                case Mono:
-                    monoFatView.setText(Double.toString(fatInfo.getAmount()));
-                    break;
-            }
-        }
         sodiumView.setText(Integer.toString(foodNutri.getSodium()));
         potassiumView.setText(Integer.toString(foodNutri.getPotassium()));
+        displayFatInfo(foodNutri);
+        displayVitaminInfo(foodNutri);
+    }
+
+    /**
+     * ...
+     * @param foodNutri foodNutri
+     */
+    private void displayVitaminInfo(FoodInfoDTO foodNutri) {
         for (VitaminInfo vitaminInfo : foodNutri.getVitaminInfoList()) {
             switch (vitaminInfo.getVitaminType()){
                 case C:
@@ -126,6 +123,30 @@ public class FoodNutriResultDialog extends DialogFragment {
                     break;
                 case B12:
                     vitB12View.setText(Double.toString(vitaminInfo.getAmount()));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * ....
+     * @param foodNutri  foodNutri
+     */
+    private void displayFatInfo(FoodInfoDTO foodNutri) {
+        for (FatInfo fatInfo : foodNutri.getFatInfoList()) {
+            switch (fatInfo.getFatType()){
+                case Sat:
+                    satFatView.setText(Double.toString(fatInfo.getAmount()));
+                    break;
+                case Poly:
+                    polyFatView.setText(Double.toString(fatInfo.getAmount()));
+                    break;
+                case Mono:
+                    monoFatView.setText(Double.toString(fatInfo.getAmount()));
+                    break;
+                default:
                     break;
             }
         }
@@ -202,16 +223,6 @@ public class FoodNutriResultDialog extends DialogFragment {
         Bundle args = getArguments();
         foodNutri = (FoodInfoDTO) args.getSerializable(getString(R.string.food_nutri));
         return foodNutri;
-    }
-
-    /**
-     * Switch to other activity
-     * @param aClass destination activity
-     */
-    public void doOpenOtherActivity(Class aClass)
-    {
-        Intent intent =new Intent(getActivity(), aClass);
-        startActivity(intent);
     }
 
     /**
