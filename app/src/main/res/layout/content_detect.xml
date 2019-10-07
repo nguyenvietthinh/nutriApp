@@ -15,21 +15,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <com.wonderkiln.camerakit.CameraView
-                xmlns:camerakit="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/camemraView"
-                android:layout_width="match_parent"
-                android:layout_height="635dp"
-                android:layout_above="@id/btnDetect"
-                camerakit:ckFacing="back"
-                camerakit:ckFlash="off"
-                camerakit:ckFocus="continuous"
-                camerakit:ckMethod="standard"
-                camerakit:ckPermissions="strict"
-                camerakit:ckCropOutput="true"
-                camerakit:ckJpegQuality="100"
-                android:adjustViewBounds="true"
-                />
+            <TextureView
+                android:id="@+id/view_finder"
+                android:layout_width="640px"
+                android:layout_height="640px"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
             <Button
                 android:id="@+id/btnDetect"
                 android:layout_width="match_parent"
