@@ -120,7 +120,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
     }
 
     /**
-     * ...
+     * Set up properties for pie chart calorie
      * @param pieChartCalorie pieChartCalorie
      */
     private static void setupPieChartCalorie(PieChart pieChartCalorie) {
