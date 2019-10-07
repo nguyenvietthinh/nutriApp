@@ -22,19 +22,22 @@ import androidx.fragment.app.DialogFragment;
 import com.andremion.counterfab.CounterFab;
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
-import com.tma.techday.foodnutrientfact.model.FatInfo;
+import com.tma.techday.foodnutrientfact.model.FatType;
 import com.tma.techday.foodnutrientfact.model.FoodInfoDTO;
 import com.tma.techday.foodnutrientfact.model.Order;
 import com.tma.techday.foodnutrientfact.model.VitaminInfo;
 import com.tma.techday.foodnutrientfact.service.FoodNutriService;
 import com.tma.techday.foodnutrientfact.service.OrderService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 public class FoodNutriResultDialog extends DialogFragment {
 
     View viewResult,viewDetailRessult,viewDialog, popupInputDialogView;
-    TextView detailFoodNameView, foodNameView, caloriesView, totalFatView, cholesterolView, proteinView, satFatView, polyFatView, monoFatView, sodiumView, potassiumView, vitCView, vitDView, vitAView,vitB6View,
+    TextView detailFoodNameView, foodNameView, caloriesView, totalFatView, cholesterolView, proteinView,  sodiumView, potassiumView, vitCView, vitDView, vitAView,vitB6View,
             vitB12View, caloriesDetailView, proteinDetailView, cholesterolDetailView, totalFatDetailView,popupDialogFoodName;
     ImageButton btnCloseDialog;
     Button btnAdd, btnDetailAdd,btnpopupDialogCancel,btnpopupDialogAdd;
@@ -49,6 +52,8 @@ public class FoodNutriResultDialog extends DialogFragment {
 
     @Inject
     OrderService orderService;
+
+    Map<FatType,TextView> fatTypeTextViewMap = new HashMap<>();
 
     /**
      * Create Alert Dialog Fragment For Result Food Nutrition
@@ -135,20 +140,11 @@ public class FoodNutriResultDialog extends DialogFragment {
      * @param foodNutri  foodNutri
      */
     private void displayFatInfo(FoodInfoDTO foodNutri) {
-        for (FatInfo fatInfo : foodNutri.getFatInfoList()) {
-            switch (fatInfo.getFatType()){
-                case Sat:
-                    satFatView.setText(Double.toString(fatInfo.getAmount()));
-                    break;
-                case Poly:
-                    polyFatView.setText(Double.toString(fatInfo.getAmount()));
-                    break;
-                case Mono:
-                    monoFatView.setText(Double.toString(fatInfo.getAmount()));
-                    break;
-                default:
-                    break;
-            }
+        if( foodNutri.getFatInfoList() != null && !foodNutri.getFatInfoList().isEmpty() )
+        {
+            foodNutri.getFatInfoList().forEach( fatInfo -> {
+                fatTypeTextViewMap.get(fatInfo.getFatType()).setText(Double.toString(fatInfo.getAmount()));
+            });
         }
     }
 
@@ -194,9 +190,11 @@ public class FoodNutriResultDialog extends DialogFragment {
         proteinView = viewDialog.findViewById(R.id.txtProtein);
         cholesterolView = viewDialog.findViewById(R.id.txtCholesterol);
         totalFatView = viewDialog.findViewById(R.id.txtTotalFat);
-        satFatView = viewDialog.findViewById(R.id.txtSaturatedFat);
-        polyFatView = viewDialog.findViewById(R.id.txtPolyunsaturatedFat);
-        monoFatView = viewDialog.findViewById(R.id.txtMonounsaturatedFat);
+
+        fatTypeTextViewMap.put(FatType.Sat,viewDialog.findViewById(R.id.txtSaturatedFat));
+        fatTypeTextViewMap.put(FatType.Poly,viewDialog.findViewById(R.id.txtPolyunsaturatedFat));
+        fatTypeTextViewMap.put(FatType.Mono,viewDialog.findViewById(R.id.txtMonounsaturatedFat));
+
         sodiumView = viewDialog.findViewById(R.id.txtSodium);
         potassiumView = viewDialog.findViewById(R.id.txtPotassium);
         vitAView = viewDialog.findViewById(R.id.txtVitaminA);
