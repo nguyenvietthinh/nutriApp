@@ -2,36 +2,18 @@ package com.tma.techday.foodnutrientfact.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
-import android.util.Rational;
 import android.view.Menu;
-import android.view.Surface;
-import android.view.TextureView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.widget.RelativeLayout;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.CameraX;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageCaptureConfig;
-import androidx.camera.core.ImageProxy;
-import androidx.camera.core.Preview;
-import androidx.camera.core.PreviewConfig;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
-
 import com.andremion.counterfab.CounterFab;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOptions;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
@@ -50,33 +32,18 @@ import com.wonderkiln.camerakit.CameraKitEventListener;
 import com.wonderkiln.camerakit.CameraKitImage;
 import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraView;
-
-import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import dmax.dialog.SpotsDialog;
 
-// Your IDE likely can auto-import these classes, but there are several
-// different implementations so we list them here to disambiguate
-import android.Manifest;
-import android.util.Size;
-import android.graphics.Matrix;
-import android.widget.Toast;
-
-import java.util.concurrent.TimeUnit;
-
-
-
 public class DetectActivity extends AppCompatActivity {
-    private int REQUEST_CODE_PERMISSIONS = 101;
-    private final String REQUIRED_PERMISSIONS = "android.permission.CAMERA";
-    TextureView textureView;
 
-
-    Button btnDetect;
+    CameraView cameraView;
+    Button btnDetect, btnDetectAgain;
     AlertDialog waitingDialog;
     CounterFab counterFab;
+    RelativeLayout.LayoutParams layoutParams;
 
     @Inject
     FoodNutriService foodNutriService;
@@ -87,14 +54,14 @@ public class DetectActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        cameraView.start();
         counterFab.setCount(orderService.getCountCart());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
+        cameraView.stop();
     }
 
     /**
@@ -112,39 +79,50 @@ public class DetectActivity extends AppCompatActivity {
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
         setUpParam();
-        startCamera();
 
-//        cameraView.addCameraKitListener(new CameraKitEventListener() {
-//            @Override
-//            public void onEvent(CameraKitEvent cameraKitEvent) {
-//
-//            }
-//            @Override
-//            public void onError(CameraKitError cameraKitError) {
-//
-//            }
-//
-//            @Override
-//            public void onImage(CameraKitImage cameraKitImage) {
-//
-//                waitingDialog.show();
-//                Bitmap bitmap = cameraKitImage.getBitmap();
-//                bitmap =  Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(),bitmap.getHeight(),false);
-//                cameraView.stop();
-//                runDetect(bitmap);
-//
-//            }
-//
-//            @Override
-//            public void onVideo(CameraKitVideo cameraKitVideo) {
-//
-//            }
-//        });
+        cameraView.addCameraKitListener(new CameraKitEventListener() {
+            @Override
+            public void onEvent(CameraKitEvent cameraKitEvent) {
 
-//        btnDetect.setOnClickListener((view)->{
-//            startCamera();
-//
-//        });
+            }
+            @Override
+            public void onError(CameraKitError cameraKitError) {
+
+            }
+
+            @Override
+            public void onImage(CameraKitImage cameraKitImage) {
+
+                waitingDialog.show();
+                Bitmap bitmap = cameraKitImage.getBitmap();
+                bitmap =  Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(),bitmap.getHeight(),false);
+                cameraView.stop();
+                runDetect(bitmap);
+
+            }
+
+            @Override
+            public void onVideo(CameraKitVideo cameraKitVideo) {
+
+            }
+        });
+
+        btnDetect.setOnClickListener((view)->{
+            showAlertDialogNoticeImageCapture();
+            cameraView.captureImage();
+            layoutParams.removeRule(RelativeLayout.ABOVE);
+            layoutParams.addRule(RelativeLayout.ABOVE,R.id.btnDetectAgain);
+
+        });
+
+        btnDetectAgain.setOnClickListener(view -> {
+            btnDetectAgain.setVisibility(View.GONE);
+            btnDetect.setVisibility(View.VISIBLE);
+            layoutParams.removeRule(RelativeLayout.ABOVE);
+            layoutParams.addRule(RelativeLayout.ABOVE,R.id.btnDetect);
+            cameraView.start();
+
+        });
 
     }
 
@@ -164,13 +142,10 @@ public class DetectActivity extends AppCompatActivity {
      * Get the vision image detecter then analyze the image bitmap.
      * @param bitmap the picture taken from camera.
      */
-    private void runDetect(Image mediaImage, int rotation) {
+    private void runDetect(Bitmap bitmap) {
 
         //Create a FirebaseVisionImage object from a Bitmap object
-//        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
-
-        FirebaseVisionImage image =
-                FirebaseVisionImage.fromMediaImage(mediaImage, rotation);
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 
         // If have internet, we will use COULD_ENGINE mode Else we will use DEVICE_ENGINE mode
         new InternetCheck(connectInternet -> {
@@ -193,7 +168,6 @@ public class DetectActivity extends AppCompatActivity {
                             builder.setTitle(getString(R.string.error_title));
                             builder.setMessage(getString(R.string.unable_detect_image));
                             builder.show();
-
                         }
                     })
                     .addOnFailureListener(e -> Log.e("DETECTERROR",e.getMessage()));
@@ -248,6 +222,8 @@ public class DetectActivity extends AppCompatActivity {
         Log.i("foodName", foodName);
         if (waitingDialog.isShowing()) {
             waitingDialog.dismiss();
+            btnDetect.setVisibility(View.GONE);
+            btnDetectAgain.setVisibility(View.VISIBLE);
         }
         if (!foodName.equals("")) {
             getNutrition(foodName);
@@ -288,8 +264,10 @@ public class DetectActivity extends AppCompatActivity {
      * Declare Params
      */
     public void setUpParam(){
-        textureView = findViewById(R.id.view_finder);
+        cameraView = findViewById(R.id.camemraView);
         btnDetect = findViewById(R.id.btnDetect);
+        layoutParams = (RelativeLayout.LayoutParams) cameraView.getLayoutParams();
+        btnDetectAgain = findViewById(R.id.btnDetectAgain);
         waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage(getString(R.string.analyzing_dialog)).setCancelable(false).build();
         counterFab = findViewById(R.id.fab);
         counterFab.setOnClickListener(view -> {
@@ -299,130 +277,24 @@ public class DetectActivity extends AppCompatActivity {
         counterFab.setCount(orderService.getCountCart());
     }
 
-    private int degreesToFirebaseRotation(int degrees) {
-        switch (degrees) {
-            case 0:
-                return FirebaseVisionImageMetadata.ROTATION_0;
-            case 90:
-                return FirebaseVisionImageMetadata.ROTATION_90;
-            case 180:
-                return FirebaseVisionImageMetadata.ROTATION_180;
-            case 270:
-                return FirebaseVisionImageMetadata.ROTATION_270;
-            default:
-                throw new IllegalArgumentException(
-                        "Rotation must be 0, 90, 180, or 270.");
-        }
-    }
+    /**
+     * Show dialog notice waiting captured image
+     */
+    public void showAlertDialogNoticeImageCapture() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(DetectActivity.this);
+        builder.setTitle("Notice Dialog")
+                .setMessage("Please hold your phone still.")
+                .setCancelable(false).setCancelable(false);
 
-    private void startCamera() {
-
-        CameraX.unbindAll();
-
-        Rational aspectRatio = new Rational (textureView.getWidth(), textureView.getHeight());
-        Size screen = new Size(textureView.getWidth(), textureView.getHeight()); //size of the screen
-
-
-        PreviewConfig pConfig = new PreviewConfig.Builder().setTargetAspectRatio(aspectRatio).setTargetResolution(screen).build();
-        Preview preview = new Preview(pConfig);
-
-        preview.setOnPreviewOutputUpdateListener(
-                new Preview.OnPreviewOutputUpdateListener() {
-                    //to update the surface texture we  have to destroy it first then re-add it
-                    @Override
-                    public void onUpdated(Preview.PreviewOutput output){
-                        ViewGroup parent = (ViewGroup) textureView.getParent();
-                        parent.removeView(textureView);
-                        parent.addView(textureView, 0);
-
-                        textureView.setSurfaceTexture(output.getSurfaceTexture());
-                        updateTransform();
-                    }
-                });
-
-
-
-        ImageCaptureConfig imageCaptureConfig = new ImageCaptureConfig.Builder().setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
-                .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation()).build();
-        final ImageCapture imgCap = new ImageCapture(imageCaptureConfig);
-        btnDetect.setOnClickListener(view -> {
-            imgCap.takePicture(new ImageCapture.OnImageCapturedListener() {
-                @Override
-                public void onCaptureSuccess(ImageProxy image, int rotationDegrees) {
-                    Image mediaImage = image.getImage();
-                    int rotation = degreesToFirebaseRotation(rotationDegrees);
-                    runDetect(mediaImage,rotation);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (alertDialog.isShowing()){
+                    alertDialog.dismiss();
                 }
-
-                @Override
-                public void onError(@NonNull ImageCapture.UseCaseError useCaseError, @NonNull String message, @Nullable Throwable cause) {
-                    String msg = "Pic capture failed : " + message;
-                    Toast.makeText(getBaseContext(), msg,Toast.LENGTH_LONG).show();
-                    if(cause != null){
-                        cause.printStackTrace();
-                    }
-                }
-            });
-        });
-
-
-
-
-        //bind to lifecycle:
-        CameraX.bindToLifecycle((LifecycleOwner)this, preview, imgCap);
-    }
-
-    private void updateTransform(){
-        Matrix mx = new Matrix();
-        float w = textureView.getMeasuredWidth();
-        float h = textureView.getMeasuredHeight();
-
-        float cX = w / 2f;
-        float cY = h / 2f;
-
-        int rotationDgr;
-        int rotation = (int)textureView.getRotation();
-
-        switch(rotation){
-            case Surface.ROTATION_0:
-                rotationDgr = 0;
-                break;
-            case Surface.ROTATION_90:
-                rotationDgr = 90;
-                break;
-            case Surface.ROTATION_180:
-                rotationDgr = 180;
-                break;
-            case Surface.ROTATION_270:
-                rotationDgr = 270;
-                break;
-            default:
-                return;
-        }
-
-        mx.postRotate((float)rotationDgr, cX, cY);
-        textureView.setTransform(mx);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        if(requestCode == REQUEST_CODE_PERMISSIONS){
-            if(allPermissionsGranted()){
-                startCamera();
-            } else{
-                Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show();
-                finish();
             }
-        }
+        }, 1500);
     }
-
-    private boolean allPermissionsGranted(){
-
-        if(ContextCompat.checkSelfPermission(this, REQUIRED_PERMISSIONS) != PackageManager.PERMISSION_GRANTED){
-            return false;
-        }
-        return true;
-    }
-
 }
