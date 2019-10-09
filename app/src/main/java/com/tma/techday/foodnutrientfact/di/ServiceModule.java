@@ -8,6 +8,8 @@ import com.tma.techday.foodnutrientfact.helper.database.SqlCalorieDailyRepositor
 import com.tma.techday.foodnutrientfact.helper.database.SqlCalorieSettingRepositoryImp;
 import com.tma.techday.foodnutrientfact.helper.database.SqlFoodNutriRepositoryImp;
 import com.tma.techday.foodnutrientfact.helper.database.SqlOrderRepositoryImp;
+import com.tma.techday.foodnutrientfact.helper.database.SqlUserRepositoryImp;
+import com.tma.techday.foodnutrientfact.helper.database.UserDAO;
 import com.tma.techday.foodnutrientfact.service.CalorieDailyRepository;
 import com.tma.techday.foodnutrientfact.service.CalorieDailyService;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingRepository;
@@ -16,6 +18,8 @@ import com.tma.techday.foodnutrientfact.service.FoodNutriRepository;
 import com.tma.techday.foodnutrientfact.service.FoodNutriService;
 import com.tma.techday.foodnutrientfact.service.OrderRepository;
 import com.tma.techday.foodnutrientfact.service.OrderService;
+import com.tma.techday.foodnutrientfact.service.UserRepository;
+import com.tma.techday.foodnutrientfact.service.UserService;
 
 import javax.inject.Singleton;
 
@@ -63,6 +67,16 @@ public class ServiceModule {
     @Provides @Singleton
     CalorieDailyService provideCalorieDailyService(CalorieDailyRepository calorieDailyRepository){
         return new CalorieDailyService(calorieDailyRepository);
+    }
+
+    @Provides @Singleton
+    UserRepository provideUserRepository (UserDAO userDAO){
+        return new SqlUserRepositoryImp(userDAO);
+    }
+
+    @Provides @Singleton
+    UserService provideUserService(UserRepository userRepository){
+        return new UserService(userRepository);
     }
 
 }

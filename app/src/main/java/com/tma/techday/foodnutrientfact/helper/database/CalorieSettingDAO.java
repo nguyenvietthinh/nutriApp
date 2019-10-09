@@ -24,7 +24,7 @@ public class CalorieSettingDAO {
 
     /**
      * Insert Calorie Setting based on the amount
-     * @param calorieSetting entered by user
+     * @param calorieSetting entered by UserActivity
      */
     public boolean insertCalorieSetting(CalorieSetting calorieSetting){
 
@@ -44,7 +44,7 @@ public class CalorieSettingDAO {
     }
 
     /**
-     * Get calorie setting of user
+     * Get calorie setting of UserActivity
      * @return
      */
     public CalorieSetting getCalorieSetting(){

@@ -32,7 +32,7 @@ public class SettingActivity extends AppCompatActivity {
     CalorieSettingService calorieSettingService;
 
     /**
-     * Save user's calorie needs to database
+     * Save UserActivity's calorie needs to database
      * @param savedInstanceState
      */
     @Override

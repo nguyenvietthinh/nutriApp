@@ -98,7 +98,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
 
     /**
      * Build pie chart
-     * @param totalCalDaily user today colories.
+     * @param totalCalDaily UserActivity today colories.
      * @param calorieSetting calorieSetting from db
      */
     private void constructPieChart(double totalCalDaily,double calorieSetting) {
@@ -153,19 +153,21 @@ public class CalorieComparisionActivity extends AppCompatActivity {
      */
     private void getEntries(double totalCalDaily, double calorieSetting) {
         float calDailyPercent = (float) (totalCalDaily/calorieSetting*100);
-        if (Float.compare(calDailyPercent,100) >= 0) {
+        float calDailyPercentRounded = (float) (Math.round(calDailyPercent * 10.0) / 10.0);
+        if (Float.compare(calDailyPercentRounded,100) >= 0) {
             pieEntriesCalories.add(new PieEntry(100," "));
+            pieDataSet.setColors(Color.rgb(102,255,102) );
         } else {
-            if (Float.compare(calDailyPercent,50) > 0){
+            if (Float.compare(calDailyPercentRounded,50) > 0){
                 pieDataSet.setColors(Color.rgb(102,255,102),Color.rgb(155, 238, 255));
             }
-            else if (Float.compare(calDailyPercent, 50) == 0){
+            else if (Float.compare(calDailyPercentRounded, 50) == 0){
                 pieDataSet.setColors(Color.rgb(255,255,102),Color.rgb(155, 238, 255));
             }else {
                 pieDataSet.setColors(Color.rgb(233,63,63),Color.rgb(155, 238, 255));
             }
-            pieEntriesCalories.add(new PieEntry(calDailyPercent,getString(R.string.current)));
-            pieEntriesCalories.add(new PieEntry(100 - calDailyPercent,getString(R.string.calorie_missing)));
+            pieEntriesCalories.add(new PieEntry(calDailyPercentRounded,getString(R.string.current)));
+            pieEntriesCalories.add(new PieEntry(100 - calDailyPercentRounded,getString(R.string.calorie_missing)));
         }
     }
 }

@@ -9,6 +9,7 @@ import com.tma.techday.foodnutrientfact.helper.database.DatabaseCalorieAccess;
 import com.tma.techday.foodnutrientfact.helper.database.DatabaseOpenHelper;
 import com.tma.techday.foodnutrientfact.helper.database.FoodNutriDAO;
 import com.tma.techday.foodnutrientfact.helper.database.OrderSharePreferenceDAO;
+import com.tma.techday.foodnutrientfact.helper.database.UserDAO;
 
 import javax.inject.Singleton;
 
@@ -51,7 +52,6 @@ public class DatabaseModule {
     }
 
 
-
     @Provides
     @Singleton
     OrderSharePreferenceDAO provideOrderSharePreferenceDAO(){
@@ -64,6 +64,11 @@ public class DatabaseModule {
         return new CalorieDailyDAO(provideSQLiteOpenHelperCalorieDb());
     }
 
+    @Provides
+    @Singleton
+    UserDAO provideUserDAO(){
+        return new UserDAO(provideSQLiteOpenHelperCalorieDb());
+    }
 
 
 }

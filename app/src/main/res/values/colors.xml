@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="green">#2AF598</color>
     <color name="blue">#009EFD</color>
+    <color name="header_user_profile_color">#660033</color>
 </resources>

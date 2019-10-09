@@ -48,7 +48,7 @@ public class CalorieDailyDAO {
     }
 
     /**
-     * Get calorie setting of user
+     * Get calorie setting of UserActivity
      * @return
      */
     public List<CalorieDaily> getCalorieDaily(Date date){

@@ -30,5 +30,7 @@
     <string name="confirm_dialog_content"> Do you really want to delete ?</string>
     <string name="confirm_dialog_update_calsetting_content">You have entered calorie setting today.\n Do you really want to update calorie setting ?</string>
     <string name="calorie_daily_intent">CalorieDaily</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
 
 </resources>
