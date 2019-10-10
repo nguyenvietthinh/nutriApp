@@ -6,4 +6,6 @@ import com.tma.techday.foodnutrientfact.model.User;
 public interface UserRepository {
     boolean insertUser(User user);
     User getUser();
+    int getProfilesCount();
+    void updateUser(User user);
 }

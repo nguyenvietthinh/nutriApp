@@ -18,9 +18,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
+import com.tma.techday.foodnutrientfact.model.CalorieSetting;
+import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
+import com.tma.techday.foodnutrientfact.service.UserService;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView userNameView;
     private View headerLayout;
 
+    @Inject
+    UserService userService;
+
+    @Inject
+    CalorieSettingService calorieSettingService;
+
     /**
      * Switch from home screen to calorie setting and detect components
      * @param savedInstanceState
@@ -40,13 +51,14 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FoodNutriApplication application = (FoodNutriApplication) getApplication();
+        application.getComponent().inject(this);
         setupParam();
         if (!checkUserNameEmpty()){
             doOpenOtherActivity(EditUserActivity.class);
         }
 
-        FoodNutriApplication application = (FoodNutriApplication) getApplication();
-        application.getComponent().inject(this);
+
 
         cardViewDetect.setOnClickListener(view -> {
             doOpenOtherActivity(DetectActivity.class);
@@ -72,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
      * Declare Params
      */
     public void setupParam(){
+
         cardViewDetect = findViewById(R.id.cardViewDetect);
         cardViewCalSetting = findViewById(R.id.cardViewCalSetting);
         drawerLayout = findViewById(R.id.activity_main);
@@ -80,19 +93,30 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigationView = findViewById(R.id.navUser);
+        headerLayout = navigationView.getHeaderView(0);
+        userNameView = headerLayout.findViewById(R.id.userNameNav);
+        if (userService.getUser() != null){
+            userNameView.setText(userService.getUser().getUserName());
+        }
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.account){
-                    doOpenOtherActivity(UserActivity.class);
+                    if (userService.getUser() != null){
+                        doOpenOtherActivity(UserActivity.class);
+                    }else {
+                        Toast.makeText(MainActivity.this, getString(R.string.require_edit_user), Toast.LENGTH_LONG).show();
+                        doOpenOtherActivity(UserActivity.class);
+                    }
+                }else if (id == R.id.settingLanguage){
+                        doOpenOtherActivity(SettingLanguageActivity.class);
                 }
                 return true;
 
             }
         });
-        headerLayout = navigationView.getHeaderView(0);
-        userNameView = headerLayout.findViewById(R.id.userNameNav);
+
 
     }
     @Override

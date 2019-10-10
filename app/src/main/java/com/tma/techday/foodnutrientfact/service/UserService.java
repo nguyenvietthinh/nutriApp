@@ -19,4 +19,12 @@ public class UserService {
     public User getUser(){
         return userRepository.getUser();
     }
+
+    public int getProfilesCount(){
+        return userRepository.getProfilesCount();
+    }
+
+    public void updateUser(User user){
+        userRepository.updateUser(user);
+    }
 }

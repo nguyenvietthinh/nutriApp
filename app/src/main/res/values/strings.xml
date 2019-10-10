@@ -1,10 +1,6 @@
 <resources>
 
     <string name="app_name">Food Nutrient Fact</string>
-    <string-array name="weight_unit_array">
-        <item>Gram</item>
-        <item>Kg</item>
-    </string-array>
     <string name="save_successfully">Save Data Successfully.</string>
     <string name="save_fail">Save To Data Failed.</string>
     <string name="cart_empty">Your cart is empty.</string>
@@ -17,10 +13,10 @@
     <string name="unable_detect_image">Unable to detect the image.</string>
     <string name="error_title">Error</string>
     <string name="detect_labeler_cannot_null">Detect Image Labeler cannot be null.</string>
-    <string name="food_nutri">foodNutri</string>
+    <string name="food_nutri" translatable="false">foodNutri</string>
     <string name="analyzing_dialog">Analyzing the object...</string>
     <string name="not_found_food">Not Found Food.</string>
-    <string name="engine_must_be_specified">Engine must be specified.</string>
+    <string name="engine_must_be_specified" translatable="false">Engine must be specified.</string>
     <string name="current">Current</string>
     <string name="calorie_missing">Missing</string>
     <string name="pie_chart_des">Pie Chart Calorie</string>
@@ -29,8 +25,40 @@
     <string name="confirm_dialog_title">Confirm dialog !</string>
     <string name="confirm_dialog_content"> Do you really want to delete ?</string>
     <string name="confirm_dialog_update_calsetting_content">You have entered calorie setting today.\n Do you really want to update calorie setting ?</string>
-    <string name="calorie_daily_intent">CalorieDaily</string>
+    <string name="calorie_daily_intent" translatable="false">CalorieDaily</string>
     <string name="Open">Open</string>
     <string name="Close">Close</string>
-
+    <string name="update_user">Update Your Information Successfully.</string>
+    <string name="require_edit_user">Please enter your information.</string>
+    <string name="user_profile_setting">Your Profile Setting</string>
+    <string name="user_name">Name:&#160;</string>
+    <string name="user_height">Height:&#160;</string>
+    <string name="user_weight">Weight:&#160;</string>
+    <string name="save">Save</string>
+    <string name="calorie_setting" translatable="false">CALORIE SETTING</string>
+    <string name="detect_main_activity">DETECT</string>
+    <string name="welcome">Welcome</string>
+    <string name="edit_user">Edit</string>
+    <string name="total">Total:&#160;</string>
+    <string name="date">Date:&#160;</string>
+    <string name="total_cal_daily">Total Calorie Daily:&#160;</string>
+    <string name="total_cal_setting">Total Calorie Setting:&#160;</string>
+    <string name="Kcal" translatable="false">&#160;KCal</string>
+    <string name="cm" translatable="false">cm</string>
+    <string name="kg" translatable="false">kg</string>
+    <string name="Calorie" translatable="false">Calorie:&#160;</string>
+    <string name="user_daily_calories_setting"> User daily calories setting</string>
+    <string name="detect_activity">DETECT</string>
+    <string name="food_weight">Food Weight:&#160;</string>
+    <string name="add_to_cart"> Add to cart</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Add">Add</string>
+    <string name="my_profile">My Profile</string>
+    <string name="detect_again">DETECT AGAIN</string>
+    <string name="hold_phone">Please hold your phone still.</string>
+    <string name="laguage">Language</string>
+    <string name="setting_language">Choose Language</string>
+    <string name="Vietnamese">Tiếng Việt</string>
+    <string name="English">English</string>
+    <string name="change_language">Change</string>
 </resources>

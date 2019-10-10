@@ -9,8 +9,10 @@
         android:id="@+id/textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User Profile Setting"
+        android:text="@string/user_profile_setting"
         android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:textSize="30sp" />
 
     <LinearLayout
@@ -24,7 +26,7 @@
             android:layout_width="114dp"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="Name: "
+            android:text="@string/user_name"
             android:textColor="#F7252323"
             android:textSize="16sp" />
 
@@ -57,7 +59,7 @@
             android:layout_width="114dp"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="Height: "
+            android:text="@string/user_height"
             android:textColor="#F7252323"
             android:textSize="16sp" />
 
@@ -76,7 +78,7 @@
         <TextView
             android:layout_width="114dp"
             android:layout_height="wrap_content"
-            android:text="cm"
+            android:text="@string/cm"
             android:textColor="#F7252323"
             android:textSize="16sp" />
     </LinearLayout>
@@ -90,7 +92,7 @@
             android:layout_width="114dp"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="Weight: "
+            android:text="@string/user_weight"
             android:textColor="#F7252323"
             android:textSize="16sp" />
 
@@ -109,7 +111,7 @@
         <TextView
             android:layout_width="114dp"
             android:layout_height="wrap_content"
-            android:text="kg"
+            android:text="@string/kg"
             android:textColor="#F7252323"
             android:textSize="16sp" />
 
@@ -118,8 +120,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
-        android:id="@+id/btnSave"
+        android:text="@string/save"
+        android:id="@+id/btnEditUserSave"
         android:gravity="center"
         android:background="@drawable/buttons"
         android:layout_below = "@+id/editText"

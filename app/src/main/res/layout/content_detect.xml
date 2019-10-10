@@ -35,14 +35,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:text="DETECT" />
+                android:text="@string/detect_activity" />
             <Button
                 android:id="@+id/btnDetectAgain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:visibility="gone"
-                android:text="DETECT AGAIN" />
+                android:text="" />
         </RelativeLayout>
 
     </FrameLayout>

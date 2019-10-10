@@ -24,4 +24,14 @@ public class SqlUserRepositoryImp implements UserRepository {
     public User getUser() {
         return userDAO.getUser();
     }
+
+    @Override
+    public int getProfilesCount() {
+        return userDAO.getProfilesCount();
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userDAO.updateUser(user);
+    }
 }

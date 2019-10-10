@@ -9,7 +9,9 @@
         android:id="@+id/textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User daily calories setting"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/user_daily_calories_setting"
         android:textSize="30sp" />
 
     <LinearLayout
@@ -18,16 +20,14 @@
         android:layout_below="@+id/textView"
         android:gravity="center"
         android:layout_marginBottom="10dp">
-
         <TextView
             android:id="@+id/txtCalorieLabel"
             android:layout_width="114dp"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="Calorie:"
+            android:text="@string/Calorie"
             android:textColor="#F7252323"
             android:textSize="16sp" />
-
         <EditText
             android:id="@+id/txtCalSetting"
             android:inputType = "numberDecimal"
@@ -44,16 +44,15 @@
             android:id="@+id/txtKcal"
             android:layout_width="114dp"
             android:layout_height="wrap_content"
-            android:text="Kcal"
+            android:text="@string/Kcal"
             android:textColor="#F7252323"
             android:textSize="16sp" />
-
     </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:text="@string/change_language"
         android:id="@+id/btnSave"
         android:gravity="center"
         android:background="@drawable/buttons"

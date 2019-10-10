@@ -3,5 +3,8 @@
 
     <item android:id="@+id/account"
         android:icon="@drawable/ic_person_black_24dp"
-        android:title="My Profile"/>
+        android:title="@string/my_profile"/>
+    <item android:id="@+id/settingLanguage"
+        android:icon="@drawable/ic_setting_camera"
+        android:title="@string/laguage"/>
 </menu>

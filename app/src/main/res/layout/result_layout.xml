@@ -208,7 +208,7 @@
         android:layout_marginBottom="5dp"
         android:typeface="normal"
         android:textColor="#330033"
-        android:text="Add"/>
+        android:text="@string/Add"/>
 
 
 </LinearLayout>

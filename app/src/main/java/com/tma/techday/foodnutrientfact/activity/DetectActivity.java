@@ -283,7 +283,7 @@ public class DetectActivity extends AppCompatActivity {
     public void showAlertDialogNoticeImageCapture() {
         AlertDialog.Builder builder = new AlertDialog.Builder(DetectActivity.this);
         builder.setTitle("Notice Dialog")
-                .setMessage("Please hold your phone still.")
+                .setMessage(getString(R.string.hold_phone))
                 .setCancelable(false).setCancelable(false);
 
         final AlertDialog alertDialog = builder.create();

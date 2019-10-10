@@ -19,20 +19,20 @@ tools:context=".activity.UserActivity">
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome"
+            android:text="@string/welcome"
             android:textColor="#fff"
             android:textStyle="bold"
             android:textSize="21sp"/>
+
         <TextView
             android:id="@+id/userNameProfile"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wiliam Snoe"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
             android:textColor="#fff"
-            android:textStyle="bold"
-            android:textSize="21sp"/>
+            android:textSize="21sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </RelativeLayout>
 <LinearLayout
@@ -51,6 +51,7 @@ tools:context=".activity.UserActivity">
             android:layout_height="36dp"
             android:src="@drawable/name"/>
         <TextView
+            android:id="@+id/txtUserName"
             android:textStyle="bold"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
@@ -150,6 +151,6 @@ tools:context=".activity.UserActivity">
     android:layout_gravity="center_horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Edit"/>
+    android:text="@string/edit_user"/>
 
 </LinearLayout>

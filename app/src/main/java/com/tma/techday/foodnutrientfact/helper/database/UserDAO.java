@@ -2,11 +2,11 @@ package com.tma.techday.foodnutrientfact.helper.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.tma.techday.foodnutrientfact.model.CalorieSetting;
-import com.tma.techday.foodnutrientfact.model.Order;
+
 import com.tma.techday.foodnutrientfact.model.User;
 
 import javax.inject.Inject;
@@ -63,5 +63,37 @@ public class UserDAO {
             e.printStackTrace();
         }
         return user;
+    }
+
+    /**
+     * Get count row of user
+     * @return
+     */
+    public int getProfilesCount() {
+        int count = 0;
+        try (SQLiteDatabase db = openHelper.getWritableDatabase()){
+             count = (int) DatabaseUtils.queryNumEntries(db, TABLE_NAME);
+            return count;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    /**
+     * Update user
+     * @param user
+     */
+    public void updateUser(User user){
+        try (SQLiteDatabase db = openHelper.getWritableDatabase()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("name", user.getUserName());
+            contentValues.put("height", user.getHeight());
+            contentValues.put("weight", user.getWeight());
+            contentValues.put("bmi", user.getBmi());
+            db.update(TABLE_NAME, contentValues, "",new String[] {});
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }
