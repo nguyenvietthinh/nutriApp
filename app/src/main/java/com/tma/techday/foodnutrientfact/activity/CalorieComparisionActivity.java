@@ -27,6 +27,9 @@ import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 
+/**
+ * Display pie chart and related parameters
+ */
 public class CalorieComparisionActivity extends AppCompatActivity {
     TextView dateView, calDailyView, calSettingView,pieChartTitle;
     NumberFormat numberFormat = new DecimalFormat("0.00");
@@ -49,11 +52,10 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
         setUpParam();
-
     }
 
     /**
-     * Declare Params and Pie Chart
+     * Declare Params, Pie Chart and set text for view
      */
     public void setUpParam(){
         pieChartCalorie = findViewById(R.id.pieChartCal);

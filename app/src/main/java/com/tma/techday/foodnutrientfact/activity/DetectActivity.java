@@ -37,6 +37,9 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import dmax.dialog.SpotsDialog;
 
+/**
+ * Capture ,detect image, add to cart
+ */
 public class DetectActivity extends AppCompatActivity {
 
     CameraView cameraView;

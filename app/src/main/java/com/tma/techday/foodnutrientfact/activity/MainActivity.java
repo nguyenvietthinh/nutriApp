@@ -1,6 +1,9 @@
 package com.tma.techday.foodnutrientfact.activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.MenuItem;
@@ -24,10 +27,13 @@ import com.tma.techday.foodnutrientfact.service.UserService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
-
+/**
+ * This is main screen contain navigation menu of user and two button use to switch to detect and calorie setting activity
+ */
 public class MainActivity extends AppCompatActivity {
 
     CardView cardViewDetect, cardViewCalSetting;
@@ -50,15 +56,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        loadLocale();
+        Intent intent = getIntent();
+        String lang = intent.getStringExtra("language");
+        if (lang != null){
+            setLocale(lang);
+            loadLocale();
+        }
         setContentView(R.layout.activity_main);
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
+
         setupParam();
+
         if (!checkUserNameEmpty()){
             doOpenOtherActivity(EditUserActivity.class);
         }
-
-
 
         cardViewDetect.setOnClickListener(view -> {
             doOpenOtherActivity(DetectActivity.class);
@@ -81,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Declare Params
+     * Declare Params and set listener for Navigation View
      */
     public void setupParam(){
 
@@ -110,15 +123,21 @@ public class MainActivity extends AppCompatActivity {
                         doOpenOtherActivity(UserActivity.class);
                     }
                 }else if (id == R.id.settingLanguage){
-                        doOpenOtherActivity(SettingLanguageActivity.class);
+                    doOpenOtherActivity(SettingLanguageActivity.class);
+                }else if (id == R.id.webView){
+                    doOpenOtherActivity(WebViewCookingRecipe.class);
                 }
                 return true;
 
             }
         });
-
-
     }
+
+    /**
+     * When click Toggle will display navigation view
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -128,10 +147,39 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Check if the user has entered information yet?
+     * @return
+     */
     private boolean checkUserNameEmpty(){
         if (userNameView.getText().toString().isEmpty()){
             return false;
         }
         return true;
+    }
+
+    /**
+     * Set Locale when choose language
+     * @param lang
+     */
+    private void setLocale(String lang){
+
+        Locale locale = new Locale(lang);
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        config.setLocale(locale);
+        getBaseContext().createConfigurationContext(config);
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getSharedPreferences("Settings",MODE_PRIVATE).edit();
+        editor.putString("My_Lang", lang);
+        editor.apply();
+    }
+
+    /**
+     * Load Locale after change language
+     */
+    private void loadLocale(){
+        SharedPreferences sharedPreferences = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String language = sharedPreferences.getString("My_Lang","");
+        setLocale(language);
     }
 }

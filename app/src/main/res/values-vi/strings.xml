@@ -47,10 +47,12 @@
     <string name="welcome">Chào</string>
     <string name="my_profile">Thông tin của tôi</string>
     <string name="detect_again">Phân tích lại</string>
-    <string name="laguage">Ngôn ngữ</string>
+    <string name="Language">Ngôn ngữ</string>
     <string name="hold_phone">Hãy giữ điện thoại của bạn để chụp được hình ảnh tốt nhất.</string>
     <string name="setting_language">Chọn ngôn ngữ</string>
     <string name="Vietnamese">Tiếng Việt</string>
     <string name="English">English</string>
     <string name="change_language">Thay dổi</string>
+    <string name="url_web_view">https://www.cooky.vn</string>
+    <string name="cooking_recipe" >Web Hướng Dẫn Nấu An</string>
 </resources>

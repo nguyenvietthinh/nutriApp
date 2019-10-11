@@ -5,6 +5,9 @@
         android:icon="@drawable/ic_person_black_24dp"
         android:title="@string/my_profile"/>
     <item android:id="@+id/settingLanguage"
-        android:icon="@drawable/ic_setting_camera"
-        android:title="@string/laguage"/>
+    android:icon="@drawable/ic_setting_camera"
+    android:title="@string/Language"/>
+    <item android:id="@+id/webView"
+        android:icon="@drawable/domain"
+        android:title="@string/cooking_recipe"/>
 </menu>

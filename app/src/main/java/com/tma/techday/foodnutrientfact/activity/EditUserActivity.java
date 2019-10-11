@@ -11,9 +11,12 @@ import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
 import com.tma.techday.foodnutrientfact.model.User;
 import com.tma.techday.foodnutrientfact.service.UserService;
-
 import javax.inject.Inject;
 
+/**
+ * Create user if not created before
+ * Edit user information
+ */
 public class EditUserActivity extends AppCompatActivity {
 
     TextView txtEditUserName, txtEditHeight, txtEditWeight;
@@ -31,10 +34,8 @@ public class EditUserActivity extends AppCompatActivity {
         setUpParam();
     }
 
-
-
     /**
-     * Declare and set up Params
+     * Declare Params and set on click listener for buttons
      */
     private void setUpParam(){
         txtEditUserName = findViewById(R.id.txtEditUserName);
@@ -57,7 +58,6 @@ public class EditUserActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     /**

@@ -1,5 +1,10 @@
 package com.tma.techday.foodnutrientfact.model;
 
+
+/**
+ * Contain and save User from DB
+ */
+
 public class User {
     private String userName;
     private double height;

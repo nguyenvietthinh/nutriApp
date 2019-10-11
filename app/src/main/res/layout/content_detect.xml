@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:visibility="gone"
-                android:text="" />
+                android:text="@string/detect_again" />
         </RelativeLayout>
 
     </FrameLayout>

@@ -14,6 +14,9 @@ import com.tma.techday.foodnutrientfact.service.UserService;
 
 import javax.inject.Inject;
 
+/**
+ * Display user information
+ */
 public class UserActivity extends AppCompatActivity {
 
     Button btnEdit;
@@ -22,6 +25,9 @@ public class UserActivity extends AppCompatActivity {
     @Inject
     UserService userService;
 
+    /**
+     * Display user information
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +38,9 @@ public class UserActivity extends AppCompatActivity {
         setUpParam();
     }
 
+    /**
+     * Display user information if resume
+     */
     @Override
     protected void onResume() {
         super.onResume();

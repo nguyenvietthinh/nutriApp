@@ -47,6 +47,7 @@ dependencies {
     implementation 'com.github.andremion:counterfab:1.0.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'io.paperdb:paperdb:2.6'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
 

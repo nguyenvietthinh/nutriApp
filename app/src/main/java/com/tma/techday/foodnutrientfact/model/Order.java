@@ -1,7 +1,7 @@
 package com.tma.techday.foodnutrientfact.model;
 
 /**
- * Detail order in cart
+ * Detail order in cart used to save data to SharePreference
  */
 public class Order {
     private String foodName;

@@ -26,6 +26,9 @@ import org.greenrobot.eventbus.EventBus;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+/**
+ * Contains and resolve operations on the cart item
+ */
 public class CartItem extends Fragment {
     private Order order;
     private Double calAmountFinal;
@@ -49,7 +52,7 @@ public class CartItem extends Fragment {
     }
 
     /**
-     * Declare Params
+     * Declare Params, set Text and set on click listener.
      */
     private void setUpParam(View view){
         foodNameItemView = view.findViewById(R.id.cart_item_food_name);
@@ -109,7 +112,6 @@ public class CartItem extends Fragment {
                                     order.setCalorieAmount(newCalAmount);
                                     order.setFoodWeight(newWeightfood);
                                 }
-
                                 Double calChange = newCalAmount - calAmount;
                                 calAmountItemView.setText(numberFormat.format(order.getCalorieAmount()));
                                 EventBus.getDefault().post(new CaloriesChangeEvent(calChange));
@@ -141,7 +143,6 @@ public class CartItem extends Fragment {
                 builder.create().cancel();
             }
         });
-
         builder.show();
     }
 

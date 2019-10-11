@@ -23,6 +23,9 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
+/**
+ * Edit and Save Calorie Setting
+ */
 public class SettingActivity extends AppCompatActivity {
 
     EditText txtCalSetting;
@@ -54,7 +57,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     /**
-     * set onclick listener for button Save
+     * Set onclick listener for button Save
      * @return
      */
     private View.OnClickListener setBtnSaveOnclickListener() {
@@ -122,5 +125,4 @@ public class SettingActivity extends AppCompatActivity {
         });
         builder.show();
     }
-
 }

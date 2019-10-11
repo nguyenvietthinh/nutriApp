@@ -30,9 +30,11 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.inject.Inject;
 
+/**
+ * Contain cart and save data to cart
+ */
 public class AddToCartActivity extends AppCompatActivity {
     EditText txtCalSetting;
     public  TextView totalCalView;
@@ -80,7 +82,6 @@ public class AddToCartActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
-
     /**
      * Declare Params
      */
@@ -96,8 +97,7 @@ public class AddToCartActivity extends AppCompatActivity {
     }
 
     /**
-     * set onclick listener for image button research
-     * @return
+     * Set onclick listener for image button research
      */
     private View.OnClickListener setBtnResearchOnClickListener() {
         return view -> {
@@ -108,9 +108,8 @@ public class AddToCartActivity extends AppCompatActivity {
         };
     }
 
-
     /**
-     * set on click listener for button save
+     * Set on click listener for button save
      * @return
      */
     private View.OnClickListener setupBtnAddOnClickListener() {
@@ -167,8 +166,6 @@ public class AddToCartActivity extends AppCompatActivity {
         totalCalView.setText(numberFormat.format(total));
     }
 
-
-
     /**
      * Receive calorie changed from adapter
      */
@@ -193,6 +190,4 @@ public class AddToCartActivity extends AppCompatActivity {
         }
         loadCart();
     }
-
-
 }
