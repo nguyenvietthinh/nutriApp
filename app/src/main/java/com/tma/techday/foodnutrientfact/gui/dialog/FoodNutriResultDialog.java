@@ -269,7 +269,7 @@ public class FoodNutriResultDialog extends DialogFragment {
                 } else {
                     double parseFoodWeight = Double.parseDouble(foodWeight);
                     double orderAmount = (parseFoodWeight * (foodNutri.getCalories())) / 100.0;
-                    if (orderService.addOrderToCard(new Order(foodNutri.getFoodName(), orderAmount, parseFoodWeight))) {
+                    if (orderService.addOrderToCard(Order.of(foodNutri.getFoodName(), orderAmount, parseFoodWeight))) {
                         Toast.makeText(getActivity(),getString(R.string.added_to_cart), Toast.LENGTH_LONG).show();
                         viewDialog.setVisibility(View.GONE);
                         popupDialog.cancel();

@@ -68,7 +68,8 @@ public class EditUserActivity extends AppCompatActivity {
         String userName = txtEditUserName.getText().toString();
         Double height = Double.valueOf(txtEditHeight.getText().toString());
         Double weight = Double.valueOf(txtEditWeight.getText().toString());
-        Double bmi =  weight/(height*height);
+        Double mheight = height/100.0;
+        Double bmi =  weight/(mheight*mheight);
         return User.of(userName,height,weight,bmi);
     }
 }

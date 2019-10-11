@@ -8,6 +8,10 @@ public class Order {
     private double calorieAmount;
     private double foodWeight;
 
+    public static Order of(String foodName, double calorieAmount, double foodWeight){
+        return new Order(foodName, calorieAmount,foodWeight);
+    }
+
     public Order(String foodName, double calorieAmount, double foodWeight) {
         this.foodName = foodName;
         this.calorieAmount = calorieAmount;
