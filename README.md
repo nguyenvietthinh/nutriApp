@@ -9,3 +9,5 @@
 ## Database
   We use SQLite as the application's database.
   To get the SQLite file, we converted from a CSV file, a CSV file that was collected from the USDA website.
+##Icon
+ The icons used for the Application are free from https://www.flaticon.com 
