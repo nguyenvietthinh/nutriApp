@@ -32,7 +32,10 @@ import com.wonderkiln.camerakit.CameraKitEventListener;
 import com.wonderkiln.camerakit.CameraKitImage;
 import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraView;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import dmax.dialog.SpotsDialog;
@@ -53,6 +56,17 @@ public class DetectActivity extends AppCompatActivity {
 
     @Inject
     OrderService orderService;
+
+    //TODO: refactor this
+    static Set<String> IGNORE_LIST = new HashSet<>();
+    static {
+        IGNORE_LIST.add("food");
+        IGNORE_LIST.add("cup");
+        IGNORE_LIST.add("orange");
+        IGNORE_LIST.add("red");
+        IGNORE_LIST.add("blue");
+        IGNORE_LIST.add("green");
+    }
 
     @Override
     protected void onResume() {
@@ -150,9 +164,9 @@ public class DetectActivity extends AppCompatActivity {
         //Create a FirebaseVisionImage object from a Bitmap object
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 
-        // If have internet, we will use COULD_ENGINE mode Else we will use DEVICE_ENGINE mode
+        // If have internet, we will use CLOUD_ENGINE mode Else we will use DEVICE_ENGINE mode
         new InternetCheck(connectInternet -> {
-            FirebaseVisionImageLabeler detectImageLabeler = getFirebaseVisionImageLabeler(connectInternet ? ImageDetectEngine.COULD_ENGINE : ImageDetectEngine.DEVICE_ENGINE);
+            FirebaseVisionImageLabeler detectImageLabeler = getFirebaseVisionImageLabeler(connectInternet ? ImageDetectEngine.CLOUD_ENGINE : ImageDetectEngine.DEVICE_ENGINE);
             if (detectImageLabeler == null)
             {
                 Log.e("Error",getString(R.string.detect_labeler_cannot_null));
@@ -187,7 +201,7 @@ public class DetectActivity extends AppCompatActivity {
             throw new IllegalArgumentException(getString(R.string.engine_must_be_specified));
         switch (imageDetectEngine)
         {
-            case COULD_ENGINE:
+            case CLOUD_ENGINE:
                 FirebaseVisionCloudImageLabelerOptions cloudLabeler =          //Finding Labels in a supplied image runs inference on cloud
                         new FirebaseVisionCloudImageLabelerOptions.Builder()
                                 .setConfidenceThreshold(0.9f) // Get highest Confidence Threshold
@@ -214,7 +228,7 @@ public class DetectActivity extends AppCompatActivity {
         String foodName = "";
         List<String> itemNames = labels.stream().map(lbl -> lbl.getText()).collect(Collectors.toList());
         for (String itemName : itemNames){
-            if (itemName.equalsIgnoreCase("food") || itemName.equalsIgnoreCase("cup")) {
+            if ( IGNORE_LIST.contains(itemName) ) {
                 continue;
             }
             else {
