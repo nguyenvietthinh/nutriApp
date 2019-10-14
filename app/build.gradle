@@ -50,8 +50,7 @@ dependencies {
     implementation 'io.paperdb:paperdb:2.6'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
-
-
+    implementation 'com.google.firebase:firebase-ml-vision-object-detection-model:19.0.1'
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
 

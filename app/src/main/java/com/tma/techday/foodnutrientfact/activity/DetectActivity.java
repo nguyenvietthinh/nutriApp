@@ -3,6 +3,7 @@ package com.tma.techday.foodnutrientfact.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -10,14 +11,22 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.andremion.counterfab.CounterFab;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOptions;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceImageLabelerOptions;
+import com.google.firebase.ml.vision.objects.FirebaseVisionObject;
+import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetector;
+import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions;
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
 import com.tma.techday.foodnutrientfact.enums.ImageDetectEngine;
@@ -26,6 +35,8 @@ import com.tma.techday.foodnutrientfact.helper.InternetCheck;
 import com.tma.techday.foodnutrientfact.model.FoodInfoDTO;
 import com.tma.techday.foodnutrientfact.service.FoodNutriService;
 import com.tma.techday.foodnutrientfact.service.OrderService;
+import com.tma.techday.foodnutrientfact.viewholder.GraphicOverlay;
+import com.tma.techday.foodnutrientfact.viewholder.RectOverlay;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
 import com.wonderkiln.camerakit.CameraKitEventListener;
@@ -46,6 +57,7 @@ import dmax.dialog.SpotsDialog;
 public class DetectActivity extends AppCompatActivity {
 
     CameraView cameraView;
+    GraphicOverlay graphicOverlay;
     Button btnDetect, btnDetectAgain;
     AlertDialog waitingDialog;
     CounterFab counterFab;
@@ -116,6 +128,7 @@ public class DetectActivity extends AppCompatActivity {
                 Bitmap bitmap = cameraKitImage.getBitmap();
                 bitmap =  Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(),bitmap.getHeight(),false);
                 cameraView.stop();
+
                 runDetect(bitmap);
 
             }
@@ -128,7 +141,10 @@ public class DetectActivity extends AppCompatActivity {
 
         btnDetect.setOnClickListener((view)->{
             showAlertDialogNoticeImageCapture();
-            cameraView.captureImage();
+            cameraView.captureImage(cameraKitImage -> {
+                runObjectDetection(cameraKitImage.getBitmap());
+
+            });
             layoutParams.removeRule(RelativeLayout.ABOVE);
             layoutParams.addRule(RelativeLayout.ABOVE,R.id.btnDetectAgain);
 
@@ -187,6 +203,8 @@ public class DetectActivity extends AppCompatActivity {
                             builder.setTitle(getString(R.string.error_title));
                             builder.setMessage(getString(R.string.unable_detect_image));
                             builder.show();
+                            btnDetect.setVisibility(View.GONE);
+                            btnDetectAgain.setVisibility(View.VISIBLE);
                         }
                     })
                     .addOnFailureListener(e -> Log.e("DETECTERROR",e.getMessage()));
@@ -284,6 +302,7 @@ public class DetectActivity extends AppCompatActivity {
      */
     public void setUpParam(){
         cameraView = findViewById(R.id.camemraView);
+        graphicOverlay = findViewById(R.id.graphicOverlay);
         btnDetect = findViewById(R.id.btnDetect);
         layoutParams = (RelativeLayout.LayoutParams) cameraView.getLayoutParams();
         btnDetectAgain = findViewById(R.id.btnDetectAgain);
@@ -315,5 +334,44 @@ public class DetectActivity extends AppCompatActivity {
                 }
             }
         }, 1500);
+    }
+
+    /**
+     * MLKit Object Detection Function
+     */
+    private void runObjectDetection(Bitmap bitmap) {
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+        FirebaseVisionObjectDetectorOptions options =  new FirebaseVisionObjectDetectorOptions.Builder()
+                .setDetectorMode(FirebaseVisionObjectDetectorOptions.SINGLE_IMAGE_MODE)
+                .enableClassification()
+                .build();
+        FirebaseVisionObjectDetector objectDetector =
+                FirebaseVision.getInstance().getOnDeviceObjectDetector(options);
+        objectDetector.processImage(image)
+                .addOnSuccessListener(
+                        new OnSuccessListener<List<FirebaseVisionObject>>() {
+                            @Override
+                            public void onSuccess(List<FirebaseVisionObject> detectedObjects) {
+                                for (FirebaseVisionObject obj : detectedObjects) {
+                                    Integer id = obj.getTrackingId();
+                                    Rect bounds = obj.getBoundingBox();
+
+                                    // If classification was enabled:
+                                    int category = obj.getClassificationCategory();
+                                    Float confidence = obj.getClassificationConfidence();
+//                                    Toast.makeText(DetectActivity.this, category, Toast.LENGTH_LONG).show();
+                                    RectOverlay rectOverLay = RectOverlay.of(graphicOverlay, bounds);
+                                    graphicOverlay.add(rectOverLay);
+
+                                }
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
     }
 }

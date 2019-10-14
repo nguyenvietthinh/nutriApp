@@ -30,6 +30,7 @@
                 camerakit:ckJpegQuality="100"
                 android:adjustViewBounds="true"
                 />
+
             <Button
                 android:id="@+id/btnDetect"
                 android:layout_width="match_parent"
@@ -46,5 +47,8 @@
         </RelativeLayout>
 
     </FrameLayout>
-
+    <com.tma.techday.foodnutrientfact.viewholder.GraphicOverlay
+        android:id="@+id/graphicOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
