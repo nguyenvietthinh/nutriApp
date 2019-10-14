@@ -42,7 +42,7 @@
         </LinearLayout>
         <EditText
                 android:id="@+id/txtFoodWeight"
-                android:inputType="number"
+                android:inputType = "numberDecimal"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"

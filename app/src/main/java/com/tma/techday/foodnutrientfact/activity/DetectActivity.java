@@ -60,12 +60,14 @@ public class DetectActivity extends AppCompatActivity {
     //TODO: refactor this
     static Set<String> IGNORE_LIST = new HashSet<>();
     static {
-        IGNORE_LIST.add("food");
-        IGNORE_LIST.add("cup");
-        IGNORE_LIST.add("orange");
-        IGNORE_LIST.add("red");
-        IGNORE_LIST.add("blue");
-        IGNORE_LIST.add("green");
+        IGNORE_LIST.add("Food");
+        IGNORE_LIST.add("Cup");
+        IGNORE_LIST.add("Orange");
+        IGNORE_LIST.add("Red");
+        IGNORE_LIST.add("Blue");
+        IGNORE_LIST.add("Green");
+        IGNORE_LIST.add("White");
+        IGNORE_LIST.add("Black");
     }
 
     @Override

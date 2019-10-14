@@ -61,7 +61,7 @@
     <string name="Vietnamese">Tiếng Việt</string>
     <string name="English">English</string>
     <string name="change_language">Change</string>
-    <string name="url_web_view">https://www.cooky.vn</string>
+    <string name="url_web_view" translatable="false">https://www.cooky.vn</string>
     <string name="language" translatable="false">language</string>
     <string name="vi" translatable="false">vi</string>
     <string name="en" translatable="false">en</string>

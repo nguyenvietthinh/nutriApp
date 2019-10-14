@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.tma.techday.foodnutrientfact.R;
 
@@ -25,6 +26,16 @@ public class WebViewCookingRecipe extends AppCompatActivity {
 
         webView = findViewById(R.id.webViewCookingRecipe);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(getString(R.string.url_web_view));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()){
+            webView.goBack();
+        }else {
+            super.onBackPressed();
+        }
     }
 }

@@ -53,6 +53,5 @@
     <string name="Vietnamese">Tiếng Việt</string>
     <string name="English">English</string>
     <string name="change_language">Thay dổi</string>
-    <string name="url_web_view">https://www.cooky.vn</string>
     <string name="cooking_recipe" >Web Hướng Dẫn Nấu An</string>
 </resources>

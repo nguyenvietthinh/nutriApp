@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 
 /**
  * Contains and resolve operations on the cart item
@@ -99,22 +100,27 @@ public class CartItem extends Fragment {
                                 foodWeightText.setText(numberFormat.format(100.0));
                                 calAmountItemView.setText(numberFormat.format((100.0 * calAmountFinal) / foodWeightFinal)); // Calorie of 100 gram food
                             } else {
-                                Double newWeightfood = Double.parseDouble(foodWeightText.getText().toString());
-                                Double calAmount  = order.getCalorieAmount();
-                                Double newCalAmount = 0.0;
-                                if (Double.compare(newWeightfood,0.0) == 0 ) {
-                                    newCalAmount = 0.0;
-                                    order.setCalorieAmount(newCalAmount);
-                                    foodNameItemView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.info, 0);
-                                } else {
-                                    newCalAmount =(newWeightfood * calAmountFinal ) / foodWeightFinal;
-                                    foodNameItemView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                                    order.setCalorieAmount(newCalAmount);
-                                    order.setFoodWeight(newWeightfood);
+                                try {
+                                    NumberFormat format = NumberFormat.getInstance();
+                                    Double newWeightfood = format.parse(foodWeightText.getText().toString()).doubleValue();
+                                    Double calAmount  = order.getCalorieAmount();
+                                    Double newCalAmount = 0.0;
+                                    if (Double.compare(newWeightfood,0.0) == 0 ) {
+                                        newCalAmount = 0.0;
+                                        order.setCalorieAmount(newCalAmount);
+                                        foodNameItemView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.info, 0);
+                                    } else {
+                                        newCalAmount =(newWeightfood * calAmountFinal ) / foodWeightFinal;
+                                        foodNameItemView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                                        order.setCalorieAmount(newCalAmount);
+                                        order.setFoodWeight(newWeightfood);
+                                    }
+                                    Double calChange = newCalAmount - calAmount;
+                                    calAmountItemView.setText(numberFormat.format(order.getCalorieAmount()));
+                                    EventBus.getDefault().post(new CaloriesChangeEvent(calChange));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
                                 }
-                                Double calChange = newCalAmount - calAmount;
-                                calAmountItemView.setText(numberFormat.format(order.getCalorieAmount()));
-                                EventBus.getDefault().post(new CaloriesChangeEvent(calChange));
                             }
                         }
                     });

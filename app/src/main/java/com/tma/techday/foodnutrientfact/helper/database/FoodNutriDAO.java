@@ -12,9 +12,7 @@ import com.tma.techday.foodnutrientfact.model.VitaminType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.inject.Inject;
-
 
 public class  FoodNutriDAO {
 
@@ -69,7 +67,6 @@ public class  FoodNutriDAO {
                 e.printStackTrace();
             }
         }
-
         return foodInfoDTO;
     }
 

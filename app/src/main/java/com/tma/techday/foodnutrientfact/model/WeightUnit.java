@@ -29,6 +29,5 @@ public enum WeightUnit {
         return desc;
     }
 
-
     private String desc;
 }
