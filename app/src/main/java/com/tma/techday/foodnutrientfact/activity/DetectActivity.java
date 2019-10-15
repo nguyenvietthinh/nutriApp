@@ -11,10 +11,10 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.andremion.counterfab.CounterFab;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,7 +48,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import javax.inject.Inject;
+
 import dmax.dialog.SpotsDialog;
 
 /**
@@ -141,9 +143,12 @@ public class DetectActivity extends AppCompatActivity {
 
         btnDetect.setOnClickListener((view)->{
             showAlertDialogNoticeImageCapture();
+            cameraView.getHeight();
+            cameraView.getWidth();
             cameraView.captureImage(cameraKitImage -> {
-                runObjectDetection(cameraKitImage.getBitmap());
-
+                Bitmap bitmap = cameraKitImage.getBitmap();
+                bitmap =  Bitmap.createScaledBitmap(bitmap,cameraView.getWidth(),cameraView.getHeight(),false);
+                runObjectDetection(bitmap);
             });
             layoutParams.removeRule(RelativeLayout.ABOVE);
             layoutParams.addRule(RelativeLayout.ABOVE,R.id.btnDetectAgain);
@@ -155,6 +160,7 @@ public class DetectActivity extends AppCompatActivity {
             btnDetect.setVisibility(View.VISIBLE);
             layoutParams.removeRule(RelativeLayout.ABOVE);
             layoutParams.addRule(RelativeLayout.ABOVE,R.id.btnDetect);
+            graphicOverlay.clear();
             cameraView.start();
 
         });

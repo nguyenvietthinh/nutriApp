@@ -10,6 +10,9 @@ import com.google.android.gms.vision.CameraSource;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Create an overlay transparent view on which we will draw the box.
+ */
 public class GraphicOverlay extends View {
     private final Object mLock = new Object();
     private int mPreviewWidth;
@@ -18,16 +21,19 @@ public class GraphicOverlay extends View {
     private float mHeightScaleFactor = 1.0f;
     private int mFacing = CameraSource.CAMERA_FACING_BACK;
     private Set<Graphic> mGraphics = new HashSet<>();
+
     /**
      * Base class for a custom graphics object to be rendered within the graphic overlay.  Subclass
      * this and implement the {@link Graphic#draw(Canvas)} method to define the
      * graphics element.  Add instances to the overlay using {@link GraphicOverlay#add(Graphic)}.
      */
-    public static abstract class Graphic {
+    public abstract static class Graphic {
+
         private GraphicOverlay mOverlay;
         public Graphic(GraphicOverlay overlay) {
-            mOverlay = overlay;
+            this.mOverlay = overlay;
         }
+
         /**
          * Draw the graphic on the supplied canvas.  Drawing should use the following methods to
          * convert to view coordinates for the graphics that are drawn:
@@ -41,6 +47,7 @@ public class GraphicOverlay extends View {
          * @param canvas drawing canvas
          */
         public abstract void draw(Canvas canvas);
+
         /**
          * Adjusts a horizontal value of the supplied value from the preview scale to the view
          * scale.
@@ -48,23 +55,27 @@ public class GraphicOverlay extends View {
         public float scaleX(float horizontal) {
             return horizontal * mOverlay.mWidthScaleFactor;
         }
+
         /**
          * Adjusts a vertical value of the supplied value from the preview scale to the view scale.
          */
         public float scaleY(float vertical) {
             return vertical * mOverlay.mHeightScaleFactor;
         }
+
+        /** Returns the application context of the app. */
+        public Context getApplicationContext() {
+            return mOverlay.getContext().getApplicationContext();
+        }
+
         /**
          * Adjusts the x coordinate from the preview's coordinate system to the view coordinate
          * system.
          */
         public float translateX(float x) {
-            if (mOverlay.mFacing == CameraSource.CAMERA_FACING_FRONT) {
-                return mOverlay.getWidth() - scaleX(x);
-            } else {
                 return scaleX(x);
-            }
         }
+
         /**
          * Adjusts the y coordinate from the preview's coordinate system to the view coordinate
          * system.
@@ -72,13 +83,16 @@ public class GraphicOverlay extends View {
         public float translateY(float y) {
             return scaleY(y);
         }
+
         public void postInvalidate() {
             mOverlay.postInvalidate();
         }
     }
+
     public GraphicOverlay(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     /**
      * Removes all graphics from the overlay.
      */
@@ -88,6 +102,7 @@ public class GraphicOverlay extends View {
         }
         postInvalidate();
     }
+
     /**
      * Adds a graphic to the overlay.
      */
@@ -95,8 +110,8 @@ public class GraphicOverlay extends View {
         synchronized (mLock) {
             mGraphics.add(graphic);
         }
-        postInvalidate();
     }
+
     /**
      * Removes a graphic from the overlay.
      */
@@ -106,6 +121,7 @@ public class GraphicOverlay extends View {
         }
         postInvalidate();
     }
+
     /**
      * Sets the camera attributes for size and facing direction, which informs how to transform
      * image coordinates later.
@@ -118,6 +134,7 @@ public class GraphicOverlay extends View {
         }
         postInvalidate();
     }
+
     /**
      * Draws the overlay with its associated graphic objects.
      */
@@ -125,13 +142,13 @@ public class GraphicOverlay extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         synchronized (mLock) {
-            if ((mPreviewWidth != 0) && (mPreviewHeight != 0)) {
+            if ((mPreviewWidth > 0) && (mPreviewHeight > 0)) {
                 mWidthScaleFactor = (float) canvas.getWidth() / (float) mPreviewWidth;
-                mHeightScaleFactor = (float) canvas.getHeight() / (float) mPreviewHeight;
+                mHeightScaleFactor = (float)canvas.getHeight() / (float) mPreviewHeight;
             }
-            for (Graphic graphic : mGraphics) {
-                graphic.draw(canvas);
-            }
-        }
+                for (Graphic graphic : mGraphics) {
+                    graphic.draw(canvas);
+                }
+         }
     }
 }

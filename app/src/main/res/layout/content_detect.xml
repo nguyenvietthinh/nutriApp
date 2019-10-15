@@ -15,6 +15,19 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <Button
+                android:id="@+id/btnDetect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="@string/detect_activity" />
+            <Button
+                android:id="@+id/btnDetectAgain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"
+                android:text="@string/detect_again" />
             <com.wonderkiln.camerakit.CameraView
                 xmlns:camerakit="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/camemraView"
@@ -30,25 +43,12 @@
                 camerakit:ckJpegQuality="100"
                 android:adjustViewBounds="true"
                 />
-
-            <Button
-                android:id="@+id/btnDetect"
+            <com.tma.techday.foodnutrientfact.viewholder.GraphicOverlay
+                android:id="@+id/graphicOverlay"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:text="@string/detect_activity" />
-            <Button
-                android:id="@+id/btnDetectAgain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:visibility="gone"
-                android:text="@string/detect_again" />
+                android:layout_height="match_parent" />
         </RelativeLayout>
 
     </FrameLayout>
-    <com.tma.techday.foodnutrientfact.viewholder.GraphicOverlay
-        android:id="@+id/graphicOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
