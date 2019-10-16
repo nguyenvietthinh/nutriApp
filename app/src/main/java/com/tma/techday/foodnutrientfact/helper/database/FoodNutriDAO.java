@@ -37,6 +37,7 @@ public class  FoodNutriDAO {
         for (int i=0; i<foodNameSplited.length; i++)
         {
             String foodNameFinal = foodNameSplited[i];
+
             try (SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ "%" + foodNameFinal + "%"})) {
                 if (cursor.moveToFirst()) { // Move to first row
                     do {

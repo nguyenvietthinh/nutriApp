@@ -20,7 +20,11 @@ public class RectOverlay extends GraphicOverlay.Graphic {
         return new RectOverlay(graphicOverlay, rect);
     }
 
-
+    /**
+     * Declare and set properties Paint
+     * @param graphicOverlay
+     * @param rect
+     */
     public RectOverlay(GraphicOverlay graphicOverlay, Rect rect) {
         super(graphicOverlay);
         this.graphicOverlay = graphicOverlay;
@@ -32,6 +36,10 @@ public class RectOverlay extends GraphicOverlay.Graphic {
         postInvalidate();
     }
 
+    /**
+     * Draw box with RectF
+     * @param canvas drawing canvas
+     */
     @Override
     public void draw(Canvas canvas) {
         RectF rectF = new RectF(rect);
@@ -41,4 +49,5 @@ public class RectOverlay extends GraphicOverlay.Graphic {
         rectF.bottom = translateY(rectF.bottom);
         canvas.drawRect(rectF, rectPaint);
     }
+
 }

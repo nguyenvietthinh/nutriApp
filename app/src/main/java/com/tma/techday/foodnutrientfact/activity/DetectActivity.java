@@ -3,21 +3,21 @@ package com.tma.techday.foodnutrientfact.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.andremion.counterfab.CounterFab;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOptions;
@@ -32,6 +32,7 @@ import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
 import com.tma.techday.foodnutrientfact.enums.ImageDetectEngine;
 import com.tma.techday.foodnutrientfact.gui.dialog.FoodNutriResultDialog;
 import com.tma.techday.foodnutrientfact.helper.InternetCheck;
+import com.tma.techday.foodnutrientfact.model.FoodBoxContain;
 import com.tma.techday.foodnutrientfact.model.FoodInfoDTO;
 import com.tma.techday.foodnutrientfact.service.FoodNutriService;
 import com.tma.techday.foodnutrientfact.service.OrderService;
@@ -44,6 +45,7 @@ import com.wonderkiln.camerakit.CameraKitImage;
 import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraView;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,7 +56,7 @@ import javax.inject.Inject;
 import dmax.dialog.SpotsDialog;
 
 /**
- * Capture ,detect image, add to cart
+ * Capture, detect image, add to cart
  */
 public class DetectActivity extends AppCompatActivity {
 
@@ -64,6 +66,7 @@ public class DetectActivity extends AppCompatActivity {
     AlertDialog waitingDialog;
     CounterFab counterFab;
     RelativeLayout.LayoutParams layoutParams;
+    List<FoodBoxContain> foodBoxContainList = new ArrayList<>();
 
     @Inject
     FoodNutriService foodNutriService;
@@ -71,7 +74,6 @@ public class DetectActivity extends AppCompatActivity {
     @Inject
     OrderService orderService;
 
-    //TODO: refactor this
     static Set<String> IGNORE_LIST = new HashSet<>();
     static {
         IGNORE_LIST.add("Food");
@@ -128,10 +130,10 @@ public class DetectActivity extends AppCompatActivity {
 
                 waitingDialog.show();
                 Bitmap bitmap = cameraKitImage.getBitmap();
-                bitmap =  Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(),bitmap.getHeight(),false);
+//                bitmap =  Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(),bitmap.getHeight(),false);
+                bitmap =  Bitmap.createScaledBitmap(bitmap,cameraView.getWidth(),cameraView.getHeight(),false);
                 cameraView.stop();
-
-                runDetect(bitmap);
+//                runDetect(bitmap);
 
             }
 
@@ -165,8 +167,22 @@ public class DetectActivity extends AppCompatActivity {
 
         });
 
-    }
+        graphicOverlay.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                for(FoodBoxContain boxContain: foodBoxContainList){
+                    Rect rect = boxContain.getRect();
+                    if (rect.contains((int)motionEvent.getX(), (int)motionEvent.getY())) {
+                        Toast.makeText(DetectActivity.this, "cc", Toast.LENGTH_LONG).show();
+                    }
+                }
 
+                return false;
+            }
+        });
+
+
+    }
 
     /**
      * Create menu
@@ -230,7 +246,7 @@ public class DetectActivity extends AppCompatActivity {
             case CLOUD_ENGINE:
                 FirebaseVisionCloudImageLabelerOptions cloudLabeler =          //Finding Labels in a supplied image runs inference on cloud
                         new FirebaseVisionCloudImageLabelerOptions.Builder()
-                                .setConfidenceThreshold(0.9f) // Get highest Confidence Threshold
+                                .setConfidenceThreshold(0.96f) // Get highest Confidence Threshold
                                 .build();
                 return FirebaseVision.getInstance()
                         .getCloudImageLabeler(cloudLabeler);
@@ -349,35 +365,29 @@ public class DetectActivity extends AppCompatActivity {
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         FirebaseVisionObjectDetectorOptions options =  new FirebaseVisionObjectDetectorOptions.Builder()
                 .setDetectorMode(FirebaseVisionObjectDetectorOptions.SINGLE_IMAGE_MODE)
+                .enableMultipleObjects()
                 .enableClassification()
                 .build();
         FirebaseVisionObjectDetector objectDetector =
                 FirebaseVision.getInstance().getOnDeviceObjectDetector(options);
         objectDetector.processImage(image)
-                .addOnSuccessListener(
-                        new OnSuccessListener<List<FirebaseVisionObject>>() {
-                            @Override
-                            public void onSuccess(List<FirebaseVisionObject> detectedObjects) {
-                                for (FirebaseVisionObject obj : detectedObjects) {
-                                    Integer id = obj.getTrackingId();
-                                    Rect bounds = obj.getBoundingBox();
-
-                                    // If classification was enabled:
-                                    int category = obj.getClassificationCategory();
-                                    Float confidence = obj.getClassificationConfidence();
-//                                    Toast.makeText(DetectActivity.this, category, Toast.LENGTH_LONG).show();
-                                    RectOverlay rectOverLay = RectOverlay.of(graphicOverlay, bounds);
-                                    graphicOverlay.add(rectOverLay);
-
-                                }
+                .addOnSuccessListener(detectedObjects -> {
+                            for (FirebaseVisionObject obj : detectedObjects) {
+                                Rect bounds = obj.getBoundingBox();
+                                Integer id = obj.getTrackingId();
+                                RectOverlay rectOverLay = RectOverlay.of(graphicOverlay, bounds);
+                                graphicOverlay.add(rectOverLay);
+                                FoodBoxContain foodBoxContain = FoodBoxContain.of(bounds,id);
+                                foodBoxContainList.add(foodBoxContain);
+                                Bitmap cutBitmap = Bitmap.createBitmap(bounds.right,
+                                        bounds.bottom, Bitmap.Config.ARGB_8888);
+                                Canvas canvas = new Canvas(cutBitmap);
+                                canvas.drawBitmap(bitmap, bounds, bounds, null);
+                                runDetect(cutBitmap);
                             }
-                        })
-                .addOnFailureListener(
-                        new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
+                        }
+                )
+                .addOnFailureListener(e -> e.printStackTrace());
     }
+
 }
