@@ -1,18 +1,19 @@
 package com.tma.techday.foodnutrientfact.model;
 
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 
 public class FoodBoxContain {
     private Rect rect;
-    private Integer trackingId;
+    private Bitmap bitmapImage;
 
-    public static FoodBoxContain of(Rect rect, Integer trackingId){
-        return new FoodBoxContain(rect, trackingId);
+    public static FoodBoxContain of(Rect rect, Bitmap bitmapImage){
+        return new FoodBoxContain(rect, bitmapImage);
     }
 
-    public FoodBoxContain(Rect rect, Integer trackingId) {
+    public FoodBoxContain(Rect rect, Bitmap bitmapImage) {
         this.rect = rect;
-        this.trackingId = trackingId;
+        this.bitmapImage = bitmapImage;
     }
 
     public Rect getRect() {
@@ -23,11 +24,11 @@ public class FoodBoxContain {
         this.rect = rect;
     }
 
-    public Integer getTrackingId() {
-        return trackingId;
+    public Bitmap getBitmapImage() {
+        return bitmapImage;
     }
 
-    public void setTrackingId(Integer trackingId) {
-        this.trackingId = trackingId;
+    public void setBitmapImage(Bitmap bitmapImage) {
+        this.bitmapImage = bitmapImage;
     }
 }

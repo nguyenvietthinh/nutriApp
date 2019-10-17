@@ -49,5 +49,4 @@ public class RectOverlay extends GraphicOverlay.Graphic {
         rectF.bottom = translateY(rectF.bottom);
         canvas.drawRect(rectF, rectPaint);
     }
-
 }

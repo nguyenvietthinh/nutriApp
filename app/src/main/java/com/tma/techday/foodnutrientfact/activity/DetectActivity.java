@@ -103,6 +103,7 @@ public class DetectActivity extends AppCompatActivity {
      * <ul>
      *     <li>Capture image</li>
      *     <li>Detect image</li>
+     *     <li>Detect object and track</li>
      *     <li>Show food nutrient result from detect result</li>
      * </ul>
      * @param savedInstanceState
@@ -114,46 +115,41 @@ public class DetectActivity extends AppCompatActivity {
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
         setUpParam();
-
         cameraView.addCameraKitListener(new CameraKitEventListener() {
             @Override
-            public void onEvent(CameraKitEvent cameraKitEvent) {
-
-            }
+            public void onEvent(CameraKitEvent cameraKitEvent) {}
             @Override
-            public void onError(CameraKitError cameraKitError) {
-
-            }
+            public void onError(CameraKitError cameraKitError) {}
 
             @Override
             public void onImage(CameraKitImage cameraKitImage) {
-
-                waitingDialog.show();
                 Bitmap bitmap = cameraKitImage.getBitmap();
-//                bitmap =  Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(),bitmap.getHeight(),false);
                 bitmap =  Bitmap.createScaledBitmap(bitmap,cameraView.getWidth(),cameraView.getHeight(),false);
                 cameraView.stop();
-//                runDetect(bitmap);
-
+                runObjectDetection(bitmap);
+                Toast.makeText(DetectActivity.this, getString(R.string.guide_detect), Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onVideo(CameraKitVideo cameraKitVideo) {
-
-            }
+            public void onVideo(CameraKitVideo cameraKitVideo) {}
         });
+        setOnClickAndTouchListener();
+    }
+
+    /**
+     * Set On click and touch listener
+     */
+    private void setOnClickAndTouchListener() {
 
         btnDetect.setOnClickListener((view)->{
-            showAlertDialogNoticeImageCapture();
+            showAlertDialogNoticeImageCapture(getString(R.string.hold_phone));
             cameraView.getHeight();
             cameraView.getWidth();
-            cameraView.captureImage(cameraKitImage -> {
-                Bitmap bitmap = cameraKitImage.getBitmap();
-                bitmap =  Bitmap.createScaledBitmap(bitmap,cameraView.getWidth(),cameraView.getHeight(),false);
-                runObjectDetection(bitmap);
-            });
+            cameraView.captureImage();
             layoutParams.removeRule(RelativeLayout.ABOVE);
             layoutParams.addRule(RelativeLayout.ABOVE,R.id.btnDetectAgain);
+            btnDetect.setVisibility(View.GONE);
+            btnDetectAgain.setVisibility(View.VISIBLE);
 
         });
 
@@ -173,15 +169,14 @@ public class DetectActivity extends AppCompatActivity {
                 for(FoodBoxContain boxContain: foodBoxContainList){
                     Rect rect = boxContain.getRect();
                     if (rect.contains((int)motionEvent.getX(), (int)motionEvent.getY())) {
-                        Toast.makeText(DetectActivity.this, "cc", Toast.LENGTH_LONG).show();
+                        waitingDialog.show();
+                        runDetect(boxContain.getBitmapImage());
+                        break;
                     }
                 }
-
                 return false;
             }
         });
-
-
     }
 
     /**
@@ -221,17 +216,12 @@ public class DetectActivity extends AppCompatActivity {
                             processDataResult(labels);
                         } else {
                             waitingDialog.dismiss();
-                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setTitle(getString(R.string.error_title));
-                            builder.setMessage(getString(R.string.unable_detect_image));
-                            builder.show();
-                            btnDetect.setVisibility(View.GONE);
-                            btnDetectAgain.setVisibility(View.VISIBLE);
+                            buildAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
+
                         }
                     })
                     .addOnFailureListener(e -> Log.e("DETECTERROR",e.getMessage()));
         });
-
     }
 
     /**
@@ -300,10 +290,7 @@ public class DetectActivity extends AppCompatActivity {
             Log.i(getString(R.string.food_nutri), foodNutri.toDebugString());
             showFoodNutri(foodNutri);
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.error_title));
-            builder.setMessage(getString(R.string.not_found_food));
-            builder.show();
+            buildAlertDialog(getString(R.string.error_title), getString(R.string.not_found_food));
         }
     }
 
@@ -340,10 +327,10 @@ public class DetectActivity extends AppCompatActivity {
     /**
      * Show dialog notice waiting captured image
      */
-    public void showAlertDialogNoticeImageCapture() {
+    public void showAlertDialogNoticeImageCapture(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(DetectActivity.this);
         builder.setTitle("Notice Dialog")
-                .setMessage(getString(R.string.hold_phone))
+                .setMessage(message)
                 .setCancelable(false).setCancelable(false);
 
         final AlertDialog alertDialog = builder.create();
@@ -355,7 +342,7 @@ public class DetectActivity extends AppCompatActivity {
                     alertDialog.dismiss();
                 }
             }
-        }, 1500);
+        }, 1600);
     }
 
     /**
@@ -374,20 +361,28 @@ public class DetectActivity extends AppCompatActivity {
                 .addOnSuccessListener(detectedObjects -> {
                             for (FirebaseVisionObject obj : detectedObjects) {
                                 Rect bounds = obj.getBoundingBox();
-                                Integer id = obj.getTrackingId();
                                 RectOverlay rectOverLay = RectOverlay.of(graphicOverlay, bounds);
                                 graphicOverlay.add(rectOverLay);
-                                FoodBoxContain foodBoxContain = FoodBoxContain.of(bounds,id);
-                                foodBoxContainList.add(foodBoxContain);
                                 Bitmap cutBitmap = Bitmap.createBitmap(bounds.right,
                                         bounds.bottom, Bitmap.Config.ARGB_8888);
                                 Canvas canvas = new Canvas(cutBitmap);
                                 canvas.drawBitmap(bitmap, bounds, bounds, null);
-                                runDetect(cutBitmap);
+                                FoodBoxContain foodBoxContain = FoodBoxContain.of(bounds,cutBitmap);
+                                foodBoxContainList.add(foodBoxContain);
                             }
                         }
                 )
                 .addOnFailureListener(e -> e.printStackTrace());
+
     }
 
+    /**
+     * Build Alert Dialog
+     */
+    private void buildAlertDialog(String title, String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
+    }
 }
