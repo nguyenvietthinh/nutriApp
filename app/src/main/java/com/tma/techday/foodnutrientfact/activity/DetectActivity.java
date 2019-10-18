@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.andremion.counterfab.CounterFab;
@@ -38,12 +39,6 @@ import com.tma.techday.foodnutrientfact.service.FoodNutriService;
 import com.tma.techday.foodnutrientfact.service.OrderService;
 import com.tma.techday.foodnutrientfact.viewholder.GraphicOverlay;
 import com.tma.techday.foodnutrientfact.viewholder.RectOverlay;
-import com.wonderkiln.camerakit.CameraKitError;
-import com.wonderkiln.camerakit.CameraKitEvent;
-import com.wonderkiln.camerakit.CameraKitEventListener;
-import com.wonderkiln.camerakit.CameraKitImage;
-import com.wonderkiln.camerakit.CameraKitVideo;
-import com.wonderkiln.camerakit.CameraView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,12 +49,27 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import dmax.dialog.SpotsDialog;
+import io.fotoapparat.Fotoapparat;
+import io.fotoapparat.log.LoggersKt;
+import io.fotoapparat.parameter.ScaleType;
+import io.fotoapparat.result.BitmapPhoto;
+import io.fotoapparat.result.PhotoResult;
+import io.fotoapparat.result.WhenDoneListener;
+import io.fotoapparat.selector.FlashSelectorsKt;
+import io.fotoapparat.selector.FocusModeSelectorsKt;
+import io.fotoapparat.selector.LensPositionSelectorsKt;
+import io.fotoapparat.selector.ResolutionSelectorsKt;
+import io.fotoapparat.selector.SelectorsKt;
+import io.fotoapparat.view.CameraView;
+import io.fotoapparat.view.FocusView;
+
 
 /**
  * Capture, detect image, add to cart
  */
 public class DetectActivity extends AppCompatActivity {
-
+    private Fotoapparat fotoapparat;
+    private FocusView focusView;
     CameraView cameraView;
     GraphicOverlay graphicOverlay;
     Button btnDetect, btnDetectAgain;
@@ -67,6 +77,8 @@ public class DetectActivity extends AppCompatActivity {
     CounterFab counterFab;
     RelativeLayout.LayoutParams layoutParams;
     List<FoodBoxContain> foodBoxContainList = new ArrayList<>();
+
+
 
     @Inject
     FoodNutriService foodNutriService;
@@ -89,14 +101,14 @@ public class DetectActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        cameraView.start();
+        fotoapparat.start();
         counterFab.setCount(orderService.getCountCart());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        cameraView.stop();
+        fotoapparat.stop();
     }
 
     /**
@@ -115,37 +127,46 @@ public class DetectActivity extends AppCompatActivity {
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
         setUpParam();
-        cameraView.addCameraKitListener(new CameraKitEventListener() {
-            @Override
-            public void onEvent(CameraKitEvent cameraKitEvent) {}
-            @Override
-            public void onError(CameraKitError cameraKitError) {}
-
-            @Override
-            public void onImage(CameraKitImage cameraKitImage) {
-                Bitmap bitmap = cameraKitImage.getBitmap();
-                bitmap =  Bitmap.createScaledBitmap(bitmap,cameraView.getWidth(),cameraView.getHeight(),false);
-                cameraView.stop();
-                runObjectDetection(bitmap);
-                Toast.makeText(DetectActivity.this, getString(R.string.guide_detect), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onVideo(CameraKitVideo cameraKitVideo) {}
-        });
         setOnClickAndTouchListener();
     }
 
+    /**
+     * Create Fotoapparat
+     * @return
+     */
+    private Fotoapparat createFotoapparat() {
+        return Fotoapparat
+                .with(this)
+                .into(cameraView)           // view which will draw the camera preview
+                .previewScaleType(ScaleType.CenterCrop)  // we want the preview to fill the view
+                .photoResolution(ResolutionSelectorsKt.highestResolution())   // we want to have the biggest photo possible
+                .lensPosition(LensPositionSelectorsKt.back())       // we want back camera
+                .focusMode(SelectorsKt.firstAvailable(  // (optional) use the first focus mode which is supported by device
+                        FocusModeSelectorsKt. continuousFocusPicture(),
+                        FocusModeSelectorsKt.autoFocus(),        // in case if continuous focus is not available on device, auto focus will be used
+                        FocusModeSelectorsKt.fixed()             // if even auto focus is not available - fixed focus mode will be used
+                ))
+                .flash(SelectorsKt.firstAvailable(      // (optional) similar to how it is done for focus mode, this time for flash
+                        FlashSelectorsKt.autoRedEye(),
+                        FlashSelectorsKt.autoFlash(),
+                        FlashSelectorsKt.torch()
+                ))
+                .logger(LoggersKt.loggers(            // (optional) we want to log camera events in 2 places at once
+                        LoggersKt.logcat(),           // ... in logcat
+                        LoggersKt.fileLogger(this)    // ... and to file
+                ))
+                .build();
+    }
     /**
      * Set On click and touch listener
      */
     private void setOnClickAndTouchListener() {
 
         btnDetect.setOnClickListener((view)->{
-            showAlertDialogNoticeImageCapture(getString(R.string.hold_phone));
+
             cameraView.getHeight();
             cameraView.getWidth();
-            cameraView.captureImage();
+            takePicture();
             layoutParams.removeRule(RelativeLayout.ABOVE);
             layoutParams.addRule(RelativeLayout.ABOVE,R.id.btnDetectAgain);
             btnDetect.setVisibility(View.GONE);
@@ -159,7 +180,7 @@ public class DetectActivity extends AppCompatActivity {
             layoutParams.removeRule(RelativeLayout.ABOVE);
             layoutParams.addRule(RelativeLayout.ABOVE,R.id.btnDetect);
             graphicOverlay.clear();
-            cameraView.start();
+            fotoapparat.start();
 
         });
 
@@ -177,6 +198,31 @@ public class DetectActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    /**
+     * Take a picture and send bitmap for detect object
+     */
+    private void takePicture() {
+        PhotoResult photoResult = fotoapparat.takePicture();
+        photoResult
+                .toBitmap()
+                .whenDone(new WhenDoneListener<BitmapPhoto>() {
+                    @Override
+                    public void whenDone(@Nullable BitmapPhoto bitmapPhoto) {
+                        if (bitmapPhoto == null) {
+                            Log.e("CAPTURE ERROR", "Couldn't capture photo.");
+                            return;
+                        }
+
+                        Bitmap bitmap = bitmapPhoto.bitmap;
+                        bitmap =  Bitmap.createScaledBitmap(bitmap,cameraView.getWidth(),cameraView.getHeight(),false);
+                        fotoapparat.stop();
+//                        runDetect(bitmap);
+                        runObjectDetection(bitmap);
+                        Toast.makeText(DetectActivity.this, getString(R.string.guide_detect), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     /**
@@ -310,7 +356,8 @@ public class DetectActivity extends AppCompatActivity {
      * Declare Params
      */
     public void setUpParam(){
-        cameraView = findViewById(R.id.camemraView);
+
+        cameraView = findViewById(R.id.cameraView);
         graphicOverlay = findViewById(R.id.graphicOverlay);
         btnDetect = findViewById(R.id.btnDetect);
         layoutParams = (RelativeLayout.LayoutParams) cameraView.getLayoutParams();
@@ -322,6 +369,7 @@ public class DetectActivity extends AppCompatActivity {
             startActivity(intent);
         });
         counterFab.setCount(orderService.getCountCart());
+        fotoapparat = createFotoapparat();
     }
 
     /**
@@ -385,4 +433,6 @@ public class DetectActivity extends AppCompatActivity {
         builder.setMessage(message);
         builder.show();
     }
+
 }
+

@@ -28,21 +28,13 @@
                 android:layout_alignParentBottom="true"
                 android:visibility="gone"
                 android:text="@string/detect_again" />
-            <com.wonderkiln.camerakit.CameraView
-                xmlns:camerakit="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/camemraView"
+            <io.fotoapparat.view.CameraView
+                android:id="@+id/cameraView"
                 android:layout_width="match_parent"
                 android:layout_height="635dp"
                 android:layout_above="@id/btnDetect"
-                camerakit:ckFacing="back"
-                camerakit:ckFlash="off"
-                camerakit:ckFocus="continuous"
-                camerakit:ckMethod="standard"
-                camerakit:ckPermissions="strict"
-                camerakit:ckCropOutput="true"
-                camerakit:ckJpegQuality="100"
-                android:adjustViewBounds="true"
-                />
+                tools:visibility="visible">
+            </io.fotoapparat.view.CameraView>
             <com.tma.techday.foodnutrientfact.viewholder.GraphicOverlay
                 android:id="@+id/graphicOverlay"
                 android:layout_width="match_parent"
