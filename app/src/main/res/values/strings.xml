@@ -66,5 +66,6 @@
     <string name="vi" translatable="false">vi</string>
     <string name="en" translatable="false">en</string>
     <string name="My_Lang" translatable="false">My_Lang</string>
-    <string name="cooking_recipe" >Cooking Recipe Website</string>
+    <string name="cooking_recipe">Cooking Recipe Website</string>
+    <string name="guide_detect">Click the red box to display the calorie of the corresponding food</string>
 </resources>
