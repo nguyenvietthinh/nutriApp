@@ -55,4 +55,5 @@
     <string name="change_language">Thay dổi</string>
     <string name="cooking_recipe">Web Hướng Dẫn Nấu An</string>
     <string name="guide_detect">Nhấp vào khung màu đỏ để hiển thị lượng calo của thực phẩm tương ứng</string>
+    <string name="CAPTURE_ERROR">Chụp ảnh bị lỗi</string>
 </resources>

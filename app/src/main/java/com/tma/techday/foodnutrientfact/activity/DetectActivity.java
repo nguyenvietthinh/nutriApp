@@ -4,9 +4,9 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.andremion.counterfab.CounterFab;
@@ -40,6 +39,8 @@ import com.tma.techday.foodnutrientfact.service.OrderService;
 import com.tma.techday.foodnutrientfact.viewholder.GraphicOverlay;
 import com.tma.techday.foodnutrientfact.viewholder.RectOverlay;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -52,9 +53,7 @@ import dmax.dialog.SpotsDialog;
 import io.fotoapparat.Fotoapparat;
 import io.fotoapparat.log.LoggersKt;
 import io.fotoapparat.parameter.ScaleType;
-import io.fotoapparat.result.BitmapPhoto;
 import io.fotoapparat.result.PhotoResult;
-import io.fotoapparat.result.WhenDoneListener;
 import io.fotoapparat.selector.FlashSelectorsKt;
 import io.fotoapparat.selector.FocusModeSelectorsKt;
 import io.fotoapparat.selector.LensPositionSelectorsKt;
@@ -68,6 +67,7 @@ import io.fotoapparat.view.FocusView;
  * Capture, detect image, add to cart
  */
 public class DetectActivity extends AppCompatActivity {
+    public static final int DEGREES_90 = 90;
     private Fotoapparat fotoapparat;
     private FocusView focusView;
     CameraView cameraView;
@@ -77,8 +77,6 @@ public class DetectActivity extends AppCompatActivity {
     CounterFab counterFab;
     RelativeLayout.LayoutParams layoutParams;
     List<FoodBoxContain> foodBoxContainList = new ArrayList<>();
-
-
 
     @Inject
     FoodNutriService foodNutriService;
@@ -187,13 +185,20 @@ public class DetectActivity extends AppCompatActivity {
         graphicOverlay.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+               // foodBoxContainList.stream().sorted((t1, t2) -> t1.getRect().);
+                FoodBoxContain found = null;
                 for(FoodBoxContain boxContain: foodBoxContainList){
                     Rect rect = boxContain.getRect();
-                    if (rect.contains((int)motionEvent.getX(), (int)motionEvent.getY())) {
-                        waitingDialog.show();
-                        runDetect(boxContain.getBitmapImage());
-                        break;
+                    if (isPressedWithinBox(motionEvent, rect)) {
+                        /*waitingDialog.show();
+                        runDetect(boxContain.getBitmapImage());*/
+                       // break;
+                        found = boxContain;
                     }
+                }
+                if (found != null){
+                    waitingDialog.show();
+                    runDetect(found.getBitmapImage());
                 }
                 return false;
             }
@@ -201,28 +206,34 @@ public class DetectActivity extends AppCompatActivity {
     }
 
     /**
+     * Check if the touch position is in the box yet
+     * @param motionEvent
+     * @param rect
+     * @return
+     */
+    private boolean isPressedWithinBox(MotionEvent motionEvent, Rect rect) {
+        return rect.contains((int)motionEvent.getX(), (int)motionEvent.getY());
+    }
+
+    /**
      * Take a picture and send bitmap for detect object
      */
     private void takePicture() {
         PhotoResult photoResult = fotoapparat.takePicture();
-        photoResult
-                .toBitmap()
-                .whenDone(new WhenDoneListener<BitmapPhoto>() {
-                    @Override
-                    public void whenDone(@Nullable BitmapPhoto bitmapPhoto) {
-                        if (bitmapPhoto == null) {
-                            Log.e("CAPTURE ERROR", "Couldn't capture photo.");
-                            return;
-                        }
+        photoResult.toBitmap().whenDone(bitmapPhoto -> {
+            if (bitmapPhoto == null) {
+                Toast.makeText(DetectActivity.this, getString(R.string.CAPTURE_ERROR), Toast.LENGTH_LONG).show();
+                return;
+            }
+            Bitmap bitmap = bitmapPhoto.bitmap;
+            bitmap =  Bitmap.createScaledBitmap(bitmap,cameraView.getHeight(),cameraView.getWidth(),true);
+            Matrix matrix = new Matrix();
+            matrix.postRotate(DEGREES_90);
+            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            fotoapparat.stop();
+            runObjectDetection(rotatedBitmap);
+        });
 
-                        Bitmap bitmap = bitmapPhoto.bitmap;
-                        bitmap =  Bitmap.createScaledBitmap(bitmap,cameraView.getWidth(),cameraView.getHeight(),false);
-                        fotoapparat.stop();
-//                        runDetect(bitmap);
-                        runObjectDetection(bitmap);
-                        Toast.makeText(DetectActivity.this, getString(R.string.guide_detect), Toast.LENGTH_LONG).show();
-                    }
-                });
     }
 
     /**
@@ -262,7 +273,7 @@ public class DetectActivity extends AppCompatActivity {
                             processDataResult(labels);
                         } else {
                             waitingDialog.dismiss();
-                            buildAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
+                            showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
 
                         }
                     })
@@ -282,7 +293,7 @@ public class DetectActivity extends AppCompatActivity {
             case CLOUD_ENGINE:
                 FirebaseVisionCloudImageLabelerOptions cloudLabeler =          //Finding Labels in a supplied image runs inference on cloud
                         new FirebaseVisionCloudImageLabelerOptions.Builder()
-                                .setConfidenceThreshold(0.96f) // Get highest Confidence Threshold
+                                .setConfidenceThreshold(0.9f) // Get highest Confidence Threshold
                                 .build();
                 return FirebaseVision.getInstance()
                         .getCloudImageLabeler(cloudLabeler);
@@ -336,7 +347,7 @@ public class DetectActivity extends AppCompatActivity {
             Log.i(getString(R.string.food_nutri), foodNutri.toDebugString());
             showFoodNutri(foodNutri);
         } else {
-            buildAlertDialog(getString(R.string.error_title), getString(R.string.not_found_food));
+            showAlertDialog(getString(R.string.error_title), getString(R.string.not_found_food));
         }
     }
 
@@ -373,27 +384,6 @@ public class DetectActivity extends AppCompatActivity {
     }
 
     /**
-     * Show dialog notice waiting captured image
-     */
-    public void showAlertDialogNoticeImageCapture(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(DetectActivity.this);
-        builder.setTitle("Notice Dialog")
-                .setMessage(message)
-                .setCancelable(false).setCancelable(false);
-
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (alertDialog.isShowing()){
-                    alertDialog.dismiss();
-                }
-            }
-        }, 1600);
-    }
-
-    /**
      * MLKit Object Detection Function
      */
     private void runObjectDetection(Bitmap bitmap) {
@@ -403,35 +393,68 @@ public class DetectActivity extends AppCompatActivity {
                 .enableMultipleObjects()
                 .enableClassification()
                 .build();
-        FirebaseVisionObjectDetector objectDetector =
-                FirebaseVision.getInstance().getOnDeviceObjectDetector(options);
+        FirebaseVisionObjectDetector objectDetector = FirebaseVision.getInstance().getOnDeviceObjectDetector(options);
         objectDetector.processImage(image)
                 .addOnSuccessListener(detectedObjects -> {
                             for (FirebaseVisionObject obj : detectedObjects) {
-                                Rect bounds = obj.getBoundingBox();
-                                RectOverlay rectOverLay = RectOverlay.of(graphicOverlay, bounds);
-                                graphicOverlay.add(rectOverLay);
-                                Bitmap cutBitmap = Bitmap.createBitmap(bounds.right,
-                                        bounds.bottom, Bitmap.Config.ARGB_8888);
-                                Canvas canvas = new Canvas(cutBitmap);
-                                canvas.drawBitmap(bitmap, bounds, bounds, null);
-                                FoodBoxContain foodBoxContain = FoodBoxContain.of(bounds,cutBitmap);
-                                foodBoxContainList.add(foodBoxContain);
+                                Rect bounds = buildBound(obj);
+                                cutBitmapImage(bitmap, bounds);
+                                Toast.makeText(DetectActivity.this, getString(R.string.guide_detect), Toast.LENGTH_LONG).show();
                             }
                         }
                 )
                 .addOnFailureListener(e -> e.printStackTrace());
+    }
 
+
+    /**
+     * Build bound depend on object detected
+     * @param obj
+     * @return
+     */
+    @NotNull
+    private Rect buildBound(FirebaseVisionObject obj) {
+        Rect bounds = obj.getBoundingBox();
+        Rect rect = new Rect(bounds.left,bounds.top+10,bounds.right,bounds.bottom+10);
+        RectOverlay rectOverLay = RectOverlay.of(graphicOverlay, rect);
+        graphicOverlay.add(rectOverLay);
+        return bounds;
+    }
+
+    /**
+     * Cut bitmap depend on bound detected
+     * @param bitmap
+     * @param bounds
+     */
+    private void cutBitmapImage(Bitmap bitmap, Rect bounds) {
+        Bitmap cutBitmap = Bitmap.createBitmap(bounds.right,
+                bounds.bottom, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(cutBitmap);
+        canvas.drawBitmap(bitmap, bounds, bounds, null);
+        FoodBoxContain foodBoxContain = FoodBoxContain.of(bounds,cutBitmap);
+        foodBoxContainList.add(foodBoxContain);
+    }
+
+    /**
+     * Show Alert Dialog
+     */
+    private void showAlertDialog(String title, String message){
+        AlertDialog.Builder builder = buildAlertDialog(title, message);
+        builder.show();
     }
 
     /**
      * Build Alert Dialog
+     * @param title
+     * @param message
+     * @return
      */
-    private void buildAlertDialog(String title, String message){
+    @NotNull
+    private AlertDialog.Builder buildAlertDialog(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
         builder.setMessage(message);
-        builder.show();
+        return builder;
     }
 
 }

@@ -31,7 +31,7 @@
             <io.fotoapparat.view.CameraView
                 android:id="@+id/cameraView"
                 android:layout_width="match_parent"
-                android:layout_height="635dp"
+                android:layout_height="650dp"
                 android:layout_above="@id/btnDetect"
                 tools:visibility="visible">
             </io.fotoapparat.view.CameraView>
