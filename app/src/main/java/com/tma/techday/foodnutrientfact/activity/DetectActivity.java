@@ -70,7 +70,7 @@ import io.fotoapparat.view.CameraView;
  */
 public class DetectActivity extends AppCompatActivity {
     public static final int DEGREES_90 = 90;
-    public static final int BOUND_ABSOLUTE_ERROR = 17;
+    public static final int BOUND_ABSOLUTE_ERROR = 45;
     private Fotoapparat fotoapparat;
     CameraView cameraView;
     GraphicOverlay graphicOverlay;
@@ -78,6 +78,8 @@ public class DetectActivity extends AppCompatActivity {
     AlertDialog waitingDialog;
     CounterFab counterFab;
     RelativeLayout.LayoutParams layoutParams;
+    Switch switchOnOff;
+    MenuItem switchOnOffItem;
     List<FoodBoxContain> foodBoxContainList = new ArrayList<>();
 
     @Inject
@@ -97,12 +99,18 @@ public class DetectActivity extends AppCompatActivity {
         IGNORE_LIST.add("White");
         IGNORE_LIST.add("Black");
         IGNORE_LIST.add("Yellow");
+        IGNORE_LIST.add("Natural foods");
+        IGNORE_LIST.add("Still life photography");
+        IGNORE_LIST.add("Fruit");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         fotoapparat.start();
+        if (switchOnOff!= null){
+            switchOnOff.setChecked(false);
+        }
         counterFab.setCount(orderService.getCountCart());
         graphicOverlay.clear();
     }
@@ -113,6 +121,7 @@ public class DetectActivity extends AppCompatActivity {
         fotoapparat.stop();
         graphicOverlay.clear();
     }
+
 
     /**
      * <ul>
@@ -191,7 +200,6 @@ public class DetectActivity extends AppCompatActivity {
         graphicOverlay.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-               // foodBoxContainList.stream().sorted((t1, t2) -> t1.getRect().);
                 FoodBoxContain found = null;
                 for(FoodBoxContain boxContain: foodBoxContainList){
                     Rect rect = boxContain.getRect();
@@ -240,20 +248,23 @@ public class DetectActivity extends AppCompatActivity {
     }
 
     /**
-     * Create menu
+     * Create menu and set listener (switch button)
      * @param menu
      * @return
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main,menu);
-        MenuItem switchOnOffItem = menu.findItem(R.id.switchOnOffItem);
+        switchOnOffItem = menu.findItem(R.id.switchOnOffItem);
         switchOnOffItem.setActionView(R.layout.switch_layout);
-        Switch switchOnOff = switchOnOffItem.getActionView().findViewById(R.id.switchOnOff);
+        switchOnOff = switchOnOffItem.getActionView().findViewById(R.id.switchOnOff);
         switchOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Intent intent = new Intent(DetectActivity.this,DetectRealTimeActivity.class);
-                startActivity(intent);
+                if (isChecked){
+                    Intent intent = new Intent(DetectActivity.this,DetectRealTimeActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
         return true;
@@ -273,7 +284,7 @@ public class DetectActivity extends AppCompatActivity {
             FirebaseVisionImageLabeler detectImageLabeler = getFirebaseVisionImageLabeler(connectInternet ? ImageDetectEngine.CLOUD_ENGINE : ImageDetectEngine.DEVICE_ENGINE);
             if (detectImageLabeler == null)
             {
-                Log.e("Error",getString(R.string.detect_labeler_cannot_null));
+                showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
                 return;
             }
             detectImageLabeler.processImage(image)
@@ -289,7 +300,7 @@ public class DetectActivity extends AppCompatActivity {
 
                         }
                     })
-                    .addOnFailureListener(e -> Log.e("DETECTERROR",e.getMessage()));
+                    .addOnFailureListener(e -> showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image)));
         });
     }
 

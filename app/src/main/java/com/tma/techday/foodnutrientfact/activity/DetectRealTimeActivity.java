@@ -3,11 +3,8 @@ package com.tma.techday.foodnutrientfact.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,7 +14,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -72,7 +68,7 @@ import io.fotoapparat.view.CameraView;
  */
 public class DetectRealTimeActivity extends AppCompatActivity {
     public static final int DEGREES_90 = 90;
-    public static final int BOUND_ABSOLUTE_ERROR = 17;
+    public static final int BOUND_ABSOLUTE_ERROR = 20;
     private Fotoapparat fotoapparat;
     CameraView cameraView;
     GraphicOverlay graphicOverlay;
@@ -80,6 +76,7 @@ public class DetectRealTimeActivity extends AppCompatActivity {
     CounterFab counterFab;
     RelativeLayout.LayoutParams layoutParams;
     FoodBoxContain foodBoxContain;
+    Switch switchOnOff;
 
     @Inject
     FoodNutriService foodNutriService;
@@ -99,6 +96,8 @@ public class DetectRealTimeActivity extends AppCompatActivity {
         IGNORE_LIST.add("Black");
         IGNORE_LIST.add("Yellow");
     }
+
+    private byte[] image;
 
     @Override
     protected void onResume() {
@@ -192,7 +191,7 @@ public class DetectRealTimeActivity extends AppCompatActivity {
     }
 
     /**
-     * Create menu
+     * Create menu and set listener ( switch button)
      * @param menu
      * @return
      */
@@ -364,15 +363,12 @@ public class DetectRealTimeActivity extends AppCompatActivity {
 
         FirebaseVisionObjectDetector objectDetector = FirebaseVision.getInstance().getOnDeviceObjectDetector(detectorOptions);
 
+
         objectDetector.processImage(image)
                 .addOnSuccessListener(detectedObjects -> {
                             for (FirebaseVisionObject obj : detectedObjects) {
                                 Rect bounds = buildBound(obj);
-                                Drawable drawable = new BitmapDrawable(getResources(),BitmapFactory.decodeByteArray(frame.getImage(), 0, frame.getImage().length));
-                                Bitmap bmp = ((BitmapDrawable) drawable).getBitmap();
-//                                Bitmap bmp =BitmapFactory.decodeByteArray(frame.getImage(), 0, frame.getImage().length);
-                                cutBitmapImage(bmp, bounds);
-                                Toast.makeText(DetectRealTimeActivity.this, getString(R.string.guide_detect), Toast.LENGTH_LONG).show();
+                                cutBitmapImage(image.getBitmap(), bounds);
                             }
                         }
                 )
