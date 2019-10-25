@@ -3,16 +3,17 @@ package com.tma.techday.foodnutrientfact.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.andremion.counterfab.CounterFab;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOptions;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
@@ -44,7 +46,6 @@ import com.tma.techday.foodnutrientfact.viewholder.RectOverlay;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,7 +57,8 @@ import dmax.dialog.SpotsDialog;
 import io.fotoapparat.Fotoapparat;
 import io.fotoapparat.log.LoggersKt;
 import io.fotoapparat.parameter.ScaleType;
-import io.fotoapparat.result.PhotoResult;
+import io.fotoapparat.preview.Frame;
+import io.fotoapparat.preview.FrameProcessor;
 import io.fotoapparat.selector.FlashSelectorsKt;
 import io.fotoapparat.selector.FocusModeSelectorsKt;
 import io.fotoapparat.selector.LensPositionSelectorsKt;
@@ -66,19 +68,18 @@ import io.fotoapparat.view.CameraView;
 
 
 /**
- * Capture, detect image, add to cart
+ * Detect image real time.
  */
-public class DetectActivity extends AppCompatActivity {
+public class DetectRealTimeActivity extends AppCompatActivity {
     public static final int DEGREES_90 = 90;
     public static final int BOUND_ABSOLUTE_ERROR = 17;
     private Fotoapparat fotoapparat;
     CameraView cameraView;
     GraphicOverlay graphicOverlay;
-    Button btnDetect, btnDetectAgain;
     AlertDialog waitingDialog;
     CounterFab counterFab;
     RelativeLayout.LayoutParams layoutParams;
-    List<FoodBoxContain> foodBoxContainList = new ArrayList<>();
+    FoodBoxContain foodBoxContain;
 
     @Inject
     FoodNutriService foodNutriService;
@@ -116,7 +117,7 @@ public class DetectActivity extends AppCompatActivity {
 
     /**
      * <ul>
-     *     <li>Capture image</li>
+     *     <li>Real time </li>
      *     <li>Detect image</li>
      *     <li>Detect object and track</li>
      *     <li>Show food nutrient result from detect result</li>
@@ -126,7 +127,7 @@ public class DetectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detect_activity);
+        setContentView(R.layout.detect_realtime_activity);
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
         setUpParam();
@@ -154,6 +155,7 @@ public class DetectActivity extends AppCompatActivity {
                         FlashSelectorsKt.autoFlash(),
                         FlashSelectorsKt.torch()
                 ))
+                .frameProcessor(new SampleFrameProcessor())
                 .logger(LoggersKt.loggers(            // (optional) we want to log camera events in 2 places at once
                         LoggersKt.logcat(),           // ... in logcat
                         LoggersKt.fileLogger(this)    // ... and to file
@@ -166,43 +168,14 @@ public class DetectActivity extends AppCompatActivity {
      */
     private void setOnClickAndTouchListener() {
 
-        btnDetect.setOnClickListener((view)->{
-
-            cameraView.getHeight();
-            cameraView.getWidth();
-            takePicture();
-            layoutParams.removeRule(RelativeLayout.ABOVE);
-            layoutParams.addRule(RelativeLayout.ABOVE,R.id.btnDetectAgain);
-            btnDetect.setVisibility(View.GONE);
-            btnDetectAgain.setVisibility(View.VISIBLE);
-
-        });
-
-        btnDetectAgain.setOnClickListener(view -> {
-            btnDetectAgain.setVisibility(View.GONE);
-            btnDetect.setVisibility(View.VISIBLE);
-            layoutParams.removeRule(RelativeLayout.ABOVE);
-            layoutParams.addRule(RelativeLayout.ABOVE,R.id.btnDetect);
-            graphicOverlay.clear();
-            fotoapparat.start();
-
-        });
-
         graphicOverlay.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-               // foodBoxContainList.stream().sorted((t1, t2) -> t1.getRect().);
-                FoodBoxContain found = null;
-                for(FoodBoxContain boxContain: foodBoxContainList){
-                    Rect rect = boxContain.getRect();
+                    Rect rect = foodBoxContain.getRect();
                     if (isPressedWithinBox(motionEvent, rect)) {
-                        found = boxContain;
+                        waitingDialog.show();
+                        runDetect(foodBoxContain.getBitmapImage());
                     }
-                }
-                if (found != null){
-                    waitingDialog.show();
-                    runDetect(found.getBitmapImage());
-                }
                 return false;
             }
         });
@@ -219,27 +192,6 @@ public class DetectActivity extends AppCompatActivity {
     }
 
     /**
-     * Take a picture and send bitmap for detect object
-     */
-    private void takePicture() {
-        PhotoResult photoResult = fotoapparat.takePicture();
-        photoResult.toBitmap().whenDone(bitmapPhoto -> {
-            if (bitmapPhoto == null) {
-                Toast.makeText(DetectActivity.this, getString(R.string.CAPTURE_ERROR), Toast.LENGTH_LONG).show();
-                return;
-            }
-            Bitmap bitmap = bitmapPhoto.bitmap;
-            bitmap =  Bitmap.createScaledBitmap(bitmap,cameraView.getHeight(),cameraView.getWidth(),true);
-            Matrix matrix = new Matrix();
-            matrix.postRotate(DEGREES_90);
-            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-            fotoapparat.stop();
-            runObjectDetection(rotatedBitmap);
-        });
-
-    }
-
-    /**
      * Create menu
      * @param menu
      * @return
@@ -250,9 +202,10 @@ public class DetectActivity extends AppCompatActivity {
         MenuItem switchOnOffItem = menu.findItem(R.id.switchOnOffItem);
         switchOnOffItem.setActionView(R.layout.switch_layout);
         Switch switchOnOff = switchOnOffItem.getActionView().findViewById(R.id.switchOnOff);
+        switchOnOff.setChecked(true);
         switchOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Intent intent = new Intent(DetectActivity.this,DetectRealTimeActivity.class);
+                Intent intent = new Intent(DetectRealTimeActivity.this,DetectActivity.class);
                 startActivity(intent);
             }
         });
@@ -286,7 +239,6 @@ public class DetectActivity extends AppCompatActivity {
                         } else {
                             waitingDialog.dismiss();
                             showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
-
                         }
                     })
                     .addOnFailureListener(e -> Log.e("DETECTERROR",e.getMessage()));
@@ -340,8 +292,6 @@ public class DetectActivity extends AppCompatActivity {
         Log.i("foodName", foodName);
         if (waitingDialog.isShowing()) {
             waitingDialog.dismiss();
-            btnDetect.setVisibility(View.GONE);
-            btnDetectAgain.setVisibility(View.VISIBLE);
         }
         if (!foodName.equals("")) {
             getNutrition(foodName);
@@ -382,13 +332,11 @@ public class DetectActivity extends AppCompatActivity {
 
         cameraView = findViewById(R.id.cameraView);
         graphicOverlay = findViewById(R.id.graphicOverlay);
-        btnDetect = findViewById(R.id.btnDetect);
         layoutParams = (RelativeLayout.LayoutParams) cameraView.getLayoutParams();
-        btnDetectAgain = findViewById(R.id.btnDetectAgain);
         waitingDialog = new SpotsDialog.Builder().setContext(this).setMessage(getString(R.string.analyzing_dialog)).setCancelable(false).build();
         counterFab = findViewById(R.id.fab);
         counterFab.setOnClickListener(view -> {
-            Intent intent = new Intent(DetectActivity.this,AddToCartActivity.class);
+            Intent intent = new Intent(DetectRealTimeActivity.this,AddToCartActivity.class);
             startActivity(intent);
         });
         counterFab.setCount(orderService.getCountCart());
@@ -398,26 +346,38 @@ public class DetectActivity extends AppCompatActivity {
     /**
      * MLKit Object Detection Function
      */
-    private void runObjectDetection(Bitmap bitmap) {
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
-        FirebaseVisionObjectDetectorOptions options =  new FirebaseVisionObjectDetectorOptions.Builder()
-                .setDetectorMode(FirebaseVisionObjectDetectorOptions.SINGLE_IMAGE_MODE)
+    private void runObjectDetection(Frame frame) {
+
+        FirebaseVisionImageMetadata metadata = new FirebaseVisionImageMetadata.Builder()
+                .setFormat(FirebaseVisionImageMetadata.IMAGE_FORMAT_NV21)
+                .setRotation(FirebaseVisionImageMetadata.ROTATION_90)
+                .setHeight(frame.getSize().height)
+                .setWidth(frame.getSize().width)
+                .build();
+
+        FirebaseVisionImage image = FirebaseVisionImage.fromByteArray(frame.getImage(), metadata);
+        FirebaseVisionObjectDetectorOptions detectorOptions =  new FirebaseVisionObjectDetectorOptions.Builder()
+                .setDetectorMode(FirebaseVisionObjectDetectorOptions.STREAM_MODE)
                 .enableMultipleObjects()
                 .enableClassification()
                 .build();
-        FirebaseVisionObjectDetector objectDetector = FirebaseVision.getInstance().getOnDeviceObjectDetector(options);
+
+        FirebaseVisionObjectDetector objectDetector = FirebaseVision.getInstance().getOnDeviceObjectDetector(detectorOptions);
+
         objectDetector.processImage(image)
                 .addOnSuccessListener(detectedObjects -> {
                             for (FirebaseVisionObject obj : detectedObjects) {
                                 Rect bounds = buildBound(obj);
-                                cutBitmapImage(bitmap, bounds);
-                                Toast.makeText(DetectActivity.this, getString(R.string.guide_detect), Toast.LENGTH_LONG).show();
+                                Drawable drawable = new BitmapDrawable(getResources(),BitmapFactory.decodeByteArray(frame.getImage(), 0, frame.getImage().length));
+                                Bitmap bmp = ((BitmapDrawable) drawable).getBitmap();
+//                                Bitmap bmp =BitmapFactory.decodeByteArray(frame.getImage(), 0, frame.getImage().length);
+                                cutBitmapImage(bmp, bounds);
+                                Toast.makeText(DetectRealTimeActivity.this, getString(R.string.guide_detect), Toast.LENGTH_LONG).show();
                             }
                         }
                 )
                 .addOnFailureListener(e -> e.printStackTrace());
     }
-
 
     /**
      * Build bound depend on object detected
@@ -429,6 +389,7 @@ public class DetectActivity extends AppCompatActivity {
         Rect bounds = obj.getBoundingBox();
         Rect rect = new Rect(bounds.left,bounds.top+BOUND_ABSOLUTE_ERROR,bounds.right,bounds.bottom+BOUND_ABSOLUTE_ERROR);
         RectOverlay rectOverLay = RectOverlay.of(graphicOverlay, rect);
+        graphicOverlay.clear();
         graphicOverlay.add(rectOverLay);
         return bounds;
     }
@@ -443,8 +404,7 @@ public class DetectActivity extends AppCompatActivity {
                 bounds.bottom, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(cutBitmap);
         canvas.drawBitmap(bitmap, bounds, bounds, null);
-        FoodBoxContain foodBoxContain = FoodBoxContain.of(bounds,cutBitmap);
-        foodBoxContainList.add(foodBoxContain);
+        foodBoxContain = FoodBoxContain.of(bounds,cutBitmap);
     }
 
     /**
@@ -469,5 +429,14 @@ public class DetectActivity extends AppCompatActivity {
         return builder;
     }
 
-}
+    /**
+     * Perform frame processing
+     */
+    private class SampleFrameProcessor implements FrameProcessor {
+        @Override
+        public void process(@NotNull Frame frame) {
+            runObjectDetection(frame);
+        }
+    }
 
+}

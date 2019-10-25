@@ -3,6 +3,7 @@ package com.tma.techday.foodnutrientfact.di;
 import com.tma.techday.foodnutrientfact.activity.AddToCartActivity;
 import com.tma.techday.foodnutrientfact.activity.CalorieComparisionActivity;
 import com.tma.techday.foodnutrientfact.activity.DetectActivity;
+import com.tma.techday.foodnutrientfact.activity.DetectRealTimeActivity;
 import com.tma.techday.foodnutrientfact.activity.EditUserActivity;
 import com.tma.techday.foodnutrientfact.activity.MainActivity;
 import com.tma.techday.foodnutrientfact.activity.SettingActivity;
@@ -32,4 +33,6 @@ public interface FoodNutriApplicationComponent  {
     void inject(EditUserActivity editUserActivity);
 
     void inject(UserActivity userActivity);
+
+    void inject(DetectRealTimeActivity detectRealTimeActivity);
 }
