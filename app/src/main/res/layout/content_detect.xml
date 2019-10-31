@@ -33,14 +33,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="650dp"
                 android:layout_above="@id/btnDetect"
-                tools:visibility="visible">
+                tools:visibility="invisible">
             </io.fotoapparat.view.CameraView>
             <com.tma.techday.foodnutrientfact.viewholder.GraphicOverlay
                 android:id="@+id/graphicOverlay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </RelativeLayout>
-
+        <TextView
+            android:id="@+id/no_permission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="100dp"
+            android:text="No Camera permission granted."
+            android:textSize="20sp"
+            android:visibility="gone"
+            tools:ignore="HardcodedText"
+            tools:visibility="visible" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

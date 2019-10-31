@@ -59,6 +59,41 @@
             android:layout_width="114dp"
             android:layout_height="wrap_content"
             android:gravity="right"
+            android:text="@string/age"
+            android:textColor="#F7252323"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/txtEditAge"
+            android:inputType = "number"
+            android:layout_width="178dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:focusable="true"
+            android:textColorHighlight="#ff7eff15"
+            android:textColorHint="#ffff25e6" />
+        <TextView
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:textColor="#F7252323"
+            android:text="@string/age_range"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
             android:text="@string/user_height"
             android:textColor="#F7252323"
             android:textSize="16sp" />
@@ -114,6 +149,43 @@
             android:text="@string/kg"
             android:textColor="#F7252323"
             android:textSize="16sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:gravity="center"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/gender"
+            android:textColor="#F7252323"
+            android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/radioSex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioMale"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/radio_male" />
+
+            <RadioButton
+                android:id="@+id/radioFemale"
+                android:layout_width="202dp"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_female" />
+
+        </RadioGroup>
+
 
     </LinearLayout>
 

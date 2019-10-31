@@ -8,14 +8,14 @@ android:orientation="vertical"
 tools:context=".activity.UserActivity">
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="150dp">
     <LinearLayout
         android:background="@color/colorPrimaryDark"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="200dp"
         android:orientation="vertical">
         <TextView
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="40dp"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@ tools:context=".activity.UserActivity">
     </LinearLayout>
 </RelativeLayout>
 <LinearLayout
-    android:layout_marginTop="60dp"
+    android:layout_marginTop="30dp"
     android:layout_width="360dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -57,8 +57,7 @@ tools:context=".activity.UserActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:textSize="20dp"
-            android:text="Wiliam"/>
+            android:textSize="18dp" />
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="25dp"
@@ -77,14 +76,13 @@ tools:context=".activity.UserActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:textSize="20dp"
-            android:text="25"/>
+            android:textSize="18dp" />
         <TextView
             android:textStyle="bold"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:paddingLeft="5dp"
             android:text="cm"/>
     </LinearLayout>
@@ -107,8 +105,7 @@ tools:context=".activity.UserActivity">
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:paddingLeft="20dp"
-            android:textSize="20dp"
-            android:text="50"
+            android:textSize="18dp"
             android:textStyle="bold" />
 
         <TextView
@@ -117,7 +114,7 @@ tools:context=".activity.UserActivity">
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dp"
             android:text="kg"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:textStyle="bold"/>
     </LinearLayout>
     <LinearLayout
@@ -137,8 +134,47 @@ tools:context=".activity.UserActivity">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:textSize="20dp"
-        android:text="15.8"/>
+        android:textSize="18dp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"
+        android:paddingLeft="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/age"/>
+        <TextView
+            android:id="@+id/txtAge"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"
+        android:paddingLeft="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/gender"/>
+        <TextView
+            android:id="@+id/txtGender"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:textSize="18dp" />
 
     </LinearLayout>
 </LinearLayout>

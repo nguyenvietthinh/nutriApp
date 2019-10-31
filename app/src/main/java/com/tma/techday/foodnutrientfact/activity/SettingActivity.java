@@ -54,6 +54,9 @@ public class SettingActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         txtCalSetting = findViewById(R.id.txtCalSetting);
         btnSave.setOnClickListener(setBtnSaveOnclickListener());
+        if (calorieSettingService.getCalorieSetting()!= null){
+            txtCalSetting.setText(String.valueOf(calorieSettingService.getCalorieSetting().getCalorieSettingAmount()));
+        }
     }
 
     /**

@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.tma.techday.foodnutrientfact.enums.Gender;
 import com.tma.techday.foodnutrientfact.model.User;
 
 import javax.inject.Inject;
@@ -33,6 +34,8 @@ public class UserDAO {
             contentValues.put("height",user.getHeight());
             contentValues.put("weight",user.getWeight());
             contentValues.put("bmi",user.getBmi());
+            contentValues.put("age",user.getAge());
+            contentValues.put("gender",user.getGender().toString());
             long result = db.insert(TABLE_NAME, null, contentValues);
             return (result == -1)? false : true;
         }catch (SQLException e){
@@ -55,7 +58,14 @@ public class UserDAO {
                     double height = Double.parseDouble( cursor.getString(cursor.getColumnIndex("height")));
                     double weight = Double.parseDouble( cursor.getString(cursor.getColumnIndex("weight")));
                     double bmi = Double.parseDouble( cursor.getString(cursor.getColumnIndex("bmi")));
-                    user = User.of(name,height,weight, bmi);
+                    int age = Integer.parseInt( cursor.getString(cursor.getColumnIndex("age")));
+                    Gender gender = null;
+                    if(Gender.Male.toString().equals(cursor.getString(cursor.getColumnIndex("gender")))){
+                        gender = Gender.Male;
+                    }else if (Gender.Female.toString().equals(cursor.getString(cursor.getColumnIndex("gender")))){
+                        gender = Gender.Female;
+                    }
+                    user = User.of(name,height,weight,bmi,age,gender);
                 } while (cursor.moveToNext());
                 return user;
             }
@@ -91,6 +101,8 @@ public class UserDAO {
             contentValues.put("height", user.getHeight());
             contentValues.put("weight", user.getWeight());
             contentValues.put("bmi", user.getBmi());
+            contentValues.put("age",user.getAge());
+            contentValues.put("gender",user.getGender().toString());
             db.update(TABLE_NAME, contentValues, "",new String[] {});
         } catch (SQLException e){
             e.printStackTrace();

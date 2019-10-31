@@ -1,15 +1,14 @@
 package com.tma.techday.foodnutrientfact.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
-import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
 import com.tma.techday.foodnutrientfact.service.UserService;
 
 import javax.inject.Inject;
@@ -20,7 +19,7 @@ import javax.inject.Inject;
 public class UserActivity extends AppCompatActivity {
 
     Button btnEdit;
-    TextView txtUserName, txtHeight, txtWeight, txtBmi, txtUserNameProfile;
+    TextView txtUserName, txtHeight, txtWeight, txtBmi, txtUserNameProfile, txtAge, txtGender;
 
     @Inject
     UserService userService;
@@ -57,6 +56,8 @@ public class UserActivity extends AppCompatActivity {
         txtBmi = findViewById(R.id.txtBmi);
         btnEdit = findViewById(R.id.btnEditUser);
         txtUserNameProfile = findViewById(R.id.userNameProfile);
+        txtAge = findViewById(R.id.txtAge);
+        txtGender = findViewById(R.id.txtGender);
     }
 
     /**
@@ -69,6 +70,8 @@ public class UserActivity extends AppCompatActivity {
             txtHeight.setText(Double.toString(userService.getUser().getHeight()));
             txtWeight.setText(Double.toString(userService.getUser().getWeight()));
             txtBmi.setText(Double.toString(userService.getUser().getBmi()));
+            txtAge.setText(Integer.toString(userService.getUser().getAge()));
+            txtGender.setText(userService.getUser().getGender().toString());
         }
         btnEdit.setOnClickListener(view -> {
             Intent intent =new Intent(this, EditUserActivity.class);

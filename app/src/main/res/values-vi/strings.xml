@@ -56,4 +56,10 @@
     <string name="cooking_recipe">Web Hướng Dẫn Nấu An</string>
     <string name="guide_detect">Nhấp vào khung màu đỏ để hiển thị lượng calo của thực phẩm tương ứng</string>
     <string name="CAPTURE_ERROR">Chụp ảnh bị lỗi</string>
+    <string name="radio_male">Nam</string>
+    <string name="radio_female">Nữ</string>
+    <string name="gender">Giới tính:&#160;</string>
+    <string name="age">Tuổi:&#160;</string>
+    <string name="age_range">&#160;độ tuổi 15 - 80</string>
+    <string name="error_age">Độ tuổi phải từ 15-80</string>
 </resources>

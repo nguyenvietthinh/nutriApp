@@ -69,4 +69,10 @@
     <string name="cooking_recipe">Cooking Recipe Website</string>
     <string name="guide_detect">Click the red box to display the calorie of the corresponding food</string>
     <string name="CAPTURE_ERROR">Could not capture photo</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
+    <string name="gender">Gender:&#160;</string>
+    <string name="age">Age:&#160;</string>
+    <string name="age_range">&#160;ages 15 - 80</string>
+    <string name="error_age">Age Range must be 15-80</string>
 </resources>

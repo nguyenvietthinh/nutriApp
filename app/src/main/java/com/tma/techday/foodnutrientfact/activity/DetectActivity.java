@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.andremion.counterfab.CounterFab;
@@ -37,6 +38,7 @@ import com.tma.techday.foodnutrientfact.gui.dialog.FoodNutriResultDialog;
 import com.tma.techday.foodnutrientfact.helper.InternetCheck;
 import com.tma.techday.foodnutrientfact.model.FoodBoxContain;
 import com.tma.techday.foodnutrientfact.model.FoodInfoDTO;
+import com.tma.techday.foodnutrientfact.model.PermissionsDelegate;
 import com.tma.techday.foodnutrientfact.service.FoodNutriService;
 import com.tma.techday.foodnutrientfact.service.OrderService;
 import com.tma.techday.foodnutrientfact.viewholder.GraphicOverlay;
@@ -69,6 +71,8 @@ import io.fotoapparat.view.CameraView;
  * Capture, detect image, add to cart
  */
 public class DetectActivity extends AppCompatActivity {
+    private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
+    private boolean hasCameraPermission;
     public static final int DEGREES_90 = 90;
     public static final int BOUND_ABSOLUTE_ERROR = 45;
     private Fotoapparat fotoapparat;
@@ -403,6 +407,14 @@ public class DetectActivity extends AppCompatActivity {
             startActivity(intent);
         });
         counterFab.setCount(orderService.getCountCart());
+        hasCameraPermission = permissionsDelegate.hasCameraPermission();
+
+        if (hasCameraPermission) {
+            cameraView.setVisibility(View.VISIBLE);
+
+        } else {
+            permissionsDelegate.requestCameraPermission();
+        }
         fotoapparat = createFotoapparat();
     }
 
@@ -479,6 +491,26 @@ public class DetectActivity extends AppCompatActivity {
         builder.setMessage(message);
         return builder;
     }
+
+    /**
+     * Request Permissions Result and open camera when allowed
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (permissionsDelegate.resultGranted(requestCode, permissions, grantResults)) {
+            hasCameraPermission = true;
+            fotoapparat = createFotoapparat();
+            fotoapparat.start();
+            cameraView.setVisibility(View.VISIBLE);
+        }
+    }
+
 
 }
 
