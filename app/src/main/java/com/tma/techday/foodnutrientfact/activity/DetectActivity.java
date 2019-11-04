@@ -112,6 +112,8 @@ public class DetectActivity extends AppCompatActivity {
         IGNORE_LIST.add("Natural foods");
         IGNORE_LIST.add("Still life photography");
         IGNORE_LIST.add("Fruit");
+        IGNORE_LIST.add("Pink");
+        IGNORE_LIST.add("Dish");
     }
 
     @Override
@@ -310,7 +312,10 @@ public class DetectActivity extends AppCompatActivity {
 
                         }
                     })
-                    .addOnFailureListener(e -> showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image)));
+                    .addOnFailureListener(e -> {
+                        waitingDialog.dismiss();
+                        showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
+                    });
         });
     }
 
@@ -374,7 +379,10 @@ public class DetectActivity extends AppCompatActivity {
                                             detectFirebaseData(bitmap);
                                         }
                                     })
-                                    .addOnFailureListener(e -> detectFirebaseData(bitmap));
+                                    .addOnFailureListener(e -> {
+                                        waitingDialog.dismiss();
+                                        detectFirebaseData(bitmap);
+                                    });
                         } catch (FirebaseMLException e) {
                             e.printStackTrace();
                         }
