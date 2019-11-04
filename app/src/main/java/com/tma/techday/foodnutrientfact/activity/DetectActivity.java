@@ -285,6 +285,7 @@ public class DetectActivity extends AppCompatActivity {
     /**
      * Get the vision image detected then analyze the image bitmap.
      * @param bitmap the picture taken from camera.
+     * @param connectInternet check whether or not the internet.
      */
     private void detectFirebaseData(Bitmap bitmap, boolean connectInternet) {
 
@@ -358,12 +359,8 @@ public class DetectActivity extends AppCompatActivity {
             if (!internet){
                 detectFirebaseData(bitmap, internet);
             }else {
-                FirebaseAutoMLRemoteModel remoteModel =
-                        new FirebaseAutoMLRemoteModel.Builder("food_train_data").build();
-                FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
-                        .requireWifi()
-                        .build();
-
+                FirebaseAutoMLRemoteModel remoteModel = new FirebaseAutoMLRemoteModel.Builder("food_train_data").build();
+                FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().requireWifi().build();
                 FirebaseModelManager.getInstance().download(remoteModel, conditions)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
