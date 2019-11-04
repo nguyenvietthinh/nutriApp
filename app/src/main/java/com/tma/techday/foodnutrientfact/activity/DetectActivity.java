@@ -286,37 +286,35 @@ public class DetectActivity extends AppCompatActivity {
      * Get the vision image detected then analyze the image bitmap.
      * @param bitmap the picture taken from camera.
      */
-    private void detectFirebaseData(Bitmap bitmap) {
+    private void detectFirebaseData(Bitmap bitmap, boolean connectInternet) {
 
         //Create a FirebaseVisionImage object from a Bitmap object
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 
         // If have internet, we will use CLOUD_ENGINE mode Else we will use DEVICE_ENGINE mode
-        new InternetCheck(connectInternet -> {
-            FirebaseVisionImageLabeler detectImageLabeler = getFirebaseVisionImageLabeler(connectInternet ? ImageDetectEngine.CLOUD_ENGINE : ImageDetectEngine.DEVICE_ENGINE);
-            if (detectImageLabeler == null)
-            {
-                showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
-                return;
-            }
-            detectImageLabeler.processImage(image)
-                    .addOnSuccessListener(labels -> {
-                        if (labels != null && !labels.isEmpty())
-                        {
-                            // Image that is 'More correct' ia put at the top
-                            labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
-                            processDataResult(labels);
-                        } else {
-                            waitingDialog.dismiss();
-                            showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
-
-                        }
-                    })
-                    .addOnFailureListener(e -> {
+        FirebaseVisionImageLabeler detectImageLabeler = getFirebaseVisionImageLabeler(connectInternet ? ImageDetectEngine.CLOUD_ENGINE : ImageDetectEngine.DEVICE_ENGINE);
+        if (detectImageLabeler == null)
+        {
+            showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
+            return;
+        }
+        detectImageLabeler.processImage(image)
+                .addOnSuccessListener(labels -> {
+                    if (labels != null && !labels.isEmpty())
+                    {
+                        // Image that is 'More correct' ia put at the top
+                        labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
+                        processDataResult(labels);
+                    } else {
                         waitingDialog.dismiss();
                         showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
-                    });
-        });
+
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    waitingDialog.dismiss();
+                    showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
+                });
     }
 
     /**
@@ -336,9 +334,10 @@ public class DetectActivity extends AppCompatActivity {
                 return FirebaseVision.getInstance()
                         .getCloudImageLabeler(cloudLabeler);
             case DEVICE_ENGINE:
+
                 FirebaseVisionOnDeviceImageLabelerOptions deviceLabeler =       //Finding Labels in a supplied image runs inference on device
                         new FirebaseVisionOnDeviceImageLabelerOptions.Builder()
-                                .setConfidenceThreshold(0.82f) // Get highest Confidence Threshold
+                                .setConfidenceThreshold(0.8f) // Get highest Confidence Threshold
                                 .build();
                 return FirebaseVision.getInstance()
                         .getOnDeviceImageLabeler(deviceLabeler);
@@ -353,41 +352,50 @@ public class DetectActivity extends AppCompatActivity {
      */
     private void detectOwnerData(Bitmap bitmap) {
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
-        FirebaseAutoMLRemoteModel remoteModel =
-                new FirebaseAutoMLRemoteModel.Builder("food_train_data").build();
-        FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
-                .requireWifi()
-                .build();
 
-        FirebaseModelManager.getInstance().download(remoteModel, conditions)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void v) {
-                        FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder optionsBuilder = new FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(remoteModel);
-                        FirebaseVisionOnDeviceAutoMLImageLabelerOptions options = optionsBuilder.setConfidenceThreshold(0.8f).build();
-                        try {
-                            FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(options);
-                            labeler.processImage(image)
-                                    .addOnSuccessListener(labels -> {
-                                        if (labels != null && !labels.isEmpty())
-                                        {
-                                            // Image that is 'More correct' ia put at the top
-                                            labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
-                                            processDataResult(labels);
-                                        } else {
-                                            waitingDialog.dismiss();
-                                            detectFirebaseData(bitmap);
-                                        }
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        waitingDialog.dismiss();
-                                        detectFirebaseData(bitmap);
-                                    });
-                        } catch (FirebaseMLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+        // If have internet, we will use Owner data mode Else we will use Firebase data mode
+        new InternetCheck(internet -> {
+            if (!internet){
+                detectFirebaseData(bitmap, internet);
+            }else {
+                FirebaseAutoMLRemoteModel remoteModel =
+                        new FirebaseAutoMLRemoteModel.Builder("food_train_data").build();
+                FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
+                        .requireWifi()
+                        .build();
+
+                FirebaseModelManager.getInstance().download(remoteModel, conditions)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void v) {
+                                FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder optionsBuilder = new FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(remoteModel);
+                                FirebaseVisionOnDeviceAutoMLImageLabelerOptions options = optionsBuilder.setConfidenceThreshold(0.8f).build();
+                                try {
+                                    FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(options);
+                                    labeler.processImage(image)
+                                            .addOnSuccessListener(labels -> {
+                                                if (labels != null && !labels.isEmpty())
+                                                {
+                                                    // Image that is 'More correct' ia put at the top
+                                                    labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
+                                                    processDataResult(labels);
+                                                } else {
+                                                    detectFirebaseData(bitmap, internet);
+                                                }
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                waitingDialog.dismiss();
+                                                detectFirebaseData(bitmap, internet);
+                                            });
+                                } catch (FirebaseMLException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+            }
+
+        });
+
     }
 
     /**
@@ -414,6 +422,8 @@ public class DetectActivity extends AppCompatActivity {
         }
         if (!foodName.equals("")) {
             getNutrition(foodName);
+        }else {
+            showAlertDialog(getString(R.string.error_title), getString(R.string.not_found_food));
         }
     }
 
