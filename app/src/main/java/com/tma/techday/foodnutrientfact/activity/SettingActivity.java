@@ -42,9 +42,9 @@ public class SettingActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calorie_setting);
-        setUpParam();
         FoodNutriApplication application = (FoodNutriApplication) getApplication();
         application.getComponent().inject(this);
+        setUpParam();
     }
 
     /**

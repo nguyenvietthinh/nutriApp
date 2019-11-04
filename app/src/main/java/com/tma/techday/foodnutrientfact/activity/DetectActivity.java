@@ -22,11 +22,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.andremion.counterfab.CounterFab;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.ml.common.FirebaseMLException;
+import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
+import com.google.firebase.ml.common.modeldownload.FirebaseModelManager;
 import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.automl.FirebaseAutoMLRemoteModel;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOptions;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
+import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceAutoMLImageLabelerOptions;
 import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceImageLabelerOptions;
 import com.google.firebase.ml.vision.objects.FirebaseVisionObject;
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetector;
@@ -213,7 +219,7 @@ public class DetectActivity extends AppCompatActivity {
                 }
                 if (found != null){
                     waitingDialog.show();
-                    runDetect(found.getBitmapImage());
+                    detectOwnerData(found.getBitmapImage());
                 }
                 return false;
             }
@@ -275,10 +281,10 @@ public class DetectActivity extends AppCompatActivity {
     }
 
     /**
-     * Get the vision image detecter then analyze the image bitmap.
+     * Get the vision image detected then analyze the image bitmap.
      * @param bitmap the picture taken from camera.
      */
-    private void runDetect(Bitmap bitmap) {
+    private void detectFirebaseData(Bitmap bitmap) {
 
         //Create a FirebaseVisionImage object from a Bitmap object
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
@@ -334,6 +340,46 @@ public class DetectActivity extends AppCompatActivity {
             default:
                 return null;
         }
+    }
+
+    /**
+     * Detect image and use owner data to get result
+     * @param bitmap the picture taken from camera
+     */
+    private void detectOwnerData(Bitmap bitmap) {
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+        FirebaseAutoMLRemoteModel remoteModel =
+                new FirebaseAutoMLRemoteModel.Builder("food_train_data").build();
+        FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
+                .requireWifi()
+                .build();
+
+        FirebaseModelManager.getInstance().download(remoteModel, conditions)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void v) {
+                        FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder optionsBuilder = new FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(remoteModel);
+                        FirebaseVisionOnDeviceAutoMLImageLabelerOptions options = optionsBuilder.setConfidenceThreshold(0.8f).build();
+                        try {
+                            FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(options);
+                            labeler.processImage(image)
+                                    .addOnSuccessListener(labels -> {
+                                        if (labels != null && !labels.isEmpty())
+                                        {
+                                            // Image that is 'More correct' ia put at the top
+                                            labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
+                                            processDataResult(labels);
+                                        } else {
+                                            waitingDialog.dismiss();
+                                            detectFirebaseData(bitmap);
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> detectFirebaseData(bitmap));
+                        } catch (FirebaseMLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     /**
@@ -419,7 +465,8 @@ public class DetectActivity extends AppCompatActivity {
     }
 
     /**
-     * MLKit Object Detection Function
+     * MLKit Object Detection Function and draw red box for object just detected
+     * @param bitmap the picture taken from camera
      */
     private void runObjectDetection(Bitmap bitmap) {
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
@@ -510,7 +557,5 @@ public class DetectActivity extends AppCompatActivity {
             cameraView.setVisibility(View.VISIBLE);
         }
     }
-
-
 }
 

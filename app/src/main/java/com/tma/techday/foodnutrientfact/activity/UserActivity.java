@@ -71,7 +71,11 @@ public class UserActivity extends AppCompatActivity {
             txtWeight.setText(Double.toString(userService.getUser().getWeight()));
             txtBmi.setText(Double.toString(userService.getUser().getBmi()));
             txtAge.setText(Integer.toString(userService.getUser().getAge()));
-            txtGender.setText(userService.getUser().getGender().toString());
+            if (userService.getUser().getGender().toString().equalsIgnoreCase("Male")){
+                txtGender.setText(getString(R.string.radio_male));
+            }else if (userService.getUser().getGender().toString().equalsIgnoreCase("Female")){
+                txtGender.setText(getString(R.string.radio_female));
+            }
         }
         btnEdit.setOnClickListener(view -> {
             Intent intent =new Intent(this, EditUserActivity.class);

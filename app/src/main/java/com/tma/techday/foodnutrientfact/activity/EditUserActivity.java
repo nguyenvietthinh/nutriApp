@@ -108,9 +108,15 @@ public class EditUserActivity extends AppCompatActivity {
         Double bmi =  weight/(mheight*mheight);
         Integer age = Integer.valueOf(txtEditAge.getText().toString());
         Gender gender = null;
-        if(Gender.Male.toString().equals(radioSexButton.getText())){
+        String rBGender = null;
+        if (radioSexButton.getText().equals("Nam")|| radioSexButton.getText().equals("Male")){
+            rBGender = "Male";
+        }else if (radioSexButton.getText().equals("Nữ")|| radioSexButton.getText().equals("Female")){
+            rBGender = "Female";
+        }
+        if(Gender.Male.toString().equals(rBGender)){
             gender = Gender.Male;
-        }else if (Gender.Female.toString().equals(radioSexButton.getText())){
+        }else if (Gender.Female.toString().equals(rBGender)){
             gender = Gender.Female;
         }
         return User.of(userName,height,weight,bmi,age,gender);
