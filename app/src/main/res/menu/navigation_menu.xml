@@ -10,4 +10,7 @@
     <item android:id="@+id/webView"
         android:icon="@drawable/domain"
         android:title="@string/cooking_recipe"/>
+    <item android:id="@+id/settingResultMode"
+        android:icon="@drawable/scan_setting"
+        android:title="@string/scan_mode_title"/>
 </menu>

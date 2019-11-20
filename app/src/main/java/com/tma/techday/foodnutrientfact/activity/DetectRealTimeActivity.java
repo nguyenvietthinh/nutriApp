@@ -1,19 +1,19 @@
 package com.tma.techday.foodnutrientfact.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -48,6 +48,7 @@ import com.tma.techday.foodnutrientfact.viewholder.RectOverlay;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -82,7 +83,6 @@ public class DetectRealTimeActivity extends AppCompatActivity {
     CounterFab counterFab;
     RelativeLayout.LayoutParams layoutParams;
     FoodBoxContain foodBoxContain;
-    Switch switchOnOff;
 
     @Inject
     FoodNutriService foodNutriService;
@@ -90,18 +90,38 @@ public class DetectRealTimeActivity extends AppCompatActivity {
     @Inject
     OrderService orderService;
 
-    static Set<String> IGNORE_LIST = new HashSet<>();
+    static Set<String> IGNORE_LIST_SINGLE_MODE = new HashSet<>();
     static {
-        IGNORE_LIST.add("Food");
-        IGNORE_LIST.add("Cup");
-        IGNORE_LIST.add("Orange");
-        IGNORE_LIST.add("Red");
-        IGNORE_LIST.add("Blue");
-        IGNORE_LIST.add("Green");
-        IGNORE_LIST.add("White");
-        IGNORE_LIST.add("Black");
-        IGNORE_LIST.add("Yellow");
-        IGNORE_LIST.add("Still life photography");
+        IGNORE_LIST_SINGLE_MODE.add("Food");
+        IGNORE_LIST_SINGLE_MODE.add("Cup");
+        IGNORE_LIST_SINGLE_MODE.add("Orange");
+        IGNORE_LIST_SINGLE_MODE.add("Red");
+        IGNORE_LIST_SINGLE_MODE.add("Blue");
+        IGNORE_LIST_SINGLE_MODE.add("Green");
+        IGNORE_LIST_SINGLE_MODE.add("White");
+        IGNORE_LIST_SINGLE_MODE.add("Black");
+        IGNORE_LIST_SINGLE_MODE.add("Yellow");
+        IGNORE_LIST_SINGLE_MODE.add("Natural foods");
+        IGNORE_LIST_SINGLE_MODE.add("Still life photography");
+        IGNORE_LIST_SINGLE_MODE.add("Fruit");
+        IGNORE_LIST_SINGLE_MODE.add("Pink");
+        IGNORE_LIST_SINGLE_MODE.add("Dish");
+    }
+
+    static Set<String> IGNORE_LIST_MULT_MODE = new HashSet<>();
+    static {
+
+        IGNORE_LIST_MULT_MODE.add("Cup");
+        IGNORE_LIST_MULT_MODE.add("Orange");
+        IGNORE_LIST_MULT_MODE.add("Red");
+        IGNORE_LIST_MULT_MODE.add("Blue");
+        IGNORE_LIST_MULT_MODE.add("Green");
+        IGNORE_LIST_MULT_MODE.add("White");
+        IGNORE_LIST_MULT_MODE.add("Black");
+        IGNORE_LIST_MULT_MODE.add("Yellow");
+        IGNORE_LIST_MULT_MODE.add("Still life photography");
+        IGNORE_LIST_MULT_MODE.add("Pink");
+        IGNORE_LIST_MULT_MODE.add("Dish");
     }
 
     private byte[] image;
@@ -205,16 +225,6 @@ public class DetectRealTimeActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main,menu);
-        MenuItem switchOnOffItem = menu.findItem(R.id.switchOnOffItem);
-        switchOnOffItem.setActionView(R.layout.switch_layout);
-        Switch switchOnOff = switchOnOffItem.getActionView().findViewById(R.id.switchOnOff);
-        switchOnOff.setChecked(true);
-        switchOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Intent intent = new Intent(DetectRealTimeActivity.this,DetectActivity.class);
-                startActivity(intent);
-            }
-        });
         return true;
     }
 
@@ -240,7 +250,13 @@ public class DetectRealTimeActivity extends AppCompatActivity {
                     {
                         // Image that is 'More correct' ia put at the top
                         labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
-                        processDataResult(labels);
+                        SharedPreferences sharedPreferences = getSharedPreferences("Mode", Activity.MODE_PRIVATE);
+                        String mode = sharedPreferences.getString("My_Mode","");
+                        if(mode.equalsIgnoreCase("multiple")){
+                            resultOptionDialog(processMultiDataResult(labels));
+                        }else {
+                            processDataResult(labels);
+                        }
                     } else {
                         waitingDialog.dismiss();
                         showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
@@ -312,7 +328,13 @@ public class DetectRealTimeActivity extends AppCompatActivity {
                                                 {
                                                     // Image that is 'More correct' ia put at the top
                                                     labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
-                                                    processDataResult(labels);
+                                                    SharedPreferences sharedPreferences = getSharedPreferences("Mode", Activity.MODE_PRIVATE);
+                                                    String mode = sharedPreferences.getString("My_Mode","");
+                                                    if(mode.equalsIgnoreCase("multiple")){
+                                                        resultOptionDialog(processMultiDataResult(labels));
+                                                    }else {
+                                                        processDataResult(labels);
+                                                    }
                                                 } else {
                                                     detectFirebaseData(bitmap, internet);
                                                 }
@@ -333,14 +355,14 @@ public class DetectRealTimeActivity extends AppCompatActivity {
     }
 
     /**
-     * Get the label's text description then the image labeling operation succeeds
+     * Get the label's text description then the image labeling operation succeeds in single result mode.
      * @param labels a list of FirebaseVisionImageLabel objects after detect image
      */
     private void processDataResult(List<FirebaseVisionImageLabel> labels) {
         String foodName = "";
         List<String> itemNames = labels.stream().map(lbl -> lbl.getText()).collect(Collectors.toList());
         for (String itemName : itemNames){
-            if ( IGNORE_LIST.contains(itemName) ) {
+            if ( IGNORE_LIST_SINGLE_MODE.contains(itemName) ) {
                 continue;
             }
             else {
@@ -357,6 +379,28 @@ public class DetectRealTimeActivity extends AppCompatActivity {
         }else {
             showAlertDialog(getString(R.string.error_title), getString(R.string.not_found_food));
         }
+    }
+
+    /**
+     * Get the array label's text description then the image labeling operation succeeds in multiple result mode.
+     * @param labels a list of FirebaseVisionImageLabel objects after detect image
+     */
+    private String[] processMultiDataResult(List<FirebaseVisionImageLabel> labels) {
+        String foodName = "";
+        List<String> foodNameResult = new ArrayList<>();
+        List<String> itemNames = labels.stream().map(lbl -> lbl.getText()).collect(Collectors.toList());
+        List<String> multItemNames = itemNames.stream().limit(3).collect(Collectors.toList());
+        for (String itemName : multItemNames){
+            if ( IGNORE_LIST_MULT_MODE.contains(itemName) ) {
+                continue;
+            }
+            else {
+                foodNameResult.add(itemName);
+            }
+        }
+        String[] itemsArray = new String[foodNameResult.size()];
+        itemsArray = foodNameResult.toArray(itemsArray);
+        return itemsArray;
     }
 
     /**
@@ -495,6 +539,45 @@ public class DetectRealTimeActivity extends AppCompatActivity {
         public void process(@NotNull Frame frame) {
             runObjectDetection(frame);
         }
+    }
+
+
+    /**
+     * Dialog display result when user choose multiple result mode
+     * @param labels list label detected
+     */
+    private void  resultOptionDialog(String[] labels){
+        if (waitingDialog.isShowing()) {
+            waitingDialog.dismiss();
+        }
+        final String[] foodName = {""};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose item");
+        int checkedItem =-1; //this will checked the item when user open the dialog
+        if (labels.length == 0){
+            builder.setMessage(getString(R.string.not_found_food));
+        }else {
+            builder.setSingleChoiceItems(labels, checkedItem, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    foodName[0] = labels[which];
+                }
+            });
+        }
+        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                if (!foodName[0].equals("")) {
+                    getNutrition(foodName[0]);
+                }else {
+                    showAlertDialog(getString(R.string.error_title), getString(R.string.not_found_food));
+                }
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

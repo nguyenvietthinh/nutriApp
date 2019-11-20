@@ -75,4 +75,21 @@
     <string name="age">Age:&#160;</string>
     <string name="age_range">&#160;ages 15 - 80</string>
     <string name="error_age">Age Range must be 15-80</string>
+    <string name="scan_mode_title">Setting Scan Mode</string>
+    <string name="setting_result_mode">Choose Mode</string>
+    <string name="single_result_mode">Single Mode</string>
+    <string name="multi_result_mode">Multiple Mode</string>
+    <string name="resultmode" translatable="false">ResultMode</string>
+    <string name="scanmode" translatable="false">ScanMode</string>
+    <string name="single" translatable="false">single</string>
+    <string name="multi" translatable="false">multiple</string>
+    <string name="My_Mode" translatable="false">My_Mode</string>
+    <string name="My_Scan_Mode" translatable="false">My_Scan_Mode</string>
+    <string name="result_mode_title_single">Number Of Result: Single</string>
+    <string name="result_mode_title_mult">Number Of Result: Multiple</string>
+    <string name="scan_mode_photo" >Scan Mode: Photo</string>
+    <string name="scan_mode_realtime" >Scan Mode: Reatime</string>
+    <string name="photo" translatable="false">photo</string>
+    <string name="reatime" translatable="false">reatime</string>
+    <string name="dialog_mult_result_title">Choose Food</string>
 </resources>

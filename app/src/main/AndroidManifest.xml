@@ -33,7 +33,7 @@
         <activity android:name=".activity.AddToCartActivity" />
         <activity android:name=".activity.CalorieComparisionActivity" />
         <activity android:name=".activity.DetectRealTimeActivity" />
-
+        <activity android:name=".activity.SettingResultModeActivity" />
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="label" />

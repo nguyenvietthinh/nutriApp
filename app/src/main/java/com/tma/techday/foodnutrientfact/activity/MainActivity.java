@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,12 +19,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
-import com.tma.techday.foodnutrientfact.model.CalorieSetting;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
 import com.tma.techday.foodnutrientfact.service.UserService;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -58,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         loadLocale();
         Intent intent = getIntent();
-        String lang = intent.getStringExtra("language");
+        String lang = intent.getStringExtra(getString(R.string.language));
+
         if (lang != null){
             setLocale(lang);
             loadLocale();
@@ -74,7 +70,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         cardViewDetect.setOnClickListener(view -> {
-            doOpenOtherActivity(DetectActivity.class);
+            SharedPreferences sharedPreferences = getSharedPreferences("Mode", Activity.MODE_PRIVATE);
+            String scanMode = sharedPreferences.getString("My_Scan_Mode","");
+            if (scanMode.equalsIgnoreCase(getString(R.string.reatime))){
+                doOpenOtherActivity(DetectRealTimeActivity.class);
+            }else{
+                doOpenOtherActivity(DetectActivity.class);
+            }
+            String resultMode = intent.getStringExtra(getString(R.string.resultmode));
+            if (resultMode != null){
+                setResultMode(resultMode);
+            }
+
         });
         cardViewCalSetting.setOnClickListener(view -> {
             doOpenOtherActivity(SettingActivity.class);
@@ -126,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
                     doOpenOtherActivity(SettingLanguageActivity.class);
                 }else if (id == R.id.webView){
                     doOpenOtherActivity(WebViewCookingRecipe.class);
+                }else if (id == R.id.settingResultMode){
+                    doOpenOtherActivity(SettingResultModeActivity.class);
                 }
                 return true;
 
@@ -181,5 +190,16 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
         String language = sharedPreferences.getString("My_Lang","");
         setLocale(language);
+    }
+
+
+    /**
+     * Set mode when choose mode
+     * @param mode
+     */
+    private void setResultMode(String mode){
+        SharedPreferences.Editor editor = getSharedPreferences("Mode",MODE_PRIVATE).edit();
+        editor.putString("My_Mode", mode);
+        editor.apply();
     }
 }

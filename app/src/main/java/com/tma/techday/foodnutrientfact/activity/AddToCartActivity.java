@@ -179,7 +179,7 @@ public class AddToCartActivity extends AppCompatActivity {
      * Delete Item of cart
      * @param deleteOrderEvent
      */
-    @Subscribe(priority = 1)
+    @Subscribe(priority = 2)
     public void onEvent(DeleteOrderEvent deleteOrderEvent){
         cart.remove(deleteOrderEvent.getOrderDeleted());
         orderService.clearCart();

@@ -62,4 +62,13 @@
     <string name="age">Tuổi:&#160;</string>
     <string name="age_range">&#160;độ tuổi 15 - 80</string>
     <string name="error_age">Độ tuổi phải từ 15-80</string>
+    <string name="scan_mode_title">Thiết lập chế độ phân tích</string>
+    <string name="setting_result_mode">Chọn chế độ</string>
+    <string name="single_result_mode">Chế độ một kết quả</string>
+    <string name="multi_result_mode">Chế độ nhiều kết quả</string>
+    <string name="result_mode_title_single" >Số lượng kết quả: Một</string>
+    <string name="result_mode_title_mult">Số lượng kết quả: Nhiều</string>
+    <string name="scan_mode_photo" >Chế độ: Hình ảnh</string>
+    <string name="scan_mode_realtime" >Chế độ: Theo thời gian thực</string>
+    <string name="dialog_mult_result_title">Chọn Một Loại Thức Ăn</string>
 </resources>
