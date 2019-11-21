@@ -3,35 +3,40 @@ package com.tma.techday.foodnutrientfact.activity;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
-import com.tma.techday.foodnutrientfact.helper.SystemConstant;
 import com.tma.techday.foodnutrientfact.model.CalorieDaily;
 import com.tma.techday.foodnutrientfact.service.CalorieDailyService;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.inject.Inject;
 
 /**
  * Display pie chart and related parameters
  */
 public class CalorieComparisionActivity extends AppCompatActivity {
-    TextView dateView, calDailyView, calSettingView,pieChartTitle;
+    TextView calDailyView, calSettingView,pieChartTitle;
+    Spinner numberOfDateView;
     NumberFormat numberFormat = new DecimalFormat("0.00");
     List<CalorieDaily> calorieDailyList = new ArrayList<>();
     PieChart pieChartCalorie;
@@ -60,18 +65,15 @@ public class CalorieComparisionActivity extends AppCompatActivity {
     public void setUpParam(){
         pieChartCalorie = findViewById(R.id.pieChartCal);
         pieChartTitle = findViewById(R.id.pieChartTitle);
-        dateView = findViewById(R.id.date);
+        numberOfDateView = findViewById(R.id.spinnerNumberOfDay);
         calDailyView = findViewById(R.id.txtCalDaily);
         calSettingView = findViewById(R.id.txtCalSetting);
         CalorieDaily calorieDailyReview = (CalorieDaily) getIntent().getSerializableExtra(getString(R.string.calorie_daily_intent));
         pieChartTitle.setText(R.string.pie_chart_title);
-
+        final String[] nbOfDate = new String[1];
+        nbOfDate[0] = "1 Day";
         Date currentDate = new Date();
         calorieDailyList = calorieDailyService.getCalorieDaily(currentDate);
-
-        SimpleDateFormat sdf = new SimpleDateFormat(SystemConstant.DATE_FORMAT_YYYY_MM_DD);
-        String date = sdf.format(currentDate);
-        dateView.setText(date);
 
         double totalCalDaily = 0.0f;
         if (calorieDailyReview != null) {
@@ -87,15 +89,55 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         if ( calorieSettingService.getCalorieSetting()!= null ) {
             calorieSetting = calorieSettingService.getCalorieSetting().getCalorieSettingAmount();
         }
+
         calSettingView.setText(numberFormat.format(calorieSetting));
         if (Float.compare((float) calorieSetting,0.0f) != 0) {
-            constructPieChart(totalCalDaily,calorieSetting);
+//            constructPieChart(totalCalDaily,calorieSetting);
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.error_title));
             builder.setMessage(getString(R.string.require_enter_calorie_setting));
             builder.show();
         }
+        final double calorieSettingTmp = calorieSetting;
+        final double totalCalDailyImp = totalCalDaily;
+        numberOfDateView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                nbOfDate[0] = parent.getItemAtPosition(position).toString();
+                switch (nbOfDate[0]){
+                    case "1 Day":
+                        calSettingView.setText(numberFormat.format(calorieSettingTmp*1));
+                        pieChartCalorie.clear();
+                        if (pieDataSet!=null){
+                            pieDataSet.clear();
+                        }
+                        constructPieChart(totalCalDailyImp,Double.parseDouble(calSettingView.getText().toString()));
+                        break;
+                    case "3 Day":
+                        calSettingView.setText(numberFormat.format(calorieSettingTmp * 3));
+                        pieChartCalorie.clear();
+                        pieDataSet.clear();
+                        constructPieChart(totalCalDailyImp,Double.parseDouble(calSettingView.getText().toString()));
+                        break;
+                    case "7 Day":
+                        calSettingView.setText(numberFormat.format(calorieSettingTmp * 7));
+                        pieChartCalorie.clear();
+                        pieDataSet.clear();
+                        constructPieChart(totalCalDailyImp,Double.parseDouble(calSettingView.getText().toString()));
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
     }
 
     /**

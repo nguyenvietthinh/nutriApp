@@ -1,10 +1,8 @@
 package com.tma.techday.foodnutrientfact.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -250,17 +248,10 @@ public class DetectRealTimeActivity extends AppCompatActivity {
                     {
                         // Image that is 'More correct' ia put at the top
                         labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
-                        SharedPreferences sharedPreferences = getSharedPreferences("Mode", Activity.MODE_PRIVATE);
-                        String mode = sharedPreferences.getString("My_Mode","");
-                        if(mode.equalsIgnoreCase("multiple")){
-                            resultOptionDialog(processMultiDataResult(labels));
-                        }else {
-                            processDataResult(labels);
-                        }
+                        processDataResult(labels);
                     } else {
                         waitingDialog.dismiss();
                         showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
-
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -328,13 +319,7 @@ public class DetectRealTimeActivity extends AppCompatActivity {
                                                 {
                                                     // Image that is 'More correct' ia put at the top
                                                     labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
-                                                    SharedPreferences sharedPreferences = getSharedPreferences("Mode", Activity.MODE_PRIVATE);
-                                                    String mode = sharedPreferences.getString("My_Mode","");
-                                                    if(mode.equalsIgnoreCase("multiple")){
-                                                        resultOptionDialog(processMultiDataResult(labels));
-                                                    }else {
-                                                        processDataResult(labels);
-                                                    }
+                                                    processDataResult(labels);
                                                 } else {
                                                     detectFirebaseData(bitmap, internet);
                                                 }
