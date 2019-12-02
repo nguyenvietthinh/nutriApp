@@ -233,7 +233,6 @@ public class DetectActivity extends AppCompatActivity {
                 }
                 if (found != null){
                     waitingDialog.show();
-
                     detectOwnerData(found.getBitmapImage());
                 }
                 return false;
@@ -316,7 +315,6 @@ public class DetectActivity extends AppCompatActivity {
                     } else {
                         waitingDialog.dismiss();
                         showAlertDialog(getString(R.string.error_title), getString(R.string.unable_detect_image));
-
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -366,14 +364,14 @@ public class DetectActivity extends AppCompatActivity {
             if (!internet){
                 detectFirebaseData(bitmap, internet);
             }else {
-                FirebaseAutoMLRemoteModel remoteModel = new FirebaseAutoMLRemoteModel.Builder("food_train_data").build();
+                FirebaseAutoMLRemoteModel remoteModel = new FirebaseAutoMLRemoteModel.Builder(getString(R.string.name_model_own_train)).build();
                 FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().requireWifi().build();
                 FirebaseModelManager.getInstance().download(remoteModel, conditions)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void v) {
                                 FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder optionsBuilder = new FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(remoteModel);
-                                FirebaseVisionOnDeviceAutoMLImageLabelerOptions options = optionsBuilder.setConfidenceThreshold(0.78f).build();
+                                FirebaseVisionOnDeviceAutoMLImageLabelerOptions options = optionsBuilder.setConfidenceThreshold(0.7f).build();
                                 try {
                                     FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(options);
                                     labeler.processImage(image)
@@ -384,12 +382,11 @@ public class DetectActivity extends AppCompatActivity {
                                                     labels.sort((lb1, lb2) -> (int) (lb2.getConfidence() - lb1.getConfidence()));
                                                     SharedPreferences sharedPreferences = getSharedPreferences("Mode", Activity.MODE_PRIVATE);
                                                     String mode = sharedPreferences.getString("My_Mode","");
-                                                    if(mode.equalsIgnoreCase("multiple")){
+                                                    if (mode.equalsIgnoreCase("multiple")){
                                                         resultOptionDialog(processMultiDataResult(labels));
                                                     }else {
                                                         processDataResult(labels);
                                                     }
-
                                                 } else {
                                                     detectFirebaseData(bitmap, internet);
                                                 }
@@ -404,9 +401,7 @@ public class DetectActivity extends AppCompatActivity {
                             }
                         });
             }
-
         });
-
     }
 
     /**
@@ -443,7 +438,6 @@ public class DetectActivity extends AppCompatActivity {
      * @param labels a list of FirebaseVisionImageLabel objects after detect image
      */
     private String[] processMultiDataResult(List<FirebaseVisionImageLabel> labels) {
-        String foodName = "";
         List<String> foodNameResult = new ArrayList<>();
         List<String> itemNames = labels.stream().map(lbl -> lbl.getText()).collect(Collectors.toList());
         List<String> multItemNames = itemNames.stream().limit(3).collect(Collectors.toList());
@@ -464,7 +458,13 @@ public class DetectActivity extends AppCompatActivity {
      * Get Food Nutrition From food Name after detect image
      * @param foodName label after detect image
      */
-    private void getNutrition(String foodName){
+    private void  getNutrition(String foodName){
+        if (foodName.equalsIgnoreCase("Annona")){
+            foodName = "Custard Apple";
+        }
+        if (foodName.equalsIgnoreCase("Shaddock")){
+            foodName = "Pomelo";
+        }
         FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
         if (foodNutri != null)
         {
@@ -539,7 +539,6 @@ public class DetectActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> e.printStackTrace());
     }
 
-
     /**
      * Build bound depend on object detected
      * @param obj
@@ -613,7 +612,7 @@ public class DetectActivity extends AppCompatActivity {
      * Dialog display result when user choose multiple result mode
      * @param labels list label detected
      */
-    private void  resultOptionDialog(String[] labels){
+    private void resultOptionDialog(String[] labels){
         if (waitingDialog.isShowing()) {
             waitingDialog.dismiss();
             btnDetect.setVisibility(View.GONE);

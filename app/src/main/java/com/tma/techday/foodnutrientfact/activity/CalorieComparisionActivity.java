@@ -128,16 +128,11 @@ public class CalorieComparisionActivity extends AppCompatActivity {
                         break;
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-
-
-
-
     }
 
     /**
