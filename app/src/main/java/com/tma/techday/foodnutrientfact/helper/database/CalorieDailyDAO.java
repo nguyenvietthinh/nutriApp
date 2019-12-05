@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.tma.techday.foodnutrientfact.helper.SystemConstant;
 import com.tma.techday.foodnutrientfact.model.CalorieDaily;
-import com.tma.techday.foodnutrientfact.model.CalorieSetting;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +38,8 @@ public class CalorieDailyDAO {
             ContentValues contentValues = new ContentValues();
             contentValues.put("date",date);
             contentValues.put("calorie_daily_amount",calorieDaily.getCalorieDailyAmount());
+            contentValues.put("protein_daily_amount",calorieDaily.getProteinDailyAmount());
+            contentValues.put("fat_daily_amount",calorieDaily.getFatDailyAmount());
             long result = db.insert(TABLE_NAME, null, contentValues);
             return (result == -1)? false : true;
         } catch (SQLException e){
@@ -60,8 +61,10 @@ public class CalorieDailyDAO {
         try (SQLiteDatabase db = openHelper.getWritableDatabase(); Cursor cursor = db.rawQuery(query, new String[]{ "%" + dateCalDaily + "%" })) {
             if (cursor.moveToFirst()) { // Move to first row
                 do {
-                    double calorieSettingAmount = Double.parseDouble(cursor.getString(cursor.getColumnIndex("calorie_daily_amount")));
-                    calorieDaily = CalorieDaily.of(new Date(),calorieSettingAmount);
+                    double calorieDailyAmount = Double.parseDouble(cursor.getString(cursor.getColumnIndex("calorie_daily_amount")));
+                    double proteinDailyAmount = Double.parseDouble(cursor.getString(cursor.getColumnIndex("protein_daily_amount")));
+                    double fatDailyAmount = Double.parseDouble(cursor.getString(cursor.getColumnIndex("fat_daily_amount")));
+                    calorieDaily = CalorieDaily.of(new Date(),calorieDailyAmount, proteinDailyAmount, fatDailyAmount);
                     calorieDailyList.add(calorieDaily);
                 } while (cursor.moveToNext());
                 return calorieDailyList;

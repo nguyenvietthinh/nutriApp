@@ -134,6 +134,9 @@ public class EditUserActivity extends AppCompatActivity {
         }else if (Gender.Female.equals(user.getGender())){
             bmr = 655 + (9.6*user.getWeight()) + (1.8*user.getHeight()) - (4.7*user.getAge());
         }
-        return CalorieSetting.of(new Date(),bmr);
+        Double tdee = bmr*1.55; // total daily energy expenditure of people with Moderately Active
+        Double fatNecessAmount =  (tdee * 0.25) / 9;
+        Double proteinNecessAmount =  (user.getWeight() * 3.3);
+        return CalorieSetting.of(new Date(),bmr, proteinNecessAmount,fatNecessAmount);
     }
 }

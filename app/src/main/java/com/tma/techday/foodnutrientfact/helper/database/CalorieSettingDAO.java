@@ -35,6 +35,8 @@ public class CalorieSettingDAO {
             ContentValues contentValues = new ContentValues();
             contentValues.put("date",date);
             contentValues.put("calorie_setting_amount",calorieSetting.getCalorieSettingAmount());
+            contentValues.put("protein_necess_amount",calorieSetting.getProteinNecessAmount());
+            contentValues.put("fat_necess_amount",calorieSetting.getFatNecessAmount());
             long result = db.insert(TABLE_NAME, null, contentValues);
             return (result == -1)? false : true;
         }catch (SQLException e){
@@ -54,7 +56,9 @@ public class CalorieSettingDAO {
             if (cursor.moveToFirst()) { // Move to first row
                 do {
                     double calorieSettingAmount = Double.parseDouble( cursor.getString(cursor.getColumnIndex("calorie_setting_amount")));
-                    calorieSetting = CalorieSetting.of(new Date(),calorieSettingAmount);
+                    double proteinNecessAmount = Double.parseDouble( cursor.getString(cursor.getColumnIndex("protein_necess_amount")));
+                    double fatNecessAmount = Double.parseDouble( cursor.getString(cursor.getColumnIndex("fat_necess_amount")));
+                    calorieSetting = CalorieSetting.of(new Date(),calorieSettingAmount,proteinNecessAmount,fatNecessAmount);
                 } while (cursor.moveToNext());
                 return calorieSetting;
             }

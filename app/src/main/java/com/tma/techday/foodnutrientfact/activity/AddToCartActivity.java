@@ -41,6 +41,8 @@ public class AddToCartActivity extends AppCompatActivity {
     Button btnAdd;
     ImageButton btnResearch;
     double total = 0.0;
+    double totalProtein = 0.0;
+    double totalFat = 0.0;
     List<Order> cart = new ArrayList<>();
     NumberFormat numberFormat = new DecimalFormat("0.00");
     LinearLayout layOutOrderItems;
@@ -139,7 +141,7 @@ public class AddToCartActivity extends AppCompatActivity {
      * @return
      */
     private CalorieDaily buildCalorieDaily() {
-        return new CalorieDaily(new Date(),Math.round(total * 100.0) / 100.0);
+        return new CalorieDaily(new Date(),Math.round(total * 100.0) / 100.0,Math.round(totalProtein * 100.0) / 100.0,Math.round(totalFat * 100.0) / 100.0);
     }
 
 
@@ -153,15 +155,21 @@ public class AddToCartActivity extends AppCompatActivity {
             // Calculate total calories
             total = cart.stream().mapToDouble( order -> order.getCalorieAmount()).sum();
 
+            // Calculate total protein
+            totalProtein = cart.stream().mapToDouble( order -> order.getProteinAmount()).sum();
+
+            // Calculate total fat
+            totalFat = cart.stream().mapToDouble( order -> order.getFatAmount()).sum();
+
             // for each order in the card, create a fragment and add to view
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             for (Order order : cart) {
-                Fragment cartItemFragment = new CartItem(order,order.getCalorieAmount(),order.getFoodWeight());
+                Fragment cartItemFragment = new CartItem(order,order.getCalorieAmount(),order.getProteinAmount(),order.getFatAmount(),order.getFoodWeight());
                 transaction.add(R.id.layout_order_items, cartItemFragment);
             }
             transaction.commit();
         } else {
-            total = 0.0;
+            total = totalProtein = totalFat = 0.0;
         }
         totalCalView.setText(numberFormat.format(total));
     }
@@ -172,6 +180,8 @@ public class AddToCartActivity extends AppCompatActivity {
     @Subscribe
     public void onEvent(CaloriesChangeEvent calChange){
         total += calChange.getCaloriesChange();
+        totalProtein += calChange.getProteinChange();
+        totalFat += calChange.getFatChange();
         totalCalView.setText(numberFormat.format(total));
     }
 
@@ -186,7 +196,7 @@ public class AddToCartActivity extends AppCompatActivity {
         layOutOrderItems.removeAllViews();
         for (Order orderInCart:cart) {
             orderService.addOrderToCard(orderInCart);
-            total = 0.0;
+            total = totalProtein = totalFat = 0.0;
         }
         loadCart();
     }

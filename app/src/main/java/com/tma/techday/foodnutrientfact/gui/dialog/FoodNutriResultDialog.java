@@ -268,8 +268,10 @@ public class FoodNutriResultDialog extends DialogFragment {
                     Toast.makeText(getActivity(), getString(R.string.required_empty_text), Toast.LENGTH_LONG).show();
                 } else {
                     double parseFoodWeight = Double.parseDouble(foodWeight);
-                    double orderAmount = (parseFoodWeight * (foodNutri.getCalories())) / 100.0;
-                    if (orderService.addOrderToCard(Order.of(foodNutri.getFoodName(), orderAmount, parseFoodWeight))) {
+                    double orderAmountCal = (parseFoodWeight * (foodNutri.getCalories())) / 100.0;
+                    double orderAmountProtein = (parseFoodWeight * (foodNutri.getProtein())) / 100.0;
+                    double orderAmountFat = (parseFoodWeight * (foodNutri.getTotalFat())) / 100.0;
+                    if (orderService.addOrderToCard(Order.of(foodNutri.getFoodName(), orderAmountCal, orderAmountProtein,orderAmountFat ,parseFoodWeight))) {
                         Toast.makeText(getActivity(),getString(R.string.added_to_cart), Toast.LENGTH_LONG).show();
                         viewDialog.setVisibility(View.GONE);
                         popupDialog.cancel();

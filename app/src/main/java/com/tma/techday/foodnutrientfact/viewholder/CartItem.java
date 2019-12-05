@@ -33,14 +33,18 @@ import java.text.ParseException;
 public class CartItem extends Fragment {
     private Order order;
     private Double calAmountFinal;
+    private Double proteinAmountFinal;
+    private Double fatAmountFinal;
     private Double foodWeightFinal;
     private TextView foodNameItemView, calAmountItemView;
     private EditText foodWeightText;
     private ImageButton btnDeleteOrder;
 
-    public CartItem(Order order, Double calAmountFinal, Double foodWeightFinal) {
+    public CartItem(Order order, Double calAmountFinal, Double proteinAmountFinal, Double fatAmountFinal, Double foodWeightFinal) {
         this.order = order;
         this.calAmountFinal = calAmountFinal;
+        this.proteinAmountFinal = proteinAmountFinal;
+        this.fatAmountFinal = fatAmountFinal;
         this.foodWeightFinal = foodWeightFinal;
     }
 
@@ -104,20 +108,34 @@ public class CartItem extends Fragment {
                                     NumberFormat format = NumberFormat.getInstance();
                                     Double newWeightfood = format.parse(foodWeightText.getText().toString()).doubleValue();
                                     Double calAmount  = order.getCalorieAmount();
+                                    Double proteinAmount  = order.getProteinAmount();
+                                    Double fatAmount = order.getFatAmount();
                                     Double newCalAmount = 0.0;
+                                    Double newProteinAmount = 0.0;
+                                    Double newFatAmount = 0.0;
                                     if (Double.compare(newWeightfood,0.0) == 0 ) {
                                         newCalAmount = 0.0;
                                         order.setCalorieAmount(newCalAmount);
+                                        newProteinAmount = 0.0;
+                                        order.setProteinAmount(newProteinAmount);
+                                        newFatAmount = 0.0;
+                                        order.setFatAmount(newFatAmount);
                                         foodNameItemView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.info, 0);
                                     } else {
                                         newCalAmount =(newWeightfood * calAmountFinal ) / foodWeightFinal;
+                                        newProteinAmount =(newWeightfood * proteinAmountFinal ) / foodWeightFinal;
+                                        newFatAmount =(newWeightfood * fatAmountFinal ) / foodWeightFinal;
                                         foodNameItemView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                                         order.setCalorieAmount(newCalAmount);
+                                        order.setProteinAmount(newProteinAmount);
+                                        order.setFatAmount(newFatAmount);
                                         order.setFoodWeight(newWeightfood);
                                     }
                                     Double calChange = newCalAmount - calAmount;
+                                    Double proteinChange = newProteinAmount - proteinAmount;
+                                    Double fatChange = newFatAmount - fatAmount;
                                     calAmountItemView.setText(numberFormat.format(order.getCalorieAmount()));
-                                    EventBus.getDefault().post(new CaloriesChangeEvent(calChange));
+                                    EventBus.getDefault().post(new CaloriesChangeEvent(calChange,proteinChange,fatChange));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }

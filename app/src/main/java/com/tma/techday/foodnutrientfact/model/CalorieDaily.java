@@ -9,14 +9,18 @@ import java.util.Date;
 public class CalorieDaily implements Serializable {
     private Date date;
     private double calorieDailyAmount;
+    private double proteinDailyAmount;
+    private double fatDailyAmount;
 
-    public static CalorieDaily of(Date date, double calorieDailyAmount){
-        return new CalorieDaily(date,calorieDailyAmount);
+    public static CalorieDaily of(Date date, double calorieDailyAmount,double proteinDailyAmount, double fatDailyAmount){
+        return new CalorieDaily(date,calorieDailyAmount,proteinDailyAmount,fatDailyAmount);
     }
 
-    public CalorieDaily(Date date, double calorieDailyAmount) {
+    public CalorieDaily(Date date, double calorieDailyAmount, double proteinDailyAmount, double fatDailyAmount) {
         this.date = date;
         this.calorieDailyAmount = calorieDailyAmount;
+        this.proteinDailyAmount = proteinDailyAmount;
+        this.fatDailyAmount = fatDailyAmount;
     }
 
     public Date getDate() {
@@ -33,5 +37,22 @@ public class CalorieDaily implements Serializable {
 
     public void setCalorieDailyAmount(double calorieDailyAmount) {
         this.calorieDailyAmount = calorieDailyAmount;
+    }
+
+    public double getProteinDailyAmount() {
+        return proteinDailyAmount;
+    }
+
+    public void setProteinDailyAmount(double proteinDailyAmount) {
+        this.proteinDailyAmount = proteinDailyAmount;
+
+    }
+
+    public double getFatDailyAmount() {
+        return fatDailyAmount;
+    }
+
+    public void setFatDailyAmount(double fatDailyAmount) {
+        this.fatDailyAmount = fatDailyAmount;
     }
 }

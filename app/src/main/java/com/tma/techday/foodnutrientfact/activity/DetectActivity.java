@@ -464,6 +464,8 @@ public class DetectActivity extends AppCompatActivity {
         }
         if (foodName.equalsIgnoreCase("Shaddock")){
             foodName = "Pomelo";
+        }if (foodName.contains("_")){
+            foodName = foodName.replace("_"," ");
         }
         FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
         if (foodNutri != null)

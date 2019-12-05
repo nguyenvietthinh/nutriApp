@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +15,9 @@ import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
 import com.tma.techday.foodnutrientfact.helper.SystemConstant;
 import com.tma.techday.foodnutrientfact.model.CalorieSetting;
+import com.tma.techday.foodnutrientfact.model.User;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
+import com.tma.techday.foodnutrientfact.service.UserService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,6 +34,9 @@ public class SettingActivity extends AppCompatActivity {
 
     @Inject
     CalorieSettingService calorieSettingService;
+
+    @Inject
+    UserService userService;
 
     /**
      * Save UserActivity's calorie needs to database
@@ -66,12 +70,15 @@ public class SettingActivity extends AppCompatActivity {
     private View.OnClickListener setBtnSaveOnclickListener() {
         return view -> {
             String calAmount = txtCalSetting.getText().toString();
-            Log.i("rawAmount", calAmount);
+            User user = userService.getUser();
             if (TextUtils.isEmpty(calAmount)) {
                 Toast.makeText(SettingActivity.this,getString(R.string.required_empty_text), Toast.LENGTH_LONG).show();
             } else {
                 double parseCalories = Double.parseDouble(calAmount);
-                CalorieSetting calorieSetting = buildCalorieSetting(parseCalories);
+                Double tdee = parseCalories*1.55; // total daily energy expenditure of people with Moderately Active
+                Double fatNecessAmount =  (tdee * 0.25) / 9;
+                Double proteinNecessAmount =(user.getWeight() * 3.3);
+                CalorieSetting calorieSetting = buildCalorieSetting(parseCalories,proteinNecessAmount,fatNecessAmount);
                 if (calorieSetting!= null) {
                     boolean isInserted = calorieSettingService.insertCalorieSetting(calorieSetting);
                     if (isInserted) {
@@ -89,7 +96,7 @@ public class SettingActivity extends AppCompatActivity {
      * Build Calorie Setting
      * @return
      */
-    private CalorieSetting buildCalorieSetting(double calorieSettingAmount) {
+    private CalorieSetting buildCalorieSetting(double calorieSettingAmount,double proteinNecessAmount,double fatNecessAmount) {
         Date currentDate = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(SystemConstant.DATE_FORMAT_YYYY_MM_DD);
         String date = sdf.format(currentDate);
@@ -97,11 +104,11 @@ public class SettingActivity extends AppCompatActivity {
             Date dateAdded = calorieSettingService.getCalorieSetting().getDate();
             String dateAdd = sdf.format(dateAdded);
             if (date.equals(dateAdd)) {
-                buildDialogConfirm(new CalorieSetting(currentDate, calorieSettingAmount));
+                buildDialogConfirm(new CalorieSetting(currentDate, calorieSettingAmount,proteinNecessAmount,fatNecessAmount));
                 return null;
             }
         }
-        return new CalorieSetting(currentDate,calorieSettingAmount);
+        return new CalorieSetting(currentDate,calorieSettingAmount,proteinNecessAmount,fatNecessAmount);
     }
 
     /**

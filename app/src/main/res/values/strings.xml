@@ -94,6 +94,7 @@
     <string name="dialog_mult_result_title">Choose Food</string>
     <string name="number_of_date_title" translatable="false">Choose a number of day</string>
     <string name="name_model_own_train" translatable="false">model_train_food</string>
+    <string name="statisticdto" translatable="false">statisticdto</string>
     <string-array name="number_of_date_arrays">
         <item>1 Day</item>
         <item>3 Day</item>

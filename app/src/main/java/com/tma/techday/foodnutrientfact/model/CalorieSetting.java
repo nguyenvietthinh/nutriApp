@@ -9,14 +9,19 @@ import java.util.Date;
 public class CalorieSetting implements Serializable {
     private Date date;
     private double calorieSettingAmount;
+    private double proteinNecessAmount;
+    private double fatNecessAmount;
 
-    public static CalorieSetting of(Date date, double calorieSettingAmount){
-        return new CalorieSetting(date, calorieSettingAmount);
+
+    public static CalorieSetting of(Date date, double calorieSettingAmount,double proteinNecessAmount, double fatNecessAmount){
+        return new CalorieSetting(date, calorieSettingAmount,proteinNecessAmount,fatNecessAmount);
     }
 
-    public CalorieSetting(Date date, double calorieSettingAmount) {
+    public CalorieSetting(Date date, double calorieSettingAmount, double proteinNecessAmount, double fatNecessAmount) {
         this.date = date;
         this.calorieSettingAmount = calorieSettingAmount;
+        this.proteinNecessAmount = proteinNecessAmount;
+        this.fatNecessAmount = fatNecessAmount;
     }
 
     public Date getDate() {
@@ -33,5 +38,21 @@ public class CalorieSetting implements Serializable {
 
     public void setCalorieSettingAmount(double calorieSettingAmount) {
         this.calorieSettingAmount = calorieSettingAmount;
+    }
+
+    public double getProteinNecessAmount() {
+        return proteinNecessAmount;
+    }
+
+    public void setProteinNecessAmount(double proteinNecessAmount) {
+        this.proteinNecessAmount = proteinNecessAmount;
+    }
+
+    public double getFatNecessAmount() {
+        return fatNecessAmount;
+    }
+
+    public void setFatNecessAmount(double fatNecessAmount) {
+        this.fatNecessAmount = fatNecessAmount;
     }
 }

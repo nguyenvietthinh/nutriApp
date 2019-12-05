@@ -9,6 +9,7 @@ import com.tma.techday.foodnutrientfact.activity.MainActivity;
 import com.tma.techday.foodnutrientfact.activity.SettingActivity;
 import com.tma.techday.foodnutrientfact.activity.UserActivity;
 import com.tma.techday.foodnutrientfact.gui.dialog.FoodNutriResultDialog;
+import com.tma.techday.foodnutrientfact.gui.dialog.NutritionComponentStatisticsDialog;
 
 import javax.inject.Singleton;
 
@@ -35,4 +36,6 @@ public interface FoodNutriApplicationComponent  {
     void inject(UserActivity userActivity);
 
     void inject(DetectRealTimeActivity detectRealTimeActivity);
+
+    void inject(NutritionComponentStatisticsDialog nutritionComponentStatisticsDialog);
 }

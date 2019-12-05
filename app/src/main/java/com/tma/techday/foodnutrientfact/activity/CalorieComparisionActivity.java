@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -19,7 +20,9 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.tma.techday.foodnutrientfact.R;
 import com.tma.techday.foodnutrientfact.di.FoodNutriApplication;
+import com.tma.techday.foodnutrientfact.gui.dialog.NutritionComponentStatisticsDialog;
 import com.tma.techday.foodnutrientfact.model.CalorieDaily;
+import com.tma.techday.foodnutrientfact.model.NutritionStatisticsDTO;
 import com.tma.techday.foodnutrientfact.service.CalorieDailyService;
 import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
 
@@ -35,7 +38,8 @@ import javax.inject.Inject;
  * Display pie chart and related parameters
  */
 public class CalorieComparisionActivity extends AppCompatActivity {
-    TextView calDailyView, calSettingView,pieChartTitle;
+    TextView calSettingView,pieChartTitle;
+    Button detailBtn;
     Spinner numberOfDateView;
     NumberFormat numberFormat = new DecimalFormat("0.00");
     List<CalorieDaily> calorieDailyList = new ArrayList<>();
@@ -66,7 +70,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         pieChartCalorie = findViewById(R.id.pieChartCal);
         pieChartTitle = findViewById(R.id.pieChartTitle);
         numberOfDateView = findViewById(R.id.spinnerNumberOfDay);
-        calDailyView = findViewById(R.id.txtCalDaily);
+        detailBtn = findViewById(R.id.detailBtn);
         calSettingView = findViewById(R.id.txtCalSetting);
         CalorieDaily calorieDailyReview = (CalorieDaily) getIntent().getSerializableExtra(getString(R.string.calorie_daily_intent));
         pieChartTitle.setText(R.string.pie_chart_title);
@@ -76,24 +80,39 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         calorieDailyList = calorieDailyService.getCalorieDaily(currentDate);
 
         double totalCalDaily = 0.0f;
+        double totalProteinDaily = 0.0f;
+        double totalFatDaily = 0.0f;
         if (calorieDailyReview != null) {
             totalCalDaily = calorieDailyReview.getCalorieDailyAmount();
+            totalProteinDaily = calorieDailyReview.getProteinDailyAmount();
+            totalFatDaily = calorieDailyReview.getFatDailyAmount();
         }
 
         for (CalorieDaily calorieDaily: calorieDailyList){
             totalCalDaily+= calorieDaily.getCalorieDailyAmount();
+            totalProteinDaily += calorieDaily.getProteinDailyAmount();
+            totalFatDaily += calorieDaily.getFatDailyAmount();
         }
-        calDailyView.setText(numberFormat.format(totalCalDaily));
+
 
         double calorieSetting = 0.0f;
+        double proteinNecessAmount = 0.0f;
+        double fatNecessAmount = 0.0f;
         if ( calorieSettingService.getCalorieSetting()!= null ) {
             calorieSetting = calorieSettingService.getCalorieSetting().getCalorieSettingAmount();
+            proteinNecessAmount = calorieSettingService.getCalorieSetting().getProteinNecessAmount();
+            fatNecessAmount = calorieSettingService.getCalorieSetting().getFatNecessAmount();
         }
 
         calSettingView.setText(numberFormat.format(calorieSetting));
-        if (Float.compare((float) calorieSetting,0.0f) != 0) {
-//            constructPieChart(totalCalDaily,calorieSetting);
-        } else {
+        if (Float.compare((float)totalCalDaily,(float)calorieSetting) >= 0&&Float.compare((float)totalProteinDaily,(float)proteinNecessAmount) >= 0&&
+                Float.compare((float)totalFatDaily,(float)fatNecessAmount) >= 0){
+            detailBtn.setBackgroundColor(Color.GREEN);
+        }else {
+            detailBtn.setBackgroundColor(Color.YELLOW);
+        }
+
+        if (Float.compare((float) calorieSetting,0.0f) == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.error_title));
             builder.setMessage(getString(R.string.require_enter_calorie_setting));
@@ -133,6 +152,27 @@ public class CalorieComparisionActivity extends AppCompatActivity {
 
             }
         });
+
+        //Click Button Detail event
+        double finalProteinNecessAmount = proteinNecessAmount;
+        double finalTotalProteinDaily = totalProteinDaily;
+        double finalTotalFatDaily = totalFatDaily;
+        double finalFatNecessAmount = fatNecessAmount;
+        detailBtn.setOnClickListener(v -> {
+            Double numberOfDate = Double.parseDouble(calSettingView.getText().toString())/calorieSettingTmp;
+            NutritionStatisticsDTO dto = NutritionStatisticsDTO.of(rounDouble(totalCalDailyImp),rounDouble(finalTotalProteinDaily), rounDouble(finalTotalFatDaily),
+                    rounDouble(Double.parseDouble(calSettingView.getText().toString())), rounDouble(finalProteinNecessAmount*numberOfDate), rounDouble(finalFatNecessAmount*numberOfDate));
+            NutritionComponentStatisticsDialog dialog = new NutritionComponentStatisticsDialog();
+            Bundle args = new Bundle();   //Use bundle to pass data for nutrition statistic dialog
+            args.putSerializable(getString(R.string.statisticdto), dto);
+            dialog.setArguments(args);
+            dialog.show(getSupportFragmentManager(),"Statistic_dialog");
+        });
+    }
+
+    //Round 2 digits
+    private double rounDouble(Double aDouble){
+        return (Math.round(aDouble * 10.0) / 10.0);
     }
 
     /**
