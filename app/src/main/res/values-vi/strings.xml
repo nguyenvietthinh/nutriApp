@@ -71,4 +71,11 @@
     <string name="scan_mode_photo" >Chế độ: Hình ảnh</string>
     <string name="scan_mode_realtime" >Chế độ: Theo thời gian thực</string>
     <string name="dialog_mult_result_title">Chọn Một Loại Thức Ăn</string>
+    <string name="number_of_date_title" >Chọn số lượng ngày: </string>
+    <string name="detail_button" >Chi tiết</string>
+    <string name="one_Day">1 Ngày</string>
+    <string name="three_Day">3 Ngày</string>
+    <string name="seven_Day">7 Ngày</string>
+    <string name="calorie_redundancy">Dư</string>
+    <string name="excess_calories">Lượng calo dư thừa: </string>
 </resources>

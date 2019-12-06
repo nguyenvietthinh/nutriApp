@@ -13,11 +13,22 @@
         android:background="@android:color/transparent"
         android:layout_centerInParent="true">
 
+
         <LinearLayout
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:background="@drawable/border"
             android:orientation="vertical">
+            <ImageButton
+                android:id="@+id/imageButton_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                android:background="@null"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="3dp"
+                android:clickable="true"
+                android:src="@drawable/closebutton" />
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="match_parent"
@@ -222,6 +233,7 @@
                     android:textColor="#330033"
                     android:textSize="18sp" />
             </LinearLayout>
+
 
         </LinearLayout>
 

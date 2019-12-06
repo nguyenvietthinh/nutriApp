@@ -19,6 +19,7 @@
     <string name="engine_must_be_specified" translatable="false">Engine must be specified.</string>
     <string name="current">Current</string>
     <string name="calorie_missing">Missing</string>
+    <string name="calorie_redundancy">Redundancy</string>
     <string name="pie_chart_des">Pie Chart Calorie</string>
     <string name="pie_chart_title">Calorie Comparision Chart</string>
     <string name="require_enter_calorie_setting">Please Enter Your Calorie Setting.</string>
@@ -92,9 +93,14 @@
     <string name="photo" translatable="false">photo</string>
     <string name="reatime" translatable="false">reatime</string>
     <string name="dialog_mult_result_title">Choose Food</string>
-    <string name="number_of_date_title" translatable="false">Choose a number of day</string>
+    <string name="number_of_date_title" >Choose a number of day: </string>
     <string name="name_model_own_train" translatable="false">model_train_food</string>
     <string name="statisticdto" translatable="false">statisticdto</string>
+    <string name="excess_calories">Excess calories: </string>
+    <string name="detail_button" >Detail</string>
+    <string name="one_Day">1 Day</string>
+    <string name="three_Day">3 Day</string>
+    <string name="seven_Day">7 Day</string>
     <string-array name="number_of_date_arrays">
         <item>1 Day</item>
         <item>3 Day</item>

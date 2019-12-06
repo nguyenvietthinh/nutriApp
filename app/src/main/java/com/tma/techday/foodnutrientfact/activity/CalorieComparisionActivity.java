@@ -28,6 +28,7 @@ import com.tma.techday.foodnutrientfact.service.CalorieSettingService;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
  * Display pie chart and related parameters
  */
 public class CalorieComparisionActivity extends AppCompatActivity {
-    TextView calSettingView,pieChartTitle;
+    TextView calSettingView,pieChartTitle,excessCalories,excessCaloriesLabel,excessCaloriesLabelUnit;
     Button detailBtn;
     Spinner numberOfDateView;
     NumberFormat numberFormat = new DecimalFormat("0.00");
@@ -67,6 +68,12 @@ public class CalorieComparisionActivity extends AppCompatActivity {
      * Declare Params, Pie Chart and set text for view
      */
     public void setUpParam(){
+        excessCalories = findViewById(R.id.txtcalRedundancy);
+        excessCalories.setVisibility(View.INVISIBLE);
+        excessCaloriesLabel = findViewById(R.id.calRedundancy);
+        excessCaloriesLabel.setVisibility(View.INVISIBLE);
+        excessCaloriesLabelUnit = findViewById(R.id.excessCaloriesLabelUnit);
+        excessCaloriesLabelUnit.setVisibility(View.INVISIBLE);
         pieChartCalorie = findViewById(R.id.pieChartCal);
         pieChartTitle = findViewById(R.id.pieChartTitle);
         numberOfDateView = findViewById(R.id.spinnerNumberOfDay);
@@ -93,7 +100,6 @@ public class CalorieComparisionActivity extends AppCompatActivity {
             totalProteinDaily += calorieDaily.getProteinDailyAmount();
             totalFatDaily += calorieDaily.getFatDailyAmount();
         }
-
 
         double calorieSetting = 0.0f;
         double proteinNecessAmount = 0.0f;
@@ -131,19 +137,31 @@ public class CalorieComparisionActivity extends AppCompatActivity {
                         if (pieDataSet!=null){
                             pieDataSet.clear();
                         }
-                        constructPieChart(totalCalDailyImp,Double.parseDouble(calSettingView.getText().toString()));
+                        try {
+                            constructPieChart(totalCalDailyImp,numberFormat.parse(calSettingView.getText().toString()).doubleValue());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case "3 Day":
                         calSettingView.setText(numberFormat.format(calorieSettingTmp * 3));
                         pieChartCalorie.clear();
                         pieDataSet.clear();
-                        constructPieChart(totalCalDailyImp,Double.parseDouble(calSettingView.getText().toString()));
+                        try {
+                            constructPieChart(totalCalDailyImp,numberFormat.parse(calSettingView.getText().toString()).doubleValue());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case "7 Day":
                         calSettingView.setText(numberFormat.format(calorieSettingTmp * 7));
                         pieChartCalorie.clear();
                         pieDataSet.clear();
-                        constructPieChart(totalCalDailyImp,Double.parseDouble(calSettingView.getText().toString()));
+                        try {
+                            constructPieChart(totalCalDailyImp,numberFormat.parse(calSettingView.getText().toString()).doubleValue());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         break;
                 }
             }
@@ -159,14 +177,19 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         double finalTotalFatDaily = totalFatDaily;
         double finalFatNecessAmount = fatNecessAmount;
         detailBtn.setOnClickListener(v -> {
-            Double numberOfDate = Double.parseDouble(calSettingView.getText().toString())/calorieSettingTmp;
-            NutritionStatisticsDTO dto = NutritionStatisticsDTO.of(rounDouble(totalCalDailyImp),rounDouble(finalTotalProteinDaily), rounDouble(finalTotalFatDaily),
-                    rounDouble(Double.parseDouble(calSettingView.getText().toString())), rounDouble(finalProteinNecessAmount*numberOfDate), rounDouble(finalFatNecessAmount*numberOfDate));
-            NutritionComponentStatisticsDialog dialog = new NutritionComponentStatisticsDialog();
-            Bundle args = new Bundle();   //Use bundle to pass data for nutrition statistic dialog
-            args.putSerializable(getString(R.string.statisticdto), dto);
-            dialog.setArguments(args);
-            dialog.show(getSupportFragmentManager(),"Statistic_dialog");
+            try {
+               Double calSetting = numberFormat.parse(calSettingView.getText().toString()).doubleValue();
+                Double numberOfDate = calSetting/calorieSettingTmp;
+                NutritionStatisticsDTO dto = NutritionStatisticsDTO.of(rounDouble(totalCalDailyImp),rounDouble(finalTotalProteinDaily), rounDouble(finalTotalFatDaily),
+                        calSetting, rounDouble(finalProteinNecessAmount*numberOfDate), rounDouble(finalFatNecessAmount*numberOfDate));
+                NutritionComponentStatisticsDialog dialog = new NutritionComponentStatisticsDialog();
+                Bundle args = new Bundle();   //Use bundle to pass data for nutrition statistic dialog
+                args.putSerializable(getString(R.string.statisticdto), dto);
+                dialog.setArguments(args);
+                dialog.show(getSupportFragmentManager(),"Statistic_dialog");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -233,16 +256,33 @@ public class CalorieComparisionActivity extends AppCompatActivity {
     private void getEntries(double totalCalDaily, double calorieSetting) {
         float calDailyPercent = (float) (totalCalDaily/calorieSetting*100);
         float calDailyPercentRounded = (float) (Math.round(calDailyPercent * 10.0) / 10.0);
-        if (Float.compare(calDailyPercentRounded,100) >= 0) {
+        if (Float.compare(calDailyPercentRounded, 100) == 0) {
             pieEntriesCalories.add(new PieEntry(100," "));
             pieDataSet.setColors(Color.rgb(102,255,102) );
-        } else {
+        }else if (Float.compare(calDailyPercentRounded, 100) > 0){
+            excessCalories.setVisibility(View.VISIBLE);
+            excessCaloriesLabel.setVisibility(View.VISIBLE);
+            excessCaloriesLabelUnit.setVisibility(View.VISIBLE);
+            excessCalories.setText(numberFormat.format(calDailyPercentRounded-100));
+            pieEntriesCalories.add(new PieEntry(100," "));
+            pieDataSet.setColors(Color.rgb(102,255,102) );
+        }
+        else {
             if (Float.compare(calDailyPercentRounded,50) > 0){
+                excessCalories.setVisibility(View.INVISIBLE);
+                excessCaloriesLabel.setVisibility(View.INVISIBLE);
+                excessCaloriesLabelUnit.setVisibility(View.INVISIBLE);
                 pieDataSet.setColors(Color.rgb(102,255,102),Color.rgb(155, 238, 255));
             }
             else if (Float.compare(calDailyPercentRounded, 50) == 0){
+                excessCalories.setVisibility(View.INVISIBLE);
+                excessCaloriesLabel.setVisibility(View.INVISIBLE);
+                excessCaloriesLabelUnit.setVisibility(View.INVISIBLE);
                 pieDataSet.setColors(Color.rgb(255,255,102),Color.rgb(155, 238, 255));
             }else {
+                excessCalories.setVisibility(View.INVISIBLE);
+                excessCaloriesLabel.setVisibility(View.INVISIBLE);
+                excessCaloriesLabelUnit.setVisibility(View.INVISIBLE);
                 pieDataSet.setColors(Color.rgb(233,63,63),Color.rgb(155, 238, 255));
             }
             pieEntriesCalories.add(new PieEntry(calDailyPercentRounded,getString(R.string.current)));

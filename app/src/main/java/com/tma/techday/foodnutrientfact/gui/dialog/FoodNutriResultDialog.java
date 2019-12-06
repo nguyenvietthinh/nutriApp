@@ -255,7 +255,6 @@ public class FoodNutriResultDialog extends DialogFragment {
         btnpopupDialogAdd.setOnClickListener(setClickBtnAddToCart());
     }
 
-
     /**
      *  set on click listener for button add
      * @return

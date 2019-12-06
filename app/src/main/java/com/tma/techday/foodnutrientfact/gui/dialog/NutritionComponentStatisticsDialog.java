@@ -43,6 +43,7 @@ public class NutritionComponentStatisticsDialog extends DialogFragment {
         init();
         setTextForTextView();
         setUpDialog();
+        setClickListener();
         return dialog;
     }
 
@@ -67,7 +68,6 @@ public class NutritionComponentStatisticsDialog extends DialogFragment {
         actualProtein.setText(Double.toString(nutritionStatisticsDTO.getProtein()));
         totalFatNecess.setText(Double.toString(nutritionStatisticsDTO.getTotalFatNecess()));
         actualtotalFat.setText(Double.toString(nutritionStatisticsDTO.getTotalFat()));
-
     }
 
     /**
@@ -91,5 +91,12 @@ public class NutritionComponentStatisticsDialog extends DialogFragment {
         totalFatNecess = viewDialog.findViewById(R.id.txtTotalFatNecess);
         actualtotalFat = viewDialog.findViewById(R.id.txtTotalFat);
         btnCloseDialog = viewDialog.findViewById(R.id.imageButton_close);
+    }
+
+    /**
+     * Set click listener for view and button
+     */
+    private void setClickListener() {
+        btnCloseDialog.setOnClickListener(view -> dialog.cancel());
     }
 }

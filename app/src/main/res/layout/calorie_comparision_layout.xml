@@ -61,15 +61,37 @@
                 android:layout_width="70dp"
                 android:layout_height="35dp"
                 android:textSize="12dp"
-                android:text="Detail"/>
+                android:text="@string/detail_button"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/calRedundancy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/excess_calories"/>
+            <TextView
+                android:id="@+id/txtcalRedundancy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"/>
+            <TextView
+                android:id="@+id/excessCaloriesLabelUnit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="%"/>
         </LinearLayout>
     </LinearLayout>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChartCal"
-        android:layout_width="400dp"
+        android:layout_width="380dp"
         android:layout_height="478dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="5dp">
     </com.github.mikephil.charting.charts.PieChart>
 
 </LinearLayout>
