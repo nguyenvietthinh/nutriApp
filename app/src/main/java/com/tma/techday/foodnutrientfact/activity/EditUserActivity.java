@@ -48,6 +48,15 @@ public class EditUserActivity extends AppCompatActivity {
         setUpParam();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (userService.getUser() == null){
+            Toast.makeText(this, getString(R.string.require_edit_user), Toast.LENGTH_LONG).show();
+        }else {
+           super.onBackPressed();
+        }
+    }
+
     /**
      * Declare Params and set on click listener for buttons
      */
@@ -72,6 +81,7 @@ public class EditUserActivity extends AppCompatActivity {
             };
         }
         btnSave.setOnClickListener(view -> {
+
             // get selected radio button from radioGroup
             int selectedId = radioSexGroup.getCheckedRadioButtonId();
 
@@ -85,7 +95,6 @@ public class EditUserActivity extends AppCompatActivity {
                     calorieSettingService.updateCalorieSetting(buildCalorieSetting(buildUser()));
                     Toast.makeText(EditUserActivity.this, getString(R.string.update_user), Toast.LENGTH_LONG).show();
                 }else {
-
                     userService.insertUser(buildUser());
                     calorieSettingService.insertCalorieSetting(buildCalorieSetting(buildUser()));
                     Toast.makeText(EditUserActivity.this, getString(R.string.save_successfully), Toast.LENGTH_LONG).show();

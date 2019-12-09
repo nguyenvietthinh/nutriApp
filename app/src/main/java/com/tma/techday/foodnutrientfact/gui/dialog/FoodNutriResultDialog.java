@@ -280,7 +280,6 @@ public class FoodNutriResultDialog extends DialogFragment {
                         viewDialog.setVisibility(View.GONE);
                     }
                 }
-
             };
     }
 

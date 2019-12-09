@@ -1,7 +1,6 @@
 package com.tma.techday.foodnutrientfact.activity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -301,7 +300,7 @@ public class DetectRealTimeActivity extends AppCompatActivity {
                 detectFirebaseData(bitmap, internet);
             }else {
                 FirebaseAutoMLRemoteModel remoteModel =
-                        new FirebaseAutoMLRemoteModel.Builder("food_train_data").build();
+                        new FirebaseAutoMLRemoteModel.Builder(getString(R.string.name_model_own_train)).build();
                 FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
                         .requireWifi()
                         .build();
@@ -310,7 +309,7 @@ public class DetectRealTimeActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void v) {
                                 FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder optionsBuilder = new FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(remoteModel);
-                                FirebaseVisionOnDeviceAutoMLImageLabelerOptions options = optionsBuilder.setConfidenceThreshold(0.8f).build();
+                                FirebaseVisionOnDeviceAutoMLImageLabelerOptions options = optionsBuilder.setConfidenceThreshold(0.7f).build();
                                 try {
                                     FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(options);
                                     labeler.processImage(image)
@@ -487,8 +486,7 @@ public class DetectRealTimeActivity extends AppCompatActivity {
      * @param bounds
      */
     private void cutBitmapImage(Bitmap bitmap, Rect bounds) {
-        Bitmap cutBitmap = Bitmap.createBitmap(bounds.right,
-                bounds.bottom, Bitmap.Config.ARGB_8888);
+        Bitmap cutBitmap = Bitmap.createBitmap(bounds.right, bounds.bottom, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(cutBitmap);
         canvas.drawBitmap(bitmap, bounds, bounds, null);
         foodBoxContain = FoodBoxContain.of(bounds,cutBitmap);
@@ -525,44 +523,4 @@ public class DetectRealTimeActivity extends AppCompatActivity {
             runObjectDetection(frame);
         }
     }
-
-
-    /**
-     * Dialog display result when user choose multiple result mode
-     * @param labels list label detected
-     */
-    private void  resultOptionDialog(String[] labels){
-        if (waitingDialog.isShowing()) {
-            waitingDialog.dismiss();
-        }
-        final String[] foodName = {""};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose item");
-        int checkedItem =-1; //this will checked the item when user open the dialog
-        if (labels.length == 0){
-            builder.setMessage(getString(R.string.not_found_food));
-        }else {
-            builder.setSingleChoiceItems(labels, checkedItem, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    foodName[0] = labels[which];
-                }
-            });
-        }
-        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                if (!foodName[0].equals("")) {
-                    getNutrition(foodName[0]);
-                }else {
-                    showAlertDialog(getString(R.string.error_title), getString(R.string.not_found_food));
-                }
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
 }
