@@ -257,7 +257,7 @@ public class CalorieComparisionActivity extends AppCompatActivity {
         float calDailyPercent = (float) (totalCalDaily/calorieSetting*100);
         float calDailyPercentRounded = (float) (Math.round(calDailyPercent * 10.0) / 10.0);
         if (Float.compare(calDailyPercentRounded, 100) == 0) {
-            pieEntriesCalories.add(new PieEntry(100," "));
+            pieEntriesCalories.add(new PieEntry(100,getString(R.string.current)));
             pieDataSet.setColors(Color.rgb(102,255,102) );
         }else if (Float.compare(calDailyPercentRounded, 100) > 0){
             excessCalories.setVisibility(View.VISIBLE);

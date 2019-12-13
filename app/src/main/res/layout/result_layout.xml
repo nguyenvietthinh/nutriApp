@@ -92,10 +92,18 @@
 
         <TextView
             android:id="@+id/txtCal"
-            android:layout_width="211dp"
+            android:layout_width="153dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="165"
+            android:textColor="#330033"
+            android:textSize="18sp"
+            android:typeface="serif" />
+        <TextView
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Kcal"
             android:typeface="serif"
             android:textColor="#330033"
             android:textSize="18sp" />
@@ -112,22 +120,30 @@
 
         <TextView
             android:id="@+id/txtProteinLabel"
-            android:layout_width="89dp"
+            android:layout_width="93dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
             android:text="Protein"
-            android:typeface="serif"
             android:textColor="#330033"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:typeface="serif" />
 
         <TextView
             android:id="@+id/txtProtein"
+            android:layout_width="144dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85"
+            android:textColor="#330033"
+            android:textSize="18sp"
+            android:typeface="serif" />
+        <TextView
             android:layout_width="211dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="85 mg"
+            android:text="@string/g"
             android:typeface="serif"
             android:textColor="#330033"
             android:textSize="18sp" />
@@ -157,10 +173,18 @@
 
         <TextView
             android:id="@+id/txtCholesterol"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="85"
+            android:textColor="#330033"
+            android:textSize="18sp"
+            android:typeface="serif" />
+        <TextView
             android:layout_width="211dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="85 mg"
+            android:text="@string/mg"
             android:typeface="serif"
             android:textColor="#330033"
             android:textSize="18sp" />
@@ -188,10 +212,18 @@
 
         <TextView
             android:id="@+id/txtTotalFat"
+            android:layout_width="142dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="3.6"
+            android:textColor="#330033"
+            android:textSize="18sp"
+            android:typeface="serif" />
+        <TextView
             android:layout_width="211dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="3.6g"
+            android:text="@string/g"
             android:typeface="serif"
             android:textColor="#330033"
             android:textSize="18sp" />

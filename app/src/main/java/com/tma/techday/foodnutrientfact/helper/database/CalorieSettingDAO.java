@@ -77,7 +77,9 @@ public class CalorieSettingDAO {
         String dateCalSetting = sdf.format(calorieSetting.getDate());
         try (SQLiteDatabase db = openHelper.getWritableDatabase()){
             ContentValues contentValues = new ContentValues();
-            contentValues.put("calorie_setting_amount", calorieSetting.getCalorieSettingAmount());
+            contentValues.put("calorie_setting_amount",calorieSetting.getCalorieSettingAmount());
+            contentValues.put("protein_necess_amount",calorieSetting.getProteinNecessAmount());
+            contentValues.put("fat_necess_amount",calorieSetting.getFatNecessAmount());
             db.update(TABLE_NAME, contentValues, "date LIKE ?",new String[] { "%" + dateCalSetting + "%" });
         } catch (SQLException e){
             e.printStackTrace();

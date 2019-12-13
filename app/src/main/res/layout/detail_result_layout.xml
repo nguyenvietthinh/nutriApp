@@ -88,10 +88,18 @@
 
             <TextView
                 android:id="@+id/txtCal"
-                android:layout_width="211dp"
+                android:layout_width="105dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="165"
+                android:textColor="#330033"
+                android:textSize="16sp"
+                android:typeface="serif" />
+            <TextView
+                android:layout_width="211dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Kcal"
                 android:typeface="serif"
                 android:textColor="#330033"
                 android:textSize="16sp" />
@@ -108,7 +116,7 @@
 
             <TextView
                 android:id="@+id/txtProteinLabel"
-                android:layout_width="91dp"
+                android:layout_width="98dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
@@ -120,13 +128,21 @@
 
             <TextView
                 android:id="@+id/txtProtein"
-                android:layout_width="189dp"
+                android:layout_width="113dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 mg"
+                android:text="85 "
                 android:textColor="#330033"
                 android:textSize="16sp"
                 android:typeface="serif" />
+            <TextView
+                android:layout_width="211dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/g"
+                android:typeface="serif"
+                android:textColor="#330033"
+                android:textSize="16sp" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -152,13 +168,21 @@
 
             <TextView
                 android:id="@+id/txtCholesterol"
-                android:layout_width="211dp"
+                android:layout_width="114dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 mg"
+                android:text="85"
                 android:textColor="#330033"
                 android:textSize="16sp"
                 android:typeface="serif" />
+            <TextView
+                android:layout_width="211dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mg"
+                android:typeface="serif"
+                android:textColor="#330033"
+                android:textSize="16sp" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -167,31 +191,41 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="36dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/txtTotalFatLabel"
-                android:layout_width="105dp"
+                android:layout_width="117dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="Total Fat"
-                android:typeface="serif"
                 android:textColor="#330033"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/txtTotalFat"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="3.6"
+                android:textColor="#330033"
+                android:textSize="16sp"
+                android:typeface="serif" />
+
+            <TextView
                 android:layout_width="211dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="3.6g"
-                android:typeface="serif"
+                android:text="@string/g"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:typeface="serif" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="34dp"
@@ -200,23 +234,33 @@
             <TextView
                 android:id="@+id/txtSaturatedLabel"
                 android:layout_width="147dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:paddingLeft="20dp"
                 android:paddingTop="7dp"
                 android:text="Saturated fat"
-                android:typeface="serif"
                 android:textAlignment="center"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:typeface="serif" />
+
             <TextView
                 android:id="@+id/txtSaturatedFat"
+                android:layout_width="143dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="85"
+                android:textColor="#330033"
+                android:textSize="16sp"
+                android:typeface="serif" />
+
+            <TextView
                 android:layout_width="211dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 g"
-                android:typeface="serif"
+                android:text="@string/g"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:typeface="serif" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -237,10 +281,19 @@
 
             <TextView
                 android:id="@+id/txtPolyunsaturatedFat"
+                android:layout_width="193dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="85"
+                android:textColor="#330033"
+                android:textSize="16sp"
+                android:typeface="serif" />
+
+            <TextView
                 android:layout_width="211dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 g"
+                android:text="@string/g"
                 android:typeface="serif"
                 android:textColor="#330033"
                 android:textSize="16sp" />
@@ -264,13 +317,22 @@
 
             <TextView
                 android:id="@+id/txtMonounsaturatedFat"
-                android:layout_width="94dp"
+                android:layout_width="49dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 g"
-                android:typeface="serif"
+                android:text="85"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:typeface="serif" />
+
+            <TextView
+                android:layout_width="61dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/g"
+                android:textColor="#330033"
+                android:textSize="16sp"
+                android:typeface="serif" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -299,7 +361,16 @@
                 android:layout_width="211dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 mg"
+                android:text="85"
+                android:typeface="serif"
+                android:textColor="#330033"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="211dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mg"
                 android:typeface="serif"
                 android:textColor="#330033"
                 android:textSize="16sp" />
@@ -331,7 +402,16 @@
                 android:layout_width="211dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 mg"
+                android:text="85"
+                android:typeface="serif"
+                android:textColor="#330033"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="211dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mg"
                 android:typeface="serif"
                 android:textColor="#330033"
                 android:textSize="16sp" />
@@ -361,13 +441,22 @@
 
             <TextView
                 android:id="@+id/txtVitaminC"
-                android:layout_width="222dp"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 mg"
-                android:typeface="serif"
+                android:text="85"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:typeface="serif" />
+
+            <TextView
+                android:layout_width="211dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mg"
+                android:textColor="#330033"
+                android:textSize="16sp"
+                android:typeface="serif" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -393,10 +482,19 @@
 
             <TextView
                 android:id="@+id/txtVitaminA"
-                android:layout_width="222dp"
+                android:layout_width="213dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 mg"
+                android:text="85 "
+                android:textColor="#330033"
+                android:textSize="16sp"
+                android:typeface="serif" />
+
+            <TextView
+                android:layout_width="211dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mg"
                 android:typeface="serif"
                 android:textColor="#330033"
                 android:textSize="16sp" />
@@ -425,13 +523,21 @@
 
             <TextView
                 android:id="@+id/txtVitaminD"
-                android:layout_width="222dp"
+                android:layout_width="212dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 mg"
+                android:text="85"
+                android:textColor="#330033"
+                android:textSize="16sp"
+                android:typeface="serif" />
+
+            <TextView
+                android:layout_width="211dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/IU"
                 android:typeface="serif"
                 android:textColor="#330033"
-
                 android:textSize="16sp" />
         </LinearLayout>
         <View
@@ -458,10 +564,19 @@
 
             <TextView
                 android:id="@+id/txtVitaminB6"
-                android:layout_width="222dp"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 mg"
+                android:text="85"
+                android:textColor="#330033"
+                android:textSize="16sp"
+                android:typeface="serif" />
+
+            <TextView
+                android:layout_width="211dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mg"
                 android:typeface="serif"
                 android:textColor="#330033"
                 android:textSize="16sp" />
@@ -490,13 +605,22 @@
 
             <TextView
                 android:id="@+id/txtVitaminB12"
-                android:layout_width="222dp"
+                android:layout_width="216dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 mg"
+                android:text="85"
                 android:textColor="#330033"
                 android:textSize="16sp"
                 android:typeface="serif" />
+
+            <TextView
+                android:layout_width="211dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/g"
+                android:typeface="serif"
+                android:textColor="#330033"
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 

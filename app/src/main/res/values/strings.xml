@@ -47,6 +47,9 @@
     <string name="Kcal" translatable="false">&#160;KCal</string>
     <string name="cm" translatable="false">cm</string>
     <string name="kg" translatable="false">kg</string>
+    <string name="g" translatable="false">g</string>
+    <string name="mg" translatable="false">mg</string>
+    <string name="IU" translatable="false">IU</string>
     <string name="Calorie" translatable="false">Calorie:&#160;</string>
     <string name="user_daily_calories_setting"> User daily calories setting</string>
     <string name="detect_activity">DETECT</string>
@@ -96,7 +99,7 @@
     <string name="number_of_date_title" >Choose a number of day: </string>
     <string name="name_model_own_train" translatable="false">model_train_food</string>
     <string name="statisticdto" translatable="false">statisticdto</string>
-    <string name="excess_calories">Excess calories: </string>
+    <string name="excess_calories">Excess calories:&#160; </string>
     <string name="detail_button" >Detail</string>
     <string name="one_Day">1 Day</string>
     <string name="three_Day">3 Day</string>
