@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -106,7 +107,9 @@ public class MainActivity extends AppCompatActivity {
     public void setupParam(){
 
         cardViewDetect = findViewById(R.id.cardViewDetect);
+        cardViewDetect.setCardBackgroundColor(Color.TRANSPARENT);
         cardViewCalSetting = findViewById(R.id.cardViewCalSetting);
+        cardViewCalSetting.setCardBackgroundColor(Color.TRANSPARENT);
         drawerLayout = findViewById(R.id.activity_main);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.Open, R.string.Close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);

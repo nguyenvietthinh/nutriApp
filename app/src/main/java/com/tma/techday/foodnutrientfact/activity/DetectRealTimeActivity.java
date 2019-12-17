@@ -392,6 +392,14 @@ public class DetectRealTimeActivity extends AppCompatActivity {
      * @param foodName label after detect image
      */
     private void getNutrition(String foodName){
+        if (foodName.equalsIgnoreCase("Annona")){
+            foodName = "Custard Apple";
+        }
+        if (foodName.equalsIgnoreCase("Shaddock")){
+            foodName = "Pomelo";
+        }if (foodName.contains("_")){
+            foodName = foodName.replace("_"," ");
+        }
         FoodInfoDTO foodNutri = foodNutriService.getFoodNutri(foodName);
         if (foodNutri != null)
         {

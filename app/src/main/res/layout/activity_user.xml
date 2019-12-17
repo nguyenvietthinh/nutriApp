@@ -181,8 +181,7 @@ tools:context=".activity.UserActivity">
 
 <Button
     android:id="@+id/btnEditUser"
-    android:textColor="#fff"
-    android:background="@drawable/button_edit_user"
+    android:background="@drawable/buttons"
     android:layout_marginTop="35dp"
     android:layout_gravity="center_horizontal"
     android:layout_width="wrap_content"
