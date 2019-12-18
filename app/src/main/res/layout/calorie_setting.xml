@@ -28,7 +28,7 @@
             android:gravity="right"
             android:text="@string/Calorie"
             android:textColor="#F7252323"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
         <EditText
             android:id="@+id/txtCalSetting"
             android:inputType = "numberDecimal"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:text="@string/Kcal"
             android:textColor="#F7252323"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <Button

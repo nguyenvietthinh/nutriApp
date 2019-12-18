@@ -29,7 +29,7 @@
             android:gravity="right"
             android:text="@string/user_name"
             android:textColor="#F7252323"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/txtEditUserName"
@@ -46,7 +46,7 @@
             android:layout_width="114dp"
             android:layout_height="wrap_content"
             android:textColor="#F7252323"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -62,7 +62,7 @@
             android:gravity="right"
             android:text="@string/age"
             android:textColor="#F7252323"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/txtEditAge"
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:textColor="#F7252323"
             android:text="@string/age_range"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -97,7 +97,7 @@
             android:gravity="right"
             android:text="@string/user_height"
             android:textColor="#F7252323"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/txtEditHeight"
@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:text="@string/cm"
             android:textColor="#F7252323"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -130,7 +130,7 @@
             android:gravity="right"
             android:text="@string/user_weight"
             android:textColor="#F7252323"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/txtEditWeight"
@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:text="@string/kg"
             android:textColor="#F7252323"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -164,7 +164,7 @@
             android:gravity="right"
             android:text="@string/gender"
             android:textColor="#F7252323"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <RadioGroup
             android:id="@+id/radioSex"

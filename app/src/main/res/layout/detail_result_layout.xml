@@ -44,15 +44,15 @@
 
             <TextView
                 android:id="@+id/txtLabelAmount"
-                android:layout_width="119dp"
+                android:layout_width="138dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="Amount Per"
-                android:typeface="serif"
                 android:textColor="#330033"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/txtAmount"
@@ -71,7 +71,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -88,7 +88,7 @@
 
             <TextView
                 android:id="@+id/txtCal"
-                android:layout_width="105dp"
+                android:layout_width="129dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="165"
@@ -111,7 +111,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -131,7 +131,6 @@
                 android:layout_width="113dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="85 "
                 android:textColor="#330033"
                 android:textSize="16sp"
                 android:typeface="serif" />
@@ -151,7 +150,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_height="wrap_content" 
             android:orientation="horizontal">
 
             <TextView
@@ -228,12 +227,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_height="31dp"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txtSaturatedLabel"
-                android:layout_width="147dp"
+                android:id="@+id/txtSaturatedFatLabel"
+                android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:paddingLeft="20dp"
                 android:paddingTop="7dp"
@@ -245,7 +244,7 @@
 
             <TextView
                 android:id="@+id/txtSaturatedFat"
-                android:layout_width="143dp"
+                android:layout_width="193dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="85"
@@ -258,10 +257,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/g"
+                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp"
-                android:typeface="serif" />
+                android:textSize="16sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="31dp"
@@ -269,19 +269,19 @@
 
             <TextView
                 android:id="@+id/txtPolyunsaturatedLabel"
-                android:layout_width="196dp"
-                android:layout_height="wrap_content"
+                android:layout_width="207dp"
+                android:layout_height="match_parent"
                 android:paddingLeft="20dp"
                 android:paddingTop="7dp"
                 android:text="Polyunsaturated fat"
-                android:typeface="serif"
                 android:textAlignment="center"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/txtPolyunsaturatedFat"
-                android:layout_width="193dp"
+                android:layout_width="195dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="85"
@@ -305,19 +305,19 @@
 
             <TextView
                 android:id="@+id/txtMonounsaturatedLabel"
-                android:layout_width="210dp"
+                android:layout_width="216dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:paddingTop="7dp"
                 android:text="Monounsaturated fat"
-                android:typeface="serif"
                 android:textAlignment="center"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/txtMonounsaturatedFat"
-                android:layout_width="49dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="85"
@@ -424,7 +424,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_height="31dp"
             android:orientation="horizontal">
 
             <TextView
@@ -434,10 +434,10 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="Vitamin C"
-                android:typeface="serif"
                 android:textColor="#330033"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/txtVitaminC"
@@ -506,12 +506,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_height="36dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/txtVitaminDLabel"
-                android:layout_width="128dp"
+                android:layout_width="127dp"
                 android:layout_height="match_parent"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
@@ -536,9 +536,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/IU"
-                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:typeface="serif" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -622,6 +622,7 @@
                 android:textColor="#330033"
                 android:textSize="16sp" />
         </LinearLayout>
+
     </LinearLayout>
 
     <Button

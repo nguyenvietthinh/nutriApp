@@ -10,38 +10,38 @@
     android:id="@+id/activity_main">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
             android:layout_marginTop="20dp"
             android:layout_width="148dp"
-            android:layout_height="148dp"
+            android:layout_height="128dp"
             android:src="@drawable/dish" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/dancingscriptbold"
-            android:textSize="40sp"
+            android:textSize="36sp"
             android:layout_marginTop="20dp"
             android:textColor="@android:color/white"
             android:text="TMA Tech Day"/>
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewDetect"
             android:layout_width="320dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="130dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="5dp">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:background="@drawable/border_white"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -56,7 +56,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/detect_main_activity"
                     android:textColor="@android:color/white"
                     android:textStyle="bold" />
@@ -66,7 +66,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewCalSetting"
             android:layout_width="320dp"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="5dp">
@@ -75,6 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:padding="6dp"
                 android:background="@drawable/border_white"
                 android:orientation="vertical">
 
@@ -88,7 +89,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="3dp"
                     android:textColor="@android:color/white"
                     android:text="@string/calorie_setting"
                     android:textStyle="bold" />

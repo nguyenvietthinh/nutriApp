@@ -19,7 +19,8 @@ public class SettingLanguageActivity extends AppCompatActivity {
     private RadioGroup radioLangGroup;
     private RadioButton radioLangButton;
     private Button btnChange;
-
+    private static final int INDEX_VI = 0;
+    private static final int INDEX_EN = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +35,7 @@ public class SettingLanguageActivity extends AppCompatActivity {
         radioLangGroup = (RadioGroup) findViewById(R.id.radioLang);
         btnChange = (Button) findViewById(R.id.btnChange);
         SharedPreferences.Editor editor = getSharedPreferences("Settings",MODE_PRIVATE).edit();
+
         btnChange.setOnClickListener(view -> {
             int selectedId = radioLangGroup.getCheckedRadioButtonId();
             // find the radiobutton by returned id
@@ -51,7 +53,14 @@ public class SettingLanguageActivity extends AppCompatActivity {
             }
             editor.apply();
         });
+        SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        String myLang = sharedPreferences.getString(getString(R.string.My_Lang),"");
+        if (myLang != null){
+            if (myLang.equalsIgnoreCase(getString(R.string.vi))){
+                ((RadioButton)radioLangGroup.getChildAt(INDEX_VI)).setChecked(true);
+            }else {
+                ((RadioButton)radioLangGroup.getChildAt(INDEX_EN)).setChecked(true);
+            }
+        }
     }
-
-
 }

@@ -1,5 +1,6 @@
 package com.tma.techday.foodnutrientfact.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -28,7 +29,20 @@ public class SettingResultModeActivity extends AppCompatActivity {
      * Declare Params and set onclick listener for language radio button
      */
     private void setUpParam(){
+        SharedPreferences sharedPreferences = getSharedPreferences("Mode", Activity.MODE_PRIVATE);
+        String mode = sharedPreferences.getString(getString(R.string.My_Mode),"");
+
         switchOnOffResultMode = findViewById(R.id.switchOnOffResultMode);
+        if (mode != null){
+            if (mode.equalsIgnoreCase("multiple")){
+                switchOnOffResultMode.setChecked(true);
+                switchOnOffResultMode.setText(getString(R.string.result_mode_title_mult));
+            }else {
+                switchOnOffResultMode.setChecked(false);
+                switchOnOffResultMode.setText(getString(R.string.result_mode_title_single));
+            }
+
+        }
         switchOnOffResultMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
@@ -38,7 +52,18 @@ public class SettingResultModeActivity extends AppCompatActivity {
                 }
             }
         });
+
         switchOnOffScanMode = findViewById(R.id.switchOnOffScanMode);
+        String scanMode = sharedPreferences.getString(getString(R.string.My_Scan_Mode),"");
+        if (scanMode != null){
+            if (scanMode.equalsIgnoreCase(getString(R.string.reatime))){
+                switchOnOffScanMode.setChecked(true);
+                switchOnOffScanMode.setText(getString(R.string.scan_mode_realtime));
+            }else{
+                switchOnOffScanMode.setChecked(false);
+                switchOnOffScanMode.setText(getString(R.string.scan_mode_photo));
+            }
+        }
         switchOnOffScanMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){

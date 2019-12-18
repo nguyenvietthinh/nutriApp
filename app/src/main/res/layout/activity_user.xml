@@ -57,10 +57,10 @@ tools:context=".activity.UserActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:textSize="18dp" />
+            android:textSize="16sp" />
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:paddingLeft="25dp"
         android:layout_width="match_parent"
@@ -76,13 +76,13 @@ tools:context=".activity.UserActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:textSize="18dp" />
+            android:textSize="16sp" />
         <TextView
             android:textStyle="bold"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="16sp"
             android:paddingLeft="5dp"
             android:text="cm"/>
     </LinearLayout>
@@ -90,7 +90,7 @@ tools:context=".activity.UserActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:paddingLeft="25dp">
 
@@ -105,7 +105,7 @@ tools:context=".activity.UserActivity">
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:paddingLeft="20dp"
-            android:textSize="18dp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -114,11 +114,11 @@ tools:context=".activity.UserActivity">
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dp"
             android:text="kg"
-            android:textSize="18dp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:paddingLeft="25dp"
         android:layout_width="match_parent"
@@ -134,11 +134,11 @@ tools:context=".activity.UserActivity">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:textSize="18dp" />
+        android:textSize="16sp" />
 
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:paddingLeft="25dp"
         android:layout_width="match_parent"
@@ -154,11 +154,11 @@ tools:context=".activity.UserActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:textSize="18dp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:paddingLeft="25dp"
         android:layout_width="match_parent"
@@ -174,18 +174,17 @@ tools:context=".activity.UserActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:textSize="18dp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
+    <Button
+        android:id="@+id/btnEditUser"
+        android:background="@drawable/buttons"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:text="@string/edit_user"/>
 </LinearLayout>
-
-<Button
-    android:id="@+id/btnEditUser"
-    android:background="@drawable/buttons"
-    android:layout_marginTop="35dp"
-    android:layout_gravity="center_horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/edit_user"/>
-
 </LinearLayout>
