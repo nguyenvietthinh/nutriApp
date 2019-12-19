@@ -30,7 +30,7 @@
             android:paddingBottom="5dp"
             android:text="Food Name"
             android:textColor="#330033"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:typeface="serif" />
         <View
             android:layout_width="match_parent"
@@ -44,13 +44,13 @@
 
             <TextView
                 android:id="@+id/txtLabelAmount"
-                android:layout_width="138dp"
+                android:layout_width="119dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="Amount Per"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:typeface="serif" />
 
@@ -62,7 +62,7 @@
                 android:text="100 grams"
                 android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                 android:text="Calories"
                 android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -93,7 +93,7 @@
                 android:layout_weight="1"
                 android:text="165"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
             <TextView
                 android:layout_width="211dp"
@@ -102,7 +102,7 @@
                 android:text="@string/Kcal"
                 android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -122,7 +122,7 @@
                 android:paddingTop="10dp"
                 android:text="Protein"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:typeface="serif" />
 
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
             <TextView
                 android:layout_width="211dp"
@@ -141,7 +141,7 @@
                 android:text="@string/g"
                 android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                 android:paddingTop="10dp"
                 android:text="Cholesterol"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:typeface="serif" />
 
@@ -172,7 +172,7 @@
                 android:layout_weight="1"
                 android:text="85"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
             <TextView
                 android:layout_width="211dp"
@@ -181,7 +181,7 @@
                 android:text="@string/mg"
                 android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -190,7 +190,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="32dp"
             android:orientation="horizontal">
 
             <TextView
@@ -201,7 +201,7 @@
                 android:paddingTop="10dp"
                 android:text="Total Fat"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:typeface="serif" />
 
@@ -212,7 +212,7 @@
                 android:layout_weight="1"
                 android:text="3.6"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
@@ -221,13 +221,13 @@
                 android:layout_weight="1"
                 android:text="@string/g"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="31dp"
+            android:layout_height="29dp"
             android:orientation="horizontal">
 
             <TextView
@@ -239,17 +239,17 @@
                 android:text="Saturated fat"
                 android:textAlignment="center"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
                 android:id="@+id/txtSaturatedFat"
-                android:layout_width="193dp"
+                android:layout_width="171dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="85"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
@@ -257,9 +257,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/g"
-                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp"
+                android:typeface="serif" />
         </LinearLayout>
 
         <LinearLayout
@@ -269,14 +269,14 @@
 
             <TextView
                 android:id="@+id/txtPolyunsaturatedLabel"
-                android:layout_width="207dp"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:paddingLeft="20dp"
                 android:paddingTop="7dp"
                 android:text="Polyunsaturated fat"
                 android:textAlignment="center"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
@@ -286,7 +286,7 @@
                 android:layout_weight="1"
                 android:text="85"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
@@ -294,25 +294,26 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/g"
-                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp"
+                android:typeface="serif" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="33dp"
+            android:layout_height="32dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/txtMonounsaturatedLabel"
-                android:layout_width="216dp"
+                android:layout_width="206dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:paddingTop="7dp"
                 android:text="Monounsaturated fat"
                 android:textAlignment="center"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
@@ -322,7 +323,7 @@
                 android:layout_weight="1"
                 android:text="85"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
@@ -331,7 +332,7 @@
                 android:layout_weight="1"
                 android:text="@string/g"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
         </LinearLayout>
         <View
@@ -341,7 +342,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="29dp"
             android:orientation="horizontal">
 
             <TextView
@@ -351,10 +352,10 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="Sodium"
-                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/txtSodium"
@@ -362,18 +363,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="85"
-                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp"
+                android:typeface="serif" />
 
             <TextView
                 android:layout_width="211dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/mg"
-                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp"
+                android:typeface="serif" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -394,7 +395,7 @@
                 android:text="Potassium"
                 android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -405,7 +406,7 @@
                 android:text="85"
                 android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="211dp"
@@ -414,7 +415,7 @@
                 android:text="@string/mg"
                 android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -435,7 +436,7 @@
                 android:paddingTop="10dp"
                 android:text="Vitamin C"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:typeface="serif" />
 
@@ -446,7 +447,7 @@
                 android:layout_weight="1"
                 android:text="85"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
@@ -455,7 +456,7 @@
                 android:layout_weight="1"
                 android:text="@string/mg"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
         </LinearLayout>
         <View
@@ -465,7 +466,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="34dp"
             android:orientation="horizontal">
 
             <TextView
@@ -475,10 +476,10 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="Vitamin A"
-                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/txtVitaminA"
@@ -487,7 +488,7 @@
                 android:layout_weight="1"
                 android:text="85 "
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
@@ -495,9 +496,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/mg"
-                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp"
+                android:typeface="serif" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -506,7 +507,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="32dp"
             android:orientation="horizontal">
 
             <TextView
@@ -517,7 +518,7 @@
                 android:paddingTop="10dp"
                 android:text="Vitamin D"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:typeface="serif" />
 
@@ -528,7 +529,7 @@
                 android:layout_weight="1"
                 android:text="85"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
@@ -537,7 +538,7 @@
                 android:layout_weight="1"
                 android:text="@string/IU"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
         </LinearLayout>
         <View
@@ -547,7 +548,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="31dp"
             android:orientation="horizontal">
 
             <TextView
@@ -557,10 +558,10 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="Vitamin B-6"
-                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/txtVitaminB6"
@@ -569,7 +570,7 @@
                 android:layout_weight="1"
                 android:text="85"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
@@ -577,9 +578,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/mg"
-                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp"
+                android:typeface="serif" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -588,7 +589,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="32dp"
             android:orientation="horizontal">
 
             <TextView
@@ -599,7 +600,7 @@
                 android:paddingTop="10dp"
                 android:text="Vitamin B-12"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:typeface="serif" />
 
@@ -610,7 +611,7 @@
                 android:layout_weight="1"
                 android:text="85"
                 android:textColor="#330033"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="serif" />
 
             <TextView
@@ -618,21 +619,21 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/g"
-                android:typeface="serif"
                 android:textColor="#330033"
-                android:textSize="16sp" />
+                android:textSize="14sp"
+                android:typeface="serif" />
         </LinearLayout>
 
     </LinearLayout>
 
     <Button
         android:id="@+id/btnAdd"
-        android:layout_gravity="center"
-        android:background="@drawable/buttons"
         android:layout_width="264dp"
-        android:layout_height="27dp"
+        android:layout_height="19dp"
+        android:layout_gravity="center"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="5dp"
+        android:background="@drawable/buttons"
         android:text="@string/Add" />
 
 </LinearLayout>

@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:textColor="#F7252323"
             android:text="@string/age_range"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
     <LinearLayout

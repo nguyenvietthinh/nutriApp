@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:orientation="vertical">
         <TextView
@@ -94,10 +94,9 @@
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChartCal"
-        android:layout_marginLeft="10dp"
-        android:layout_width="380dp"
-        android:layout_height="370dp"
-        android:layout_weight=".5"
+        android:layout_marginLeft="17dp"
+        android:layout_width="340dp"
+        android:layout_height="match_parent"
         >
     </com.github.mikephil.charting.charts.PieChart>
 
